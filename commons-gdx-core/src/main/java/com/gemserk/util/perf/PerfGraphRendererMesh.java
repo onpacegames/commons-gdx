@@ -12,7 +12,6 @@ import com.gemserk.commons.gdx.graphics.MeshRenderer;
 import com.gemserk.commons.gdx.math.MathUtils2;
 
 public class PerfGraphRendererMesh implements Disposable {
-
 	public Camera camera;
 	Mesh mesh;
 	private int vertexSize;
@@ -28,7 +27,7 @@ public class PerfGraphRendererMesh implements Disposable {
 		mesh = new Mesh(VertexDataType.VertexArray, false, maxVertices, 0, attribs);
 
 		vertexSize = mesh.getVertexAttributes().vertexSize / 4;
-		vertices = new float[maxVertices * (vertexSize)];
+		vertices = new float[maxVertices * vertexSize];
 		colorOffset = mesh.getVertexAttribute(Usage.ColorPacked) != null ? mesh.getVertexAttribute(Usage.ColorPacked).offset / 4 : 0;
 	}
 
@@ -36,9 +35,7 @@ public class PerfGraphRendererMesh implements Disposable {
 
 		int vertexIndex = 0;
 
-		for (int renderDefinitionIndex = 0; renderDefinitionIndex < renderDefinitions.length; renderDefinitionIndex++) {
-			PerfGraphRenderDefinition renderDefinition = renderDefinitions[renderDefinitionIndex];
-
+		for (PerfGraphRenderDefinition renderDefinition : renderDefinitions) {
 			FloatSlidingWindowArray deltas = renderDefinition.perfData.data;
 			float x = renderDefinition.x;
 			float y = renderDefinition.y;
@@ -50,11 +47,11 @@ public class PerfGraphRendererMesh implements Disposable {
 
 			int steps = deltas.size();
 			float lastY = y + MathUtils2.inverseLinealInterpolation(deltas.get(0), minValue, maxValue) * height;
-			float stepX = ((float) width) / deltas.getWindowSize();
+			float stepX = width / deltas.getWindowSize();
 			if (guidelines != null) {
 				float colorGuidelines = renderDefinition.guidelinesColor.toFloatBits();
-				for (int i = 0; i < guidelines.length; i++) {
-					float percentHeight = MathUtils2.inverseLinealInterpolation(guidelines[i], minValue, maxValue);
+				for (float guideline : guidelines) {
+					float percentHeight = MathUtils2.inverseLinealInterpolation(guideline, minValue, maxValue);
 					float guidelineY = y + height * percentHeight;
 
 					vertices[vertexIndex + 0] = x;
@@ -145,8 +142,9 @@ public class PerfGraphRendererMesh implements Disposable {
 		}
 
 		int cantVertices = vertexIndex / vertexSize;
-		if (cantVertices == 0)
+		if (cantVertices == 0) {
 			return;
+		}
 
 		mesh.setVertices(vertices, 0, vertexIndex);
 		meshRenderer.render(camera, mesh, GL10.GL_LINES, 0, cantVertices);

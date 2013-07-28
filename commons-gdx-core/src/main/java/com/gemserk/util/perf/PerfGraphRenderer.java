@@ -14,12 +14,12 @@ public class PerfGraphRenderer {
 		int width = Gdx.graphics.getWidth();
 		int steps = deltas.size();
 		float lastY = 0;
-		float stepX = ((float) width) / deltas.getWindowSize();
+		float stepX = (float) width / deltas.getWindowSize();
 		shapeRenderer.setColor(Color.RED);
 		shapeRenderer.begin(ShapeType.Line);
 		float averageDelta = (1 / 60f + 1 / 30f) / 2;
 		for (int i = 0; i < steps; i++) {
-			float nextY = (deltas.get(i) / averageDelta) * Gdx.graphics.getHeight() / 2;
+			float nextY = deltas.get(i) / averageDelta * Gdx.graphics.getHeight() / 2;
 			float x1 = stepX * (i - 1);
 			float x2 = stepX * i;
 			shapeRenderer.line(x1, lastY, x2, nextY);
@@ -42,13 +42,13 @@ public class PerfGraphRenderer {
 		FloatSlidingWindowArray deltas = perfData.data;
 		int steps = deltas.size();
 		float lastY = y + MathUtils2.inverseLinealInterpolation(deltas.get(0), minValue, maxValue) * height;
-		float stepX = ((float) width) / deltas.getWindowSize();
+		float stepX = width / deltas.getWindowSize();
 		
 		shapeRenderer.begin(ShapeType.Line);
 		if(guidelines!=null){
 			shapeRenderer.setColor(Color.YELLOW);
-			for (int i = 0; i < guidelines.length; i++) {
-				float percentHeight = MathUtils2.inverseLinealInterpolation(guidelines[i], minValue, maxValue);
+			for (float guideline : guidelines) {
+				float percentHeight = MathUtils2.inverseLinealInterpolation(guideline, minValue, maxValue);
 				float guidelineY = y + height * percentHeight;
 				shapeRenderer.line(x, guidelineY, x + width, guidelineY);
 			}

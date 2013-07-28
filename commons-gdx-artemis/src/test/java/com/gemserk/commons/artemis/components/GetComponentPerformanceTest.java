@@ -5,19 +5,16 @@ import org.junit.Test;
 import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.ComponentType;
-import com.artemis.ComponentTypeManager;
 import com.artemis.Entity;
 import com.artemis.World;
 
 public class GetComponentPerformanceTest {
-
 	private static class MyTestComponent extends Component {
 
 	}
 
 	@Test
 	public void test() {
-
 		// some vm warm up
 
 		for (int i = 0; i < 100; i++) {
@@ -57,13 +54,12 @@ public class GetComponentPerformanceTest {
 	}
 
 	public long testTimeWithGetComponentFromMapper(int iterations) {
-
 		World world = new World();
 		Entity e = world.createEntity();
 		e.addComponent(new MyTestComponent());
-		e.refresh();
+		e.addToWorld();
 
-		ComponentMapper<MyTestComponent> myTestComponentMapper = new ComponentMapper<MyTestComponent>(MyTestComponent.class, world.getEntityManager());
+		ComponentMapper<MyTestComponent> myTestComponentMapper = ComponentMapper.getFor(MyTestComponent.class, world);
 
 		long startNanoTime = System.nanoTime();
 
@@ -76,50 +72,47 @@ public class GetComponentPerformanceTest {
 	}
 
 	public long testTimeWithGetComponentUsingTypeAndClass(int iterations) {
-
 		World world = new World();
 		Entity e = world.createEntity();
 		e.addComponent(new MyTestComponent());
-		e.refresh();
+		e.addToWorld();
 
-		ComponentType myTestComponentType = ComponentTypeManager.getTypeFor(MyTestComponent.class);
+		ComponentType myTestComponentType = ComponentType.getTypeFor(MyTestComponent.class);
 
 		long startNanoTime = System.nanoTime();
 
 		for (int i = 0; i < iterations; i++) {
 			// MyTestComponent myTestComponent = MyTestComponent.class.cast(e.getComponent(myTestComponentType.getId()));
-			MyTestComponent.class.cast(e.getComponent(myTestComponentType.getId()));
+			MyTestComponent.class.cast(e.getComponent(myTestComponentType));
 		}
 
 		return System.nanoTime() - startNanoTime;
 	}
 
 	public long testTimeWithGetComponentUsingTypeAndCacheClass(int iterations) {
-
 		World world = new World();
 		Entity e = world.createEntity();
 		e.addComponent(new MyTestComponent());
-		e.refresh();
+		e.addToWorld();
 
-		ComponentType myTestComponentType = ComponentTypeManager.getTypeFor(MyTestComponent.class);
+		ComponentType myTestComponentType = ComponentType.getTypeFor(MyTestComponent.class);
 		Class<MyTestComponent> myTestComponentClass = MyTestComponent.class;
 
 		long startNanoTime = System.nanoTime();
 
 		for (int i = 0; i < iterations; i++) {
 			// MyTestComponent myTestComponent = myTestComponentClass.cast(e.getComponent(myTestComponentType.getId()));
-			myTestComponentClass.cast(e.getComponent(myTestComponentType.getId()));
+			myTestComponentClass.cast(e.getComponent(myTestComponentType));
 		}
 
 		return System.nanoTime() - startNanoTime;
 	}
 
 	public long testTimeWithGetComponentFromClassWithClassCache(int iterations) {
-
 		World world = new World();
 		Entity e = world.createEntity();
 		e.addComponent(new MyTestComponent());
-		e.refresh();
+		e.addToWorld();
 
 		Class<MyTestComponent> myTestComponentClass = MyTestComponent.class;
 
@@ -134,11 +127,10 @@ public class GetComponentPerformanceTest {
 	}
 
 	public long testTimeWithGetComponentFromClass(int iterations) {
-
 		World world = new World();
 		Entity e = world.createEntity();
 		e.addComponent(new MyTestComponent());
-		e.refresh();
+		e.addToWorld();
 
 		long startNanoTime = System.nanoTime();
 		// long iterationsTime = 0;

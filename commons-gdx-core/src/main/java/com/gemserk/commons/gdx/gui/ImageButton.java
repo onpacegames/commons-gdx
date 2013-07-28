@@ -9,7 +9,6 @@ import com.gemserk.commons.gdx.input.LibgdxPointer;
 import com.gemserk.commons.gdx.math.MathUtils2;
 
 public class ImageButton extends ControlImpl {
-
 	ButtonHandler buttonHandler;
 	Sprite sprite;
 	LibgdxPointer libgdxPointer;
@@ -25,7 +24,7 @@ public class ImageButton extends ControlImpl {
 	}
 
 	public void setColor(float r, float g, float b, float a) {
-		this.color.set(r, g, b, a);
+		color.set(r, g, b, a);
 	}
 	
 	public Color getColor() {
@@ -51,8 +50,8 @@ public class ImageButton extends ControlImpl {
 	}
 
 	public void setSize(float w, float h) {
-		this.width = w;
-		this.height = h;
+		width = w;
+		height = h;
 		invalidate();
 	}
 
@@ -71,19 +70,21 @@ public class ImageButton extends ControlImpl {
 	public ImageButton(String id, Sprite sprite) {
 		this.id = id;
 		this.sprite = sprite;
-		this.buttonHandler = new ButtonHandler();
-		this.color = new Color(1f, 1f, 1f, 1f);
-		this.libgdxPointer = new LibgdxPointer(0);
-		this.width = sprite.getWidth();
-		this.height = sprite.getHeight();
-		this.bounds = new Rectangle(0, 0, width, height);
-		this.cx = 0.5f;
-		this.cy = 0.5f;
+		buttonHandler = new ButtonHandler();
+		color = new Color(1f, 1f, 1f, 1f);
+		libgdxPointer = new LibgdxPointer(0);
+		width = sprite.getWidth();
+		height = sprite.getHeight();
+		bounds = new Rectangle(0, 0, width, height);
+		cx = 0.5f;
+		cy = 0.5f;
 	}
 
+	@Override
 	public void draw(SpriteBatch spriteBatch) {
-		if (!isVisible())
+		if (!isVisible()) {
 			return;
+		}
 		sprite.setColor(color);
 		sprite.setSize(width, height);
 		SpriteBatchUtils.drawCentered(spriteBatch, sprite, getX(), getY(), width, height, 0f, cx, cy);
@@ -91,6 +92,7 @@ public class ImageButton extends ControlImpl {
 	
 	boolean wasInside;
 
+	@Override
 	public void update() {
 
 		if (!isValid()) {
@@ -113,22 +115,26 @@ public class ImageButton extends ControlImpl {
 			wasInside = false;
 		}
 
-		if (libgdxPointer.wasPressed)
+		if (libgdxPointer.wasPressed) {
 			pressed = MathUtils2.inside(bounds, libgdxPointer.getPressedPosition());
+		}
 
-		if (libgdxPointer.wasReleased)
+		if (libgdxPointer.wasReleased) {
 			released = MathUtils2.inside(bounds, libgdxPointer.getReleasedPosition());
+		}
 
-		if (pressed)
+		if (pressed) {
 			buttonHandler.onPressed(this);
+		}
 
-		if (released)
+		if (released) {
 			buttonHandler.onReleased(this);
+		}
 
 	}
 
 	public void recalculateBounds() {
-		this.bounds.set(getX() - width * cx, getY() - height * cy, width, height);
+		bounds.set(getX() - width * cx, getY() - height * cy, width, height);
 	}
 
 }

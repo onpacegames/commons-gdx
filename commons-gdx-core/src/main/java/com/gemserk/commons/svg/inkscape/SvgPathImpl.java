@@ -4,10 +4,10 @@ import com.gemserk.vecmath.Vector2f;
 
 
 public class SvgPathImpl implements SvgPath {
-
 	String id;
 	Vector2f[] points;
 
+	@Override
 	public String getId() {
 		return id;
 	}
@@ -16,6 +16,7 @@ public class SvgPathImpl implements SvgPath {
 		this.id = id;
 	}
 
+	@Override
 	public Vector2f[] getPoints() {
 		return points;
 	}

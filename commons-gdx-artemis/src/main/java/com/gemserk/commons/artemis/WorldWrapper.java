@@ -6,8 +6,8 @@ import com.artemis.EntitySystem;
 import com.artemis.World;
 import com.badlogic.gdx.utils.Disposable;
 
+// FIXME I'm not sure the way the artmeis world is processed will work with separating update and render systems - needs looking in to.
 public class WorldWrapper {
-
 	protected World world;
 
 	protected ArrayList<EntitySystem> updateSystems;
@@ -30,7 +30,7 @@ public class WorldWrapper {
 	}
 
 	public void addUpdateSystem(EntitySystem entitySystem) {
-		world.getSystemManager().setSystem(entitySystem);
+		world.setSystem(entitySystem);
 		updateSystems.add(entitySystem);
 	}
 	
@@ -39,7 +39,7 @@ public class WorldWrapper {
 	}
 
 	public void addRenderSystem(EntitySystem entitySystem) {
-		world.getSystemManager().setSystem(entitySystem);
+		world.setSystem(entitySystem);
 		renderSystems.add(entitySystem);
 	}
 	
@@ -48,65 +48,62 @@ public class WorldWrapper {
 	}
 
 	public void init() {
-		world.getSystemManager().initializeAll();
+		world.initialize();
 		
-		for (int i = 0; i < worldUpdateSystems.size(); i++) 
-			worldUpdateSystems.get(i).init(world);
-
-		for (int i = 0; i < worldRenderSystems.size(); i++) 
-			worldRenderSystems.get(i).init(world);
-
+		for (WorldSystem worldUpdateSystem : worldUpdateSystems) {
+			worldUpdateSystem.init(world);
+		}
+		
+		for (WorldSystem worldRenderSystem : worldRenderSystems) {
+			worldRenderSystem.init(world);
+		}
 	}
 
 	public void update(int delta) {
-		world.loopStart();
 		world.setDelta(delta);
+		world.process();
 		
-		for (int i = 0; i < updateSystems.size(); i++) {
-			EntitySystem system = updateSystems.get(i);
-			system.process();
+		for (EntitySystem updateSystem : updateSystems) {
+			updateSystem.process();
 		}
 		
-		for (int i = 0; i < worldUpdateSystems.size(); i++) 
-			worldUpdateSystems.get(i).process(world);
+		for (WorldSystem worldUpdateSystem : worldUpdateSystems) {
+			worldUpdateSystem.process(world);
+		}
 	}
 
 	public void render() {
-		
-		for (int i = 0; i < renderSystems.size(); i++) {
-			EntitySystem system = renderSystems.get(i);
-			system.process();
+		for (EntitySystem renderSystem : renderSystems) {
+			renderSystem.process();
 		}
 		
-		for (int i = 0; i < worldRenderSystems.size(); i++) 
-			worldRenderSystems.get(i).process(world);
+		for (WorldSystem worldRenderSystem : worldRenderSystems) {
+			worldRenderSystem.process(world);
+		}
 	}
 
 	/**
 	 * Called to dispose the world and all entity systems, be aware you can't use is again without reinitializing it.
 	 */
 	public void dispose() {
-
-		for (int i = 0; i < updateSystems.size(); i++) {
-			EntitySystem system = updateSystems.get(i);
-			// should be part of the EntitySystem interface.
-			// system.dispose();
-			if (system instanceof Disposable)
-				((Disposable) system).dispose();
+		for (EntitySystem updateSystem : updateSystems) {
+			if (updateSystem instanceof Disposable) {
+				((Disposable) updateSystem).dispose();
+			}
 		}
 
-		for (int i = 0; i < renderSystems.size(); i++) {
-			EntitySystem system = renderSystems.get(i);
-			// system.dispose();
-			if (system instanceof Disposable)
-				((Disposable) system).dispose();
+		for (EntitySystem renderSystem : renderSystems) {
+			if (renderSystem instanceof Disposable) {
+				((Disposable) renderSystem).dispose();
+			}
 		}
 		
-		for (int i = 0; i < worldUpdateSystems.size(); i++) 
-			worldUpdateSystems.get(i).dispose(world);
+		for (WorldSystem worldUpdateSystem : worldUpdateSystems) {
+			worldUpdateSystem.dispose(world);
+		}
 
-		for (int i = 0; i < worldRenderSystems.size(); i++) 
-			worldRenderSystems.get(i).dispose(world);
+		for (WorldSystem worldRenderSystem : worldRenderSystems) {
+			worldRenderSystem.dispose(world);
+		}
 	}
-
 }

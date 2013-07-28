@@ -9,7 +9,6 @@ import java.util.Set;
 import com.badlogic.gdx.utils.ObjectIntMap;
 
 public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccessWithKey<K, V> {
-
 	ArrayList<V> items;
 	ArrayList<K> keys;
 	ObjectIntMap<Object> positions;
@@ -48,8 +47,9 @@ public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccessWithKey<K, 
 	@Override
 	public V get(Object key) {
 		int position = positions.get(key, NOT_PRESENT);
-		if (position == NOT_PRESENT)
+		if (position == NOT_PRESENT) {
 			return null;
+		}
 
 		return items.get(position);
 	}
@@ -70,8 +70,9 @@ public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccessWithKey<K, 
 	@Override
 	public V remove(Object key) {
 		int position = positions.get(key, NOT_PRESENT);
-		if (position == NOT_PRESENT)
+		if (position == NOT_PRESENT) {
 			return null;
+		}
 
 		int lastPosition = items.size() - 1;
 
@@ -99,6 +100,7 @@ public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccessWithKey<K, 
 
 	}
 
+	@Override
 	public V get(int index) {
 		return items.get(index);
 	}

@@ -9,7 +9,6 @@ import com.gemserk.commons.gdx.input.Pointer;
 import com.gemserk.commons.gdx.math.MathUtils2;
 
 public class ToggleableImageButton extends ControlImpl {
-
 	public static class ToggleHandler {
 
 		public void onToggle(boolean value) {
@@ -81,13 +80,16 @@ public class ToggleableImageButton extends ControlImpl {
 		invalidate();
 	}
 
+	@Override
 	public void draw(SpriteBatch spriteBatch) {
-		if (!isVisible())
+		if (!isVisible()) {
 			return;
-		if (enabled)
+		}
+		if (enabled) {
 			SpriteBatchUtils.drawCentered(spriteBatch, enabledSprite, getX(), getY(), width, height, 0f, cx, cy);
-		else
+		} else {
 			SpriteBatchUtils.drawCentered(spriteBatch, disabledSprite, getX(), getY(), width, height, 0f, cx, cy);
+		}
 	}
 
 	@Override
@@ -100,18 +102,20 @@ public class ToggleableImageButton extends ControlImpl {
 
 		pointer.update();
 
-		if (!pointer.wasReleased())
+		if (!pointer.wasReleased()) {
 			return;
+		}
 
-		if (!MathUtils2.inside(bounds, pointer.getReleasedPosition()))
+		if (!MathUtils2.inside(bounds, pointer.getReleasedPosition())) {
 			return;
+		}
 
 		toggle();
 
 	}
 
 	protected void recalculateBounds() {
-		this.bounds.set(getX() - width * cx, getY() - height * cy, width, height);
+		bounds.set(getX() - width * cx, getY() - height * cy, width, height);
 	}
 
 }

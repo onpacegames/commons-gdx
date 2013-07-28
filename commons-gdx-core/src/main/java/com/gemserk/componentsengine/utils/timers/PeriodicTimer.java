@@ -1,16 +1,15 @@
 package com.gemserk.componentsengine.utils.timers;
 
-
 public class PeriodicTimer implements Timer{
-
 	int period;
 	int timeLeft;
 
 	public PeriodicTimer(int period) {
 		this.period = period;
-		this.timeLeft = period;
+		timeLeft = period;
 	}
 
+	@Override
 	public boolean update(int delta) {
 		
 		timeLeft-=delta;
@@ -21,6 +20,7 @@ public class PeriodicTimer implements Timer{
 		return false;
 	}
 
+	@Override
 	public void reset() {
 		timeLeft = period;
 	}

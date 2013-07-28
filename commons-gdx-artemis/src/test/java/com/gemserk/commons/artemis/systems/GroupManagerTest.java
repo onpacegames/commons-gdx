@@ -7,34 +7,34 @@ import org.junit.Test;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.managers.GroupManager;
 import com.artemis.utils.ImmutableBag;
+import com.gemserk.commons.artemis.WorldWrapper;
 
 public class GroupManagerTest {
-	
 	@Test
 	public void entityNotRemovedFromGroupWhenDeleted() {
 		String group = "EntityGroup";
 		
-		World world = new World();
-		Entity e = world.createEntity();
+		WorldWrapper worldWrapper = new WorldWrapper(new World());
+		worldWrapper.getWorld().setManager(new GroupManager());
+		worldWrapper.init();
 		
-		e.setGroup(group);
-		e.refresh();
+		Entity e = worldWrapper.getWorld().createEntity();
 		
-		world.setDelta(10);
-		world.loopStart();
+		worldWrapper.getWorld().getManager(GroupManager.class).add(e, group);
+		e.addToWorld();
 		
-		ImmutableBag<Entity> entities = world.getGroupManager().getEntities(group);
+		worldWrapper.update(10);
+		
+		ImmutableBag<Entity> entities = worldWrapper.getWorld().getManager(GroupManager.class).getEntities(group);
 		assertThat(entities.size(), IsEqual.equalTo(1));
 		
-		world.deleteEntity(e);
+		worldWrapper.getWorld().deleteEntity(e);
 		
-		world.setDelta(10);
-		world.loopStart();
+		worldWrapper.update(10);
 
-		entities = world.getGroupManager().getEntities(group);
+		entities = worldWrapper.getWorld().getManager(GroupManager.class).getEntities(group);
 		assertThat(entities.size(), IsEqual.equalTo(0));
 	}
-
-
 }

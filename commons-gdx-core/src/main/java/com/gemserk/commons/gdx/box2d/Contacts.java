@@ -5,7 +5,6 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Array;
 
 public class Contacts {
-
 	public static class Contact {
 
 		Fixture myFixture;
@@ -23,18 +22,18 @@ public class Contacts {
 			this.myFixture = myFixture;
 			this.otherFixture = otherFixture;
 			this.normal.set(normal);
-			this.inContact = true;
+			inContact = true;
 			myBodyPosition.set(myFixture.getBody().getPosition());
 			otherBodyPosition.set(otherFixture.getBody().getPosition());
 		}
 
 		public void unsetContact() {
-			this.inContact = false;
+			inContact = false;
 			myFixture = null;
 			otherFixture = null;
-			this.normal.set(0f, 0f);
-			this.myBodyPosition.set(0,0);
-			this.otherBodyPosition.set(0,0);
+			normal.set(0f, 0f);
+			myBodyPosition.set(0,0);
+			otherBodyPosition.set(0,0);
 		}
 
 		public Fixture getMyFixture() {
@@ -67,8 +66,9 @@ public class Contacts {
 	int activeContacts = 0;
 	
 	public Contacts() {
-		for (int i = 0; i < 31; i++) 
+		for (int i = 0; i < 31; i++) {
 			contacts.add(new Contact());
+		}
 	}
 
 	public void addContact(com.badlogic.gdx.physics.box2d.Contact contact, boolean AB) {
@@ -81,7 +81,7 @@ public class Contacts {
 		} else {
 			myFixture = contact.getFixtureB();
 			otherFixture = contact.getFixtureA();
-			normal.mul(-1);// if the body in contact is the first one declared by the contact, then we have to invert the normal.
+			normal.scl(-1);// if the body in contact is the first one declared by the contact, then we have to invert the normal.
 		}
 
 		addContact(myFixture, otherFixture, normal);
@@ -120,8 +120,9 @@ public class Contacts {
 		for (int i = 0; i < activeContacts; i++) {
 			Contact contact = contacts.get(i);
 
-			if (contact.myFixture != myFixture || contact.otherFixture != otherFixture)
+			if (contact.myFixture != myFixture || contact.otherFixture != otherFixture) {
 				continue;
+			}
 
 			contact.unsetContact();
 			contacts.set(i, contacts.get(activeContacts - 1));

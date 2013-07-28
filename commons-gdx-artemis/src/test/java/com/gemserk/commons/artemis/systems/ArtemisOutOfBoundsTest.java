@@ -10,7 +10,6 @@ import com.artemis.Entity;
 import com.artemis.World;
 
 public class ArtemisOutOfBoundsTest {
-
 	private static class Component1 extends Component {
 	}
 
@@ -73,16 +72,14 @@ public class ArtemisOutOfBoundsTest {
 
 		Entity e = world.createEntity();
 		e.addComponent(new Component1());
-		e.refresh();
+		e.addToWorld();
 
 		Component1 component = e.getComponent(Component1.class);
 		assertThat(component, IsNull.notNullValue());
-
 	}
 
 	@Test
 	public void shouldNotFailWhenAskingForComponentOutsideBounds() {
-
 		World world = new World();
 
 		Entity e = world.createEntity();
@@ -107,7 +104,7 @@ public class ArtemisOutOfBoundsTest {
 		e.addComponent(new Component16());
 		e.addComponent(new ComponentOutOfBounds());
 
-		e.refresh();
+		e.addToWorld();
 
 		e.getComponent(Component1.class);
 		e.getComponent(Component2.class);
@@ -135,7 +132,5 @@ public class ArtemisOutOfBoundsTest {
 
 		Component7 component7 = e.getComponent(Component7.class);
 		assertThat(component7, IsNull.nullValue());
-
 	}
-
 }

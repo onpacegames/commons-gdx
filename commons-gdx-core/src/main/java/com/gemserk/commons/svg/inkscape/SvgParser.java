@@ -9,12 +9,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 public class SvgParser {
-
 	private ArrayList<SvgElementHandler> handlers = new ArrayList<SvgElementHandler>();
 
 	class SvgConverters {
 
+		@SuppressWarnings("rawtypes")
 		Map<String, SvgElementConverter> converters = new HashMap<String, SvgElementConverter>() {
+			private static final long serialVersionUID = 1L;
+
 			{
 				put("g", SvgInkscapeConvertUtils.groupConverter());
 				put("image", SvgInkscapeConvertUtils.imageConverter());
@@ -93,15 +95,17 @@ public class SvgParser {
 
 	private void processElement(Element element) {
 		SvgElementConverter<SvgElement> converter = svgConverters.get(element);
-		if (converter == null)
+		if (converter == null) {
 			return;
+		}
 		handle(converter.convert(element), element);
 	}
 
 	private void postProcessElement(Element element) {
 		SvgElementConverter<SvgElement> converter = svgConverters.get(element);
-		if (converter == null)
+		if (converter == null) {
 			return;
+		}
 		postHandle(converter.convert(element), element);
 	}
 
@@ -120,7 +124,7 @@ public class SvgParser {
 	}
 
 	public void processChildren(boolean process) {
-		this.processChildren = process;
+		processChildren = process;
 	}
 
 }

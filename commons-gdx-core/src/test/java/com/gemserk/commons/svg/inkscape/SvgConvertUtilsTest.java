@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.gemserk.vecmath.Vector2f;
 
 public class SvgConvertUtilsTest {
-
 	private void assertVectorEquals(float x, float y, Vector2f actual) {
 		Assert.assertEquals(x, actual.x, 0.01f);
 		Assert.assertEquals(y, actual.y, 0.01f);
@@ -19,9 +18,9 @@ public class SvgConvertUtilsTest {
 	private void assertColorEquals(float r, float g, float b, float a, Color color) {
 		assertNotNull(color);
 		Assert.assertEquals(r, color.r, 0.01f);
-		Assert.assertEquals(g, color.g, 0.01f);		
+		Assert.assertEquals(g, color.g, 0.01f);
 		Assert.assertEquals(b, color.b, 0.01f);
-		Assert.assertEquals(a, color.a, 0.01f);		
+		Assert.assertEquals(a, color.a, 0.01f);
 	}
 
 	@Test
@@ -57,7 +56,7 @@ public class SvgConvertUtilsTest {
 	}
 	
 	@Test
-	public void naada(){ 
+	public void naada(){
 		
 		Integer v = Integer.valueOf("FFF", 16);
 		System.out.println(v);

@@ -4,7 +4,6 @@ import com.gemserk.commons.admob.AdMobView;
 import com.gemserk.commons.admob.AdsParameters;
 
 public class AdMobViewSimulatorImpl implements AdMobView {
-
 	private AdsParameters adsParameters = new AdsParameters().verticalAlign(AdsParameters.VERTICAL_TOP).horizontalAlign(AdsParameters.HORIZONTAL_CENTER);
 	boolean visible = true;
 	long delay = 0L;
@@ -20,36 +19,42 @@ public class AdMobViewSimulatorImpl implements AdMobView {
 
 	@Override
 	public void show() {
-		if (!enabled)
+		if (!enabled) {
 			return;
-		this.visible = true;
+		}
+		visible = true;
 	}
 
 	@Override
 	public void show(AdsParameters adsParameters) {
-		if (!enabled)
+		if (!enabled) {
 			return;
-		this.visible = true;
-		if (adsParameters != null) 
+		}
+		visible = true;
+		if (adsParameters != null) {
 			this.adsParameters = adsParameters;
-		this.delay = adsParameters.delay;
+			delay = adsParameters.delay;
+		}
 	}
 
 	@Override
 	public void hide() {
-		if (!enabled)
+		if (!enabled) {
 			return;
-		this.visible = false;
+		}
+		visible = false;
 	}
 
 	@Override
 	public void hide(AdsParameters adsParameters) {
-		if (!enabled)
+		if (!enabled) {
 			return;
-		this.visible = false;
-		if (adsParameters != null)
+		}
+		visible = false;
+		if (adsParameters != null) {
 			this.adsParameters = adsParameters;
-		this.delay = adsParameters.delay;
+			delay = adsParameters.delay;
+		}
 	}
 
 	@Override
@@ -59,8 +64,9 @@ public class AdMobViewSimulatorImpl implements AdMobView {
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		if (!enabled)
+		if (!enabled) {
 			hide();
+		}
 		this.enabled = enabled;
 	}
 

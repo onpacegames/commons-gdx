@@ -1,6 +1,7 @@
 package com.gemserk.util;
 
 import java.awt.Point;
+import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -20,7 +21,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class ScreenshotSaver {
-
 	private static final int[] RGBA_OFFSETS = { 0, 1, 2, 3 };
 	private static final int[] RGB_OFFSETS = { 0, 1, 2 };
 
@@ -34,8 +34,9 @@ public class ScreenshotSaver {
 	}
 
 	public static void saveScreenshot(File file, boolean hasAlpha) throws IOException {
-		if (Gdx.app.getType() == ApplicationType.Android)
+		if (Gdx.app.getType() == ApplicationType.Android) {
 			return;
+		}
 
 		byte[] screenshotPixels = ScreenUtils.getFrameBufferPixels(true);
 
@@ -58,14 +59,16 @@ public class ScreenshotSaver {
 	}
 
 	private static ColorModel getColorModel(boolean alpha) {
-		if (alpha)
-			return new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB), new int[] { 8, 8, 8, 8 }, true, false, ComponentColorModel.TRANSLUCENT, DataBuffer.TYPE_BYTE);
-		return new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB), new int[] { 8, 8, 8 }, false, false, ComponentColorModel.OPAQUE, DataBuffer.TYPE_BYTE);
+		if (alpha) {
+			return new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB), new int[] { 8, 8, 8, 8 }, true, false, Transparency.TRANSLUCENT, DataBuffer.TYPE_BYTE);
+		}
+		return new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB), new int[] { 8, 8, 8 }, false, false, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
 	}
 
 	private static int[] getOffsets(boolean alpha) {
-		if (alpha)
+		if (alpha) {
 			return RGBA_OFFSETS;
+		}
 		return RGB_OFFSETS;
 	}
 

@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.gemserk.commons.gdx</groupId>
 		<artifactId>commons-gdx</artifactId>
-		<version>0.0.11-SNAPSHOT</version>
+		<version>1.0.0-OPG-SNAPSHOT</version>
 	</parent>
 	<artifactId>commons-gdx-core</artifactId>
 	<packaging>jar</packaging>
@@ -13,7 +13,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.badlogic.gdx</groupId>
+			<groupId>com.badlogicgames.gdx</groupId>
 			<artifactId>gdx</artifactId>
 			<version>${gdx.version}</version>
 		</dependency>
@@ -23,28 +23,33 @@
 			<version>${animation4j.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.gemserk.vecmath</groupId>
-			<artifactId>vecmath</artifactId>
-			<version>${vecmath.version}</version>
-		</dependency>
+            <groupId>com.gemserk.vecmath</groupId>
+            <artifactId>vecmath</artifactId>
+            <version>${vecmath.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.6.1</version>
+			<version>${slf4j.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.1.1</version>
+			<version>${apache.http.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit-dep</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <scope>test</scope>
+        </dependency>
 		<dependency>
 			<groupId>org.jmock</groupId>
 			<artifactId>jmock-junit4</artifactId>
@@ -63,13 +68,13 @@
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
-			<version>3.0</version>
+			<version>${easymock.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymockclassextension</artifactId>
-			<version>3.0</version>
+			<version>${easymock.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

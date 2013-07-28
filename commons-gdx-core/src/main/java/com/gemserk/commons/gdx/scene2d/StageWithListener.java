@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class StageWithListener extends Stage {
-
 	private final InputProcessor inputProcessor;
 
 	public StageWithListener(InputProcessor inputProcessor) {
@@ -23,60 +22,74 @@ public class StageWithListener extends Stage {
 		this.inputProcessor = inputProcessor;
 	}
 
+	@Override
 	public boolean keyDown (int keycode) {
-		if(super.keyDown(keycode))
+		if(super.keyDown(keycode)) {
 			return true;
+		}
 		
 		return inputProcessor.keyDown(keycode);
 	}
 
+	@Override
 	public boolean keyUp (int keycode) {
-		if(super.keyUp(keycode))
+		if(super.keyUp(keycode)) {
 			return true;
+		}
 		
 		return inputProcessor.keyUp(keycode);
 	}
 
+	@Override
 	public boolean keyTyped (char character) {
-		if(super.keyTyped(character))
+		if(super.keyTyped(character)) {
 			return true;
+		}
 		
 		return inputProcessor.keyTyped(character);
 	}
 
+	@Override
 	public boolean touchDown (int screenX, int screenY, int pointer, int button) {
-		if(super.touchDown(screenX, screenY, pointer, button))
+		if(super.touchDown(screenX, screenY, pointer, button)) {
 			return true;
+		}
 		
 		return inputProcessor.touchDown(screenX, screenY, pointer, button);
 	}
 
+	@Override
 	public boolean touchUp (int screenX, int screenY, int pointer, int button) {
-		if(super.touchUp(screenX, screenY, pointer, button))
+		if(super.touchUp(screenX, screenY, pointer, button)) {
 			return true;
+		}
 		
 		return inputProcessor.touchUp(screenX, screenY, pointer, button);
 	}
 
+	@Override
 	public boolean touchDragged (int screenX, int screenY, int pointer) {
-		if(super.touchDragged(screenX, screenY, pointer))
+		if(super.touchDragged(screenX, screenY, pointer)) {
 			return true;
+		}
 		
 		return inputProcessor.touchDragged(screenX, screenY, pointer);
 	}
 
 	@Override
 	public boolean mouseMoved (int screenX, int screenY) {
-		if(super.mouseMoved(screenX, screenY))
+		if(super.mouseMoved(screenX, screenY)) {
 			return true;
+		}
 		
 		return inputProcessor.mouseMoved(screenX, screenY);
 	}
 
 	@Override
 	public boolean scrolled (int amount) {
-		if(super.scrolled(amount))
+		if(super.scrolled(amount)) {
 			return true;
+		}
 		
 		return inputProcessor.scrolled(amount);
 	}

@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ButtonMonitorTest {
-
 	static class ButtonMonitorMock extends ButtonMonitor {
 
 		public boolean down = false;
@@ -22,6 +21,7 @@ public class ButtonMonitorTest {
 			return down;
 		}
 
+		@Override
 		public String toString() {
 			@SuppressWarnings("serial")
 			Map<String, Boolean> actual = new LinkedHashMap<String, Boolean>() {

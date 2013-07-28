@@ -4,7 +4,6 @@ import com.gemserk.componentsengine.utils.Parameters;
 import com.gemserk.componentsengine.utils.ParametersWrapper;
 
 public class GameStateImpl implements GameState {
-
 	/**
 	 * Delta time in seconds.
 	 */
@@ -26,6 +25,7 @@ public class GameStateImpl implements GameState {
 	/**
 	 * Returns the parameters used when entering the game state.
 	 */
+	@Override
 	public Parameters getParameters() {
 		return parameters;
 	}

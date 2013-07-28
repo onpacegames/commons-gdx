@@ -1,7 +1,6 @@
 package com.gemserk.commons.connectivity;
 
 public class ConnectionStatusMonitorImpl implements ConnectionMonitor {
-
 	ConnectionStatus connectionStatus;
 	boolean connected = true;
 
@@ -22,6 +21,7 @@ public class ConnectionStatusMonitorImpl implements ConnectionMonitor {
 		return wasDisconnected;
 	}
 
+	@Override
 	public void update() {
 		wasConnected = false;
 		wasDisconnected = false;

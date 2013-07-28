@@ -1,13 +1,12 @@
 package com.gemserk.commons.artemis.components;
 
 import com.artemis.Component;
-import com.artemis.ComponentTypeManager;
+import com.artemis.ComponentType;
 import com.artemis.Entity;
 import com.gemserk.commons.artemis.render.Renderable;
 
 public class RenderableComponent extends Component {
-
-	public static final int type = ComponentTypeManager.getTypeFor(RenderableComponent.class).getId();
+	public static final ComponentType type = ComponentType.getTypeFor(RenderableComponent.class);
 
 	public static RenderableComponent get(Entity e) {
 		return (RenderableComponent) e.getComponent(type);
@@ -30,5 +29,4 @@ public class RenderableComponent extends Component {
 	public RenderableComponent(Renderable renderable) {
 		this.renderable = renderable;
 	}
-
 }

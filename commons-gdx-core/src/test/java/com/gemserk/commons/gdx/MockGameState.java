@@ -9,8 +9,10 @@ class MockGameState implements GameState {
 	
 	public boolean initialized = false;
 
+	@SuppressWarnings("unused")
 	private float delta;
 
+	@SuppressWarnings("unused")
 	private float alpha;
 
 	@Override

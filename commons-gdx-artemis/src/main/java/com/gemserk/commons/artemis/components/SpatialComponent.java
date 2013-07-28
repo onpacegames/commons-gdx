@@ -1,14 +1,13 @@
 package com.gemserk.commons.artemis.components;
 
 import com.artemis.Component;
-import com.artemis.ComponentTypeManager;
+import com.artemis.ComponentType;
 import com.artemis.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.commons.gdx.games.Spatial;
 
 public class SpatialComponent extends Component {
-
-	public static final int type = ComponentTypeManager.getTypeFor(SpatialComponent.class).getId();
+	public static final ComponentType type = ComponentType.getTypeFor(SpatialComponent.class);
 
 	public static SpatialComponent get(Entity e) {
 		return (SpatialComponent) e.getComponent(type);
@@ -35,5 +34,4 @@ public class SpatialComponent extends Component {
 	public SpatialComponent(Spatial spatial) {
 		this.spatial = spatial;
 	}
-
 }

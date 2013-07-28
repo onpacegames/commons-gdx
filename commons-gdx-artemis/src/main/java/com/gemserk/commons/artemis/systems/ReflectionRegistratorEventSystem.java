@@ -2,28 +2,27 @@ package com.gemserk.commons.artemis.systems;
 
 import java.util.ArrayList;
 
+import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
-import com.gemserk.commons.artemis.components.ScriptComponent;
+import com.artemis.utils.ImmutableBag;
+import com.gemserk.commons.artemis.components.Components;
 import com.gemserk.commons.artemis.events.EventManager;
 import com.gemserk.commons.artemis.events.reflection.EventListenerReflectionRegistrator;
 import com.gemserk.commons.artemis.scripts.Script;
 
 public class ReflectionRegistratorEventSystem extends EntitySystem {
-
-	private static final Class<ScriptComponent> scriptComponentClass = ScriptComponent.class;
 	private final EventListenerReflectionRegistrator eventListenerReflectionRegistrator;
 
 	@SuppressWarnings("unchecked")
 	public ReflectionRegistratorEventSystem(EventManager eventManager) {
-		super(ScriptComponent.class);
-		this.eventListenerReflectionRegistrator = new EventListenerReflectionRegistrator(eventManager);
+		super(Aspect.getAspectForAll(Components.scriptComponentClass));
+		eventListenerReflectionRegistrator = new EventListenerReflectionRegistrator(eventManager);
 	}
 
 	@Override
-	protected void added(Entity e) {
-		super.added(e);
-		ArrayList<Script> scripts = e.getComponent(scriptComponentClass).getScripts();
+	protected void inserted(Entity e) {
+		ArrayList<Script> scripts = e.getComponent(Components.scriptComponentClass).getScripts();
 		for (int i = 0; i < scripts.size(); i++) {
 			Script script = scripts.get(i);
 			eventListenerReflectionRegistrator.registerEventListeners(script);
@@ -32,8 +31,7 @@ public class ReflectionRegistratorEventSystem extends EntitySystem {
 
 	@Override
 	protected void removed(Entity e) {
-		super.removed(e);
-		ArrayList<Script> scripts = e.getComponent(scriptComponentClass).getScripts();
+		ArrayList<Script> scripts = e.getComponent(Components.scriptComponentClass).getScripts();
 		for (int i = 0; i < scripts.size(); i++) {
 			Script script = scripts.get(i);
 			eventListenerReflectionRegistrator.unregisterEventListeners(script);
@@ -41,7 +39,11 @@ public class ReflectionRegistratorEventSystem extends EntitySystem {
 	}
 
 	@Override
-	protected void processEntities() {
+	protected void processEntities(ImmutableBag<Entity> entities) {
 	}
-	
+
+	@Override
+	protected boolean checkProcessing() {
+		return false;
+	}
 }

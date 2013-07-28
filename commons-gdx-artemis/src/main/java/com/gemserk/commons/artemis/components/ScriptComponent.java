@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.artemis.Component;
-import com.artemis.ComponentTypeManager;
+import com.artemis.ComponentType;
 import com.artemis.Entity;
 import com.gemserk.commons.artemis.scripts.Script;
 
 public class ScriptComponent extends Component {
-
-	public static final int type = ComponentTypeManager.getTypeFor(ScriptComponent.class).getId();
+	public static final ComponentType type = ComponentType.getTypeFor(ScriptComponent.class);
 
 	public static ScriptComponent get(Entity e) {
 		return (ScriptComponent) e.getComponent(type);
@@ -27,10 +26,10 @@ public class ScriptComponent extends Component {
 	}
 
 	public ScriptComponent(Script... scripts) {
-		if (scripts == null)
+		if (scripts == null) {
 			throw new RuntimeException("Cant create a ScriptComponent with null scripts");
+		}
 		this.scripts = new ArrayList<Script>(scripts.length);
 		Collections.addAll(this.scripts, scripts);
 	}
-
 }

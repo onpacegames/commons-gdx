@@ -13,7 +13,6 @@ import com.gemserk.commons.gdx.input.LibgdxPointer;
 import com.gemserk.commons.gdx.math.MathUtils2;
 
 public class TextButton extends ControlImpl {
-
 	private float cx, cy;
 	private float width, height;
 	private float offsetX, offsetY;
@@ -34,8 +33,9 @@ public class TextButton extends ControlImpl {
 	private boolean roundPosition = true;
 
 	public TextButton setColor(Color color) {
-		if (colorTransition != null)
+		if (colorTransition != null) {
 			colorTransition.start(0.25f, color);
+		}
 		return this;
 	}
 
@@ -44,9 +44,10 @@ public class TextButton extends ControlImpl {
 	}
 
 	public TextButton setOverColor(float r, float g, float b, float a) {
-		this.overColor.set(r, g, b, a);
-		if (wasInside)
-			setColor(this.overColor);
+		overColor.set(r, g, b, a);
+		if (wasInside) {
+			setColor(overColor);
+		}
 		return this;
 	}
 
@@ -55,9 +56,10 @@ public class TextButton extends ControlImpl {
 	}
 
 	public TextButton setNotOverColor(float r, float g, float b, float a) {
-		this.notOverColor.set(r, g, b, a);
-		if (!wasInside)
-			setColor(this.notOverColor);
+		notOverColor.set(r, g, b, a);
+		if (!wasInside) {
+			setColor(notOverColor);
+		}
 		return this;
 	}
 
@@ -68,7 +70,7 @@ public class TextButton extends ControlImpl {
 	}
 
 	private void recalculateBounds() {
-		this.bounds.set(getX() - width * cx - offsetX * 0.5f, getY() - height * cy - offsetY * 0.5f, width + offsetX, height + offsetY);
+		bounds.set(getX() - width * cx - offsetX * 0.5f, getY() - height * cy - offsetY * 0.5f, width + offsetX, height + offsetY);
 	}
 
 	private void recalculateBoundsSize(CharSequence text) {
@@ -124,9 +126,9 @@ public class TextButton extends ControlImpl {
 	}
 
 	public TextButton() {
-		this.cx = 0.5f;
-		this.cy = 0.5f;
-		this.id = "";
+		cx = 0.5f;
+		cy = 0.5f;
+		id = "";
 		invalidate();
 	}
 
@@ -137,9 +139,9 @@ public class TextButton extends ControlImpl {
 		setY(y);
 		// colorTransition = Transitions.transitionBuilder(notOverColor).build();
 		colorTransition = Transitions.transition(notOverColor).build();
-		this.cx = 0.5f;
-		this.cy = 0.5f;
-		this.id = "";
+		cx = 0.5f;
+		cy = 0.5f;
+		id = "";
 
 		invalidate();
 	}
@@ -149,9 +151,11 @@ public class TextButton extends ControlImpl {
 		return this;
 	}
 
+	@Override
 	public void draw(SpriteBatch spriteBatch) {
-		if (!isVisible())
+		if (!isVisible()) {
 			return;
+		}
 		font.setColor(colorTransition.get());
 		SpriteBatchUtils.drawMultilineTextWithAlignment(spriteBatch, font, text, getX(), getY(), cx, cy, alignment, roundPosition);
 		// ImmediateModeRendererUtils.drawRectangle(bounds.x, bounds.y, bounds.x + bounds.width, bounds.y + bounds.height, Color.GREEN);
@@ -165,6 +169,7 @@ public class TextButton extends ControlImpl {
 		return released;
 	}
 
+	@Override
 	public void update() {
 
 		if (!isValid()) {
@@ -182,25 +187,31 @@ public class TextButton extends ControlImpl {
 
 		boolean inside = MathUtils2.inside(bounds, libgdxPointer.getPosition());
 
-		if (wasInside && !inside)
+		if (wasInside && !inside) {
 			colorTransition.start(0.25f, notOverColor);
+		}
 
-		if (!wasInside && inside)
+		if (!wasInside && inside) {
 			colorTransition.start(0.25f, overColor);
+		}
 
 		wasInside = inside;
 
-		if (libgdxPointer.wasPressed)
+		if (libgdxPointer.wasPressed) {
 			pressed = MathUtils2.inside(bounds, libgdxPointer.getPressedPosition());
+		}
 
-		if (libgdxPointer.wasReleased)
+		if (libgdxPointer.wasReleased) {
 			released = MathUtils2.inside(bounds, libgdxPointer.getReleasedPosition());
+		}
 
-		if (pressed)
+		if (pressed) {
 			buttonHandler.onPressed(this);
+		}
 
-		if (released)
+		if (released) {
 			buttonHandler.onReleased(this);
+		}
 
 		// NOTE: for now the button could be released while it was never pressed before
 

@@ -2,7 +2,6 @@ package com.gemserk.commons.gdx;
 
 
 public class GameTransitions {
-
 	public static class TransitionHandler {
 		public void onBegin() {
 		}
@@ -64,6 +63,7 @@ public class GameTransitions {
 			started = true;
 		}
 
+		@Override
 		public Screen getScreen() {
 			return screen;
 		}
@@ -79,31 +79,37 @@ public class GameTransitions {
 		public InternalScreenTransitionImpl(Screen screen, float time, TransitionHandler transitionHandler) {
 			this.screen = screen;
 			this.transitionHandler = transitionHandler;
-			this.totalTime = time;
+			totalTime = time;
 		}
 
+		@Override
 		public void preRender(float delta) {
 
 		}
 
+		@Override
 		public void postRender(float delta) {
 
 		}
 
+		@Override
 		public void update(float delta) {
-			if (!started)
+			if (!started) {
 				return;
+			}
 			internalUpdate(delta);
 		}
 
 		protected void internalUpdate(float delta) {
-			if (isFinished())
+			if (isFinished()) {
 				return;
+			}
 			totalTime -= delta;
 			finished = totalTime <= 0f;
 			// getScreen().update();
 		}
 
+		@Override
 		public boolean isFinished() {
 			return finished;
 		}
@@ -120,6 +126,7 @@ public class GameTransitions {
 			super(screen, time, transitionHandler);
 		}
 
+		@Override
 		public void init() {
 			super.init();
 			getScreen().init();
@@ -128,6 +135,7 @@ public class GameTransitions {
 			getTransitionHandler().onBegin();
 		}
 
+		@Override
 		public void dispose() {
 			getScreen().pause();
 			getScreen().hide();
@@ -146,6 +154,7 @@ public class GameTransitions {
 			super(screen, time, transitionHandler);
 		}
 
+		@Override
 		public void init() {
 			super.init();
 			getScreen().init();
@@ -155,6 +164,7 @@ public class GameTransitions {
 			getTransitionHandler().onBegin();
 		}
 
+		@Override
 		public void dispose() {
 			// getScreen().resume();
 			getTransitionHandler().onEnd();
@@ -187,8 +197,8 @@ public class GameTransitions {
 		}
 
 		public ScreenTransition(InternalScreenTransition leave, InternalScreenTransition enter) {
-			this.leaveTransition = leave;
-			this.enterTransition = enter;
+			leaveTransition = leave;
+			enterTransition = enter;
 			currentTransition = leaveTransition;
 		}
 
@@ -197,15 +207,17 @@ public class GameTransitions {
 		}
 
 		public void update(float delta) {
-			if (isFinished())
+			if (isFinished()) {
 				return;
+			}
 			updateEnterTransition(delta);
 			updateLeaveTransition(delta);
 		}
 
 		private void updateLeaveTransition(float delta) {
-			if (leaveTransition.isFinished())
+			if (leaveTransition.isFinished()) {
 				return;
+			}
 
 			leaveTransition.update(delta);
 			if (leaveTransition.isFinished()) {
@@ -216,15 +228,18 @@ public class GameTransitions {
 		}
 
 		private void updateEnterTransition(float delta) {
-			if (!leaveTransition.isFinished())
+			if (!leaveTransition.isFinished()) {
 				return;
+			}
 
-			if (enterTransition.isFinished())
+			if (enterTransition.isFinished()) {
 				return;
+			}
 
 			enterTransition.update(delta);
-			if (enterTransition.isFinished())
+			if (enterTransition.isFinished()) {
 				enterTransition.dispose();
+			}
 		}
 
 	}

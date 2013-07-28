@@ -30,7 +30,6 @@ import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 
 public class AdSimulatorApplicationDelegate implements ApplicationListener {
-
 	protected static final Logger logger = LoggerFactory.getLogger(AdSimulatorApplicationDelegate.class);
 
 	private final ApplicationListener applicationListener;
@@ -56,10 +55,11 @@ public class AdSimulatorApplicationDelegate implements ApplicationListener {
 	public AdSimulatorApplicationDelegate(ApplicationListener applicationListener, AdMobViewSimulatorImpl adMobViewSimulator, boolean enabled) {
 		this.applicationListener = applicationListener;
 		this.adMobViewSimulator = adMobViewSimulator;
-		this.animationManager = new AnimationManager();
+		animationManager = new AnimationManager();
 		this.enabled = enabled;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public void create() {
 		applicationListener.create();
@@ -78,7 +78,6 @@ public class AdSimulatorApplicationDelegate implements ApplicationListener {
 				monitorKeys("toggleAds", Keys.BACKSPACE, Keys.STAR);
 			}
 		};
-
 	}
 
 	@Override
@@ -92,10 +91,10 @@ public class AdSimulatorApplicationDelegate implements ApplicationListener {
 	}
 
 	private DimensionWithDensity getCurrentDimension(int width, int height) {
-		for (int i = 0; i < DimensionArray.availableDimensions.length; i++) {
-			DimensionWithDensity dimension = DimensionArray.availableDimensions[i];
-			if (dimension.getWidth() == width && dimension.getHeight() == height)
+		for (DimensionWithDensity dimension : DimensionArray.availableDimensions) {
+			if (dimension.getWidth() == width && dimension.getHeight() == height) {
 				return dimension;
+			}
 		}
 		return DimensionArray.availableDimensions[0];
 	}
@@ -111,11 +110,13 @@ public class AdSimulatorApplicationDelegate implements ApplicationListener {
 
 		inputMonitor.update();
 
-		if (inputMonitor.getButton("toggleAds").isReleased())
+		if (inputMonitor.getButton("toggleAds").isReleased()) {
 			enabled = !enabled;
+		}
 
-		if (!enabled)
+		if (!enabled) {
 			return;
+		}
 
 		adsVisibleMonitor.update(adMobViewSimulator.isVisible());
 
@@ -130,10 +131,11 @@ public class AdSimulatorApplicationDelegate implements ApplicationListener {
 
 			ArrayList<AdsAnimation> animations = adsParameters.animations;
 
-			if (visible)
+			if (visible) {
 				adsColor.set(1f, 1f, 1f, 1f);
-			else if (animations.size() == 0)
+			} else if (animations.size() == 0) {
 				adsColor.set(1f, 1f, 1f, 0f);
+			}
 
 			for (int i = 0; i < animations.size(); i++) {
 				AdsAnimation adsAnimation = animations.get(i);
@@ -146,11 +148,11 @@ public class AdSimulatorApplicationDelegate implements ApplicationListener {
 							.value(Builders //
 									.timelineValue(adsColor, LibgdxConverters.colorOpacityConverter) //
 									.keyFrame(0f, startValue) //
-									.keyFrame(((float) adsAnimation.duration) * 0.001f, endValue) //
+									.keyFrame(adsAnimation.duration * 0.001f, endValue) //
 							) //
 							) //
 							.speed(1f) //
-							.delay(((float) adsParameters.delay) * 0.001f) //
+							.delay(adsParameters.delay * 0.001f) //
 							.build();
 
 					animation.start();
@@ -168,11 +170,11 @@ public class AdSimulatorApplicationDelegate implements ApplicationListener {
 							.value(Builders //
 									.timelineValue(position, LibgdxConverters.vector2Converter) //
 									.keyFrame(0f, startValue) //
-									.keyFrame(((float) adsAnimation.duration) * 0.001f, endValue) //
+									.keyFrame(adsAnimation.duration * 0.001f, endValue) //
 							) //
 							) //
 							.speed(1f) //
-							.delay(((float) adsParameters.delay) * 0.001f) //
+							.delay(adsParameters.delay * 0.001f) //
 							.build();
 
 					animation.start();
@@ -204,31 +206,37 @@ public class AdSimulatorApplicationDelegate implements ApplicationListener {
 
 	private float getCenterY(AdsParameters adsParameters) {
 		int verticalAlign = getVerticalAlign(adsParameters);
-		if (verticalAlign == AdsParameters.VERTICAL_BOTTOM)
+		if (verticalAlign == AdsParameters.VERTICAL_BOTTOM) {
 			return 0f;
-		if (verticalAlign == AdsParameters.VERTICAL_TOP)
+		}
+		if (verticalAlign == AdsParameters.VERTICAL_TOP) {
 			return 1f;
+		}
 		return 0.5f;
 	}
 
 	private int getVerticalAlign(AdsParameters adsParameters) {
-		if (adsParameters.verticalAlign != null)
-			this.verticalAlign = adsParameters.verticalAlign;
+		if (adsParameters.verticalAlign != null) {
+			verticalAlign = adsParameters.verticalAlign;
+		}
 		return verticalAlign;
 	}
 
 	private float getCenterX(AdsParameters adsParameters) {
 		int horizontalAlign = getHorizontalAlign(adsParameters);
-		if (horizontalAlign == AdsParameters.HORIZONTAL_LEFT)
+		if (horizontalAlign == AdsParameters.HORIZONTAL_LEFT) {
 			return 0f;
-		if (horizontalAlign == AdsParameters.HORIZONTAL_RIGHT)
+		}
+		if (horizontalAlign == AdsParameters.HORIZONTAL_RIGHT) {
 			return 1f;
+		}
 		return 0.5f;
 	}
 
 	private int getHorizontalAlign(AdsParameters adsParameters) {
-		if (adsParameters.horizontalAlign != null)
-			this.horizontalAlign = adsParameters.horizontalAlign;
+		if (adsParameters.horizontalAlign != null) {
+			horizontalAlign = adsParameters.horizontalAlign;
+		}
 		return horizontalAlign;
 	}
 

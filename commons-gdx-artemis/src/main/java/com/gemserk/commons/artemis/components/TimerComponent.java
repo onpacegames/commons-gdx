@@ -1,12 +1,11 @@
 package com.gemserk.commons.artemis.components;
 
 import com.artemis.Component;
-import com.artemis.ComponentTypeManager;
+import com.artemis.ComponentType;
 import com.artemis.Entity;
 
 public class TimerComponent extends Component {
-	
-	public static final int type = ComponentTypeManager.getTypeFor(TimerComponent.class).getId();
+	public static final ComponentType type = ComponentType.getTypeFor(TimerComponent.class);
 
 	public static TimerComponent get(Entity e) {
 		return (TimerComponent) e.getComponent(type);
@@ -36,7 +35,7 @@ public class TimerComponent extends Component {
 	}
 
 	public TimerComponent(float time) {
-		this.totalTime = time;
-		this.currentTime = time;
+		totalTime = time;
+		currentTime = time;
 	}
 }

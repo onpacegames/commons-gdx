@@ -7,14 +7,12 @@ import com.gemserk.commons.artemis.components.OwnerComponent;
 import com.gemserk.commons.artemis.components.RenderableComponent;
 
 public class RenderableComponentComparator implements Comparator<Entity> {
-
 	static class EntityComponents {
 		public RenderableComponent renderableComponent;
 		public OwnerComponent ownerComponent;
 	}
 	
 	static class Factory extends EntityComponentsFactory<EntityComponents> {
-
 		@Override
 		public EntityComponents newInstance() {
 			return new EntityComponents();
@@ -47,8 +45,9 @@ public class RenderableComponentComparator implements Comparator<Entity> {
 		RenderableComponent c1 = entity1Components.renderableComponent;
 		RenderableComponent c2 = entity2Components.renderableComponent;
 
-		if (c1.renderable.getLayer() != c2.renderable.getLayer())
+		if (c1.renderable.getLayer() != c2.renderable.getLayer()) {
 			return c1.renderable.getLayer() - c2.renderable.getLayer();
+		}
 
 		OwnerComponent ownerComponent1 = entity1Components.ownerComponent;
 		OwnerComponent ownerComponent2 = entity2Components.ownerComponent;
@@ -58,20 +57,22 @@ public class RenderableComponentComparator implements Comparator<Entity> {
 
 		if (ownerComponent1 != null) {
 			Entity owner = ownerComponent1.getOwner();
-			if (owner != null)
+			if (owner != null) {
 				id1 = owner.getId();
+			}
 		}
 
 		if (ownerComponent2 != null) {
 			Entity owner = ownerComponent2.getOwner();
-			if (owner != null)
+			if (owner != null) {
 				id2 = owner.getId();
+			}
 		}
 
-		if (id1 != id2)
+		if (id1 != id2) {
 			return id1 - id2;
+		}
 
 		return c1.renderable.getSubLayer() - c2.renderable.getSubLayer();
 	}
-
 }

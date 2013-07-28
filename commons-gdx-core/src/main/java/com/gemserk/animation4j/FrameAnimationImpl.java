@@ -4,7 +4,6 @@ package com.gemserk.animation4j;
  * An implementation of the state of an animation based on frames (without knowing nothing about graphics).
  */
 public class FrameAnimationImpl implements FrameAnimation {
-
 	/**
 	 * Represents each frame time
 	 */
@@ -27,45 +26,45 @@ public class FrameAnimationImpl implements FrameAnimation {
 	}
 
 	public FrameAnimationImpl(FrameAnimationImpl frameAnimationImpl) {
-		this.framesTimes = new float[frameAnimationImpl.framesTimes.length];
-		System.arraycopy(frameAnimationImpl.framesTimes, 0, this.framesTimes, 0, frameAnimationImpl.framesTimes.length);
-		this.currentFrame = frameAnimationImpl.currentFrame;
-		this.currentTime = frameAnimationImpl.currentTime;
-		this.currentIteration = 1;
-		this.loop = frameAnimationImpl.loop;
-		this.iterationTime = frameAnimationImpl.iterationTime;
-		this.duration = frameAnimationImpl.duration;
+		framesTimes = new float[frameAnimationImpl.framesTimes.length];
+		System.arraycopy(frameAnimationImpl.framesTimes, 0, framesTimes, 0, frameAnimationImpl.framesTimes.length);
+		currentFrame = frameAnimationImpl.currentFrame;
+		currentTime = frameAnimationImpl.currentTime;
+		currentIteration = 1;
+		loop = frameAnimationImpl.loop;
+		iterationTime = frameAnimationImpl.iterationTime;
+		duration = frameAnimationImpl.duration;
 	}
 
 	public FrameAnimationImpl(float f0, float... framesTimes) {
-		this.currentFrame = 0;
-		this.currentTime = 0;
-		this.currentIteration = 1;
-		this.loop = false;
-		this.iterationTime = 0f;
-		this.duration = 0f;
+		currentFrame = 0;
+		currentTime = 0;
+		currentIteration = 1;
+		loop = false;
+		iterationTime = 0f;
+		duration = 0f;
 		set(f0, framesTimes);
 	}
 
 	public FrameAnimationImpl(float... framesTimes) {
-		this.currentFrame = 0;
-		this.currentTime = 0;
-		this.currentIteration = 1;
-		this.loop = false;
-		this.iterationTime = 0f;
-		this.duration = 0f;
+		currentFrame = 0;
+		currentTime = 0;
+		currentIteration = 1;
+		loop = false;
+		iterationTime = 0f;
+		duration = 0f;
 		set(framesTimes);
 	}
 
 	public FrameAnimationImpl(boolean loop, float... framesTimes) {
 		// we could use the pattern 1+
-		assert (framesTimes.length > 0);
-		this.currentFrame = 0;
-		this.currentTime = 0;
-		this.currentIteration = 1;
+		assert framesTimes.length > 0;
+		currentFrame = 0;
+		currentTime = 0;
+		currentIteration = 1;
 		this.loop = loop;
-		this.iterationTime = 0f;
-		this.duration = 0f;
+		iterationTime = 0f;
+		duration = 0f;
 		set(framesTimes);
 	}
 
@@ -77,25 +76,26 @@ public class FrameAnimationImpl implements FrameAnimation {
 		return truncate(number, 1000);
 	}
 
+	@Override
 	public FrameAnimationImpl clone() {
 		return new FrameAnimationImpl(this);
 	}
 
 	private void set(float f0, float... frames) {
-		this.framesTimes = new float[frames.length + 1];
-		this.framesTimes[0] = truncate(f0);
+		framesTimes = new float[frames.length + 1];
+		framesTimes[0] = truncate(f0);
 		duration += framesTimes[0];
 		for (int i = 1; i < frames.length + 1; i++) {
-			this.framesTimes[i] = truncate(frames[i - 1]);
-			duration += this.framesTimes[i];
+			framesTimes[i] = truncate(frames[i - 1]);
+			duration += framesTimes[i];
 		}
 	}
 
 	private void set(float... frames) {
-		this.framesTimes = new float[frames.length];
+		framesTimes = new float[frames.length];
 		for (int i = 0; i < frames.length; i++) {
-			this.framesTimes[i] = truncate(frames[i]);
-			duration += this.framesTimes[i];
+			framesTimes[i] = truncate(frames[i]);
+			duration += framesTimes[i];
 		}
 	}
 
@@ -116,8 +116,9 @@ public class FrameAnimationImpl implements FrameAnimation {
 
 	@Override
 	public void setFrame(int frame) {
-		if (currentFrame < 0 || currentFrame >= framesTimes.length)
+		if (currentFrame < 0 || currentFrame >= framesTimes.length) {
 			throw new IllegalStateException("Frame animation with index " + frame + " not found.");
+		}
 		currentFrame = frame;
 	}
 
@@ -144,25 +145,28 @@ public class FrameAnimationImpl implements FrameAnimation {
 
 	private void nextFrame() {
 
-		if (currentFrame < getFramesCount() - 1)
+		if (currentFrame < getFramesCount() - 1) {
 			currentFrame++;
-		else if (loop) {
+		} else if (loop) {
 			currentFrame = 0;
 			currentIteration++;
 			iterationTime -= duration;
 			iterationTime = truncate(iterationTime);
-			if (iterationTime <= 0f)
+			if (iterationTime <= 0f) {
 				iterationTime = 0f;
+			}
 		}
 
 	}
 
 	@Override
 	public boolean isFinished() {
-		if (loop)
+		if (loop) {
 			return false;
-		if (currentFrame != getFramesCount() - 1)
+		}
+		if (currentFrame != getFramesCount() - 1) {
 			return false;
+		}
 		return currentTime >= getCurrentFrameTime();
 	}
 

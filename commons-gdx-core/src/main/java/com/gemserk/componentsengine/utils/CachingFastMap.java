@@ -48,15 +48,19 @@ public class CachingFastMap<K, V> implements Map<K, V>, Iterable<CachingFastMap.
 	}
 
 	public CachingFastMap(int initialCapacity, float loadFactor) {
-		if (initialCapacity > 1 << 30)
+		if (initialCapacity > 1 << 30) {
 			throw new IllegalArgumentException("initialCapacity is too large.");
-		if (initialCapacity < 0)
+		}
+		if (initialCapacity < 0) {
 			throw new IllegalArgumentException("initialCapacity must be greater than zero.");
-		if (loadFactor <= 0)
+		}
+		if (loadFactor <= 0) {
 			throw new IllegalArgumentException("initialCapacity must be greater than zero.");
+		}
 		capacity = 1;
-		while (capacity < initialCapacity)
+		while (capacity < initialCapacity) {
 			capacity <<= 1;
+		}
 		this.threshold = (int) (capacity * loadFactor);
 		this.table = new Entry[capacity];
 		this.mask = capacity - 1;
@@ -68,8 +72,9 @@ public class CachingFastMap<K, V> implements Map<K, V>, Iterable<CachingFastMap.
 	}
 
 	public void cache(int count) {
-		for (int i = freeEntries.size(); i < count; i++)
+		for (int i = freeEntries.size(); i < count; i++) {
 			freeEntries.add(new Entry());
+		}
 	}
 
 	@Override
@@ -79,8 +84,9 @@ public class CachingFastMap<K, V> implements Map<K, V>, Iterable<CachingFastMap.
 		int index = hash & mask;
 		// Check if key already exists.
 		for (Entry e = table[index]; e != null; e = e.next) {
-			if (!e.key.equals(key))
+			if (!e.key.equals(key)) {
 				continue;
+			}
 			Object oldValue = e.value;
 			e.value = value;
 			return (V) oldValue;
@@ -97,10 +103,11 @@ public class CachingFastMap<K, V> implements Map<K, V>, Iterable<CachingFastMap.
 			int newCapacity = 2 * capacity;
 			Entry[] newTable = new Entry[newCapacity];
 			int newMask = newCapacity - 1;
-			for (int i = 0; i < table.length; i++) {
-				Entry e = table[i];
-				if (e == null)
+			for (Entry element : table) {
+				Entry e = element;
+				if (e == null) {
 					continue;
+				}
 				do {
 					Entry next = e.next;
 					index = e.hash & newMask;
@@ -120,28 +127,35 @@ public class CachingFastMap<K, V> implements Map<K, V>, Iterable<CachingFastMap.
 	@Override
 	public V get(Object key) {
 		int index = key.hashCode() & mask;
-		for (Entry e = table[index]; e != null; e = e.next)
-			if (e.key.equals(key))
+		for (Entry e = table[index]; e != null; e = e.next) {
+			if (e.key.equals(key)) {
 				return (V) e.value;
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public boolean containsValue(Object value) {
 		Entry[] table = this.table;
-		for (int i = table.length - 1; i >= 0; i--)
-			for (Entry e = table[i]; e != null; e = e.next)
-				if (e.value.equals(value))
+		for (int i = table.length - 1; i >= 0; i--) {
+			for (Entry e = table[i]; e != null; e = e.next) {
+				if (e.value.equals(value)) {
 					return true;
+				}
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public boolean containsKey(Object key) {
 		int index = key.hashCode() & mask;
-		for (Entry e = table[index]; e != null; e = e.next)
-			if (e.key.equals(key))
+		for (Entry e = table[index]; e != null; e = e.next) {
+			if (e.key.equals(key)) {
 				return true;
+			}
+		}
 		return false;
 	}
 
@@ -154,10 +168,11 @@ public class CachingFastMap<K, V> implements Map<K, V>, Iterable<CachingFastMap.
 			Entry next = e.next;
 			if (e.key.equals(key)) {
 				size--;
-				if (prev == e)
+				if (prev == e) {
 					table[index] = next;
-				else
+				} else {
 					prev.next = next;
+				}
 				freeEntries.add(e);
 				return (V) e.value;
 			}
@@ -181,8 +196,9 @@ public class CachingFastMap<K, V> implements Map<K, V>, Iterable<CachingFastMap.
 	public void clear() {
 		Entry[] table = this.table;
 		for (int index = table.length - 1; index >= 0; index--) {
-			for (Entry e = table[index]; e != null; e = e.next)
+			for (Entry e = table[index]; e != null; e = e.next) {
 				freeEntries.add(e);
+			}
 			table[index] = null;
 		}
 		size = 0;
@@ -206,19 +222,24 @@ public class CachingFastMap<K, V> implements Map<K, V>, Iterable<CachingFastMap.
 			// Find first bucket.
 			Entry[] table = CachingFastMap.this.table;
 			int i;
-			for (i = table.length - 1; i >= 0; i--)
-				if (table[i] != null)
+			for (i = table.length - 1; i >= 0; i--) {
+				if (table[i] != null) {
 					break;
+				}
+			}
 			nextIndex = i;
 		}
 
+		@Override
 		public boolean hasNext() {
-			if (nextIndex >= 0)
+			if (nextIndex >= 0) {
 				return true;
+			}
 			Entry e = current;
 			return e != null && e.next != null;
 		}
 
+		@Override
 		public Entry<K, V> next() {
 			// Next entry in current bucket.
 			Entry e = current;
@@ -233,13 +254,16 @@ public class CachingFastMap<K, V> implements Map<K, V>, Iterable<CachingFastMap.
 			Entry[] table = CachingFastMap.this.table;
 			int i = nextIndex;
 			e = current = table[i];
-			while (--i >= 0)
-				if (table[i] != null)
+			while (--i >= 0) {
+				if (table[i] != null) {
 					break;
+				}
+			}
 			nextIndex = i;
 			return e;
 		}
 
+		@Override
 		public void remove() {
 			CachingFastMap.this.remove(current.key);
 		}

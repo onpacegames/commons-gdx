@@ -3,12 +3,11 @@ package com.gemserk.commons.artemis.components;
 import java.util.ArrayList;
 
 import com.artemis.Component;
-import com.artemis.ComponentTypeManager;
+import com.artemis.ComponentType;
 import com.artemis.Entity;
 
 public class ParentComponent extends Component {
-	
-	public static final int type = ComponentTypeManager.getTypeFor(ParentComponent.class).getId();
+	public static final ComponentType type = ComponentType.getTypeFor(ParentComponent.class);
 
 	public static ParentComponent get(Entity e) {
 		return (ParentComponent) e.getComponent(type);
@@ -20,7 +19,7 @@ public class ParentComponent extends Component {
 		return children;
 	}
 	
-	public void addChild(Entity child){ 
+	public void addChild(Entity child){
 		children.add(child);
 	}
 	
@@ -35,5 +34,4 @@ public class ParentComponent extends Component {
 	public ParentComponent() {
 		this(new ArrayList<Entity>());
 	}
-
 }

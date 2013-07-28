@@ -2,9 +2,7 @@ package com.gemserk.commons.artemis.systems;
 
 import com.gemserk.commons.artemis.render.Renderable;
 
-
 public interface RenderLayer {
-
 	/**
 	 * Performs initialization.
 	 */
@@ -50,5 +48,4 @@ public interface RenderLayer {
 	 * Sets if the layer should be enabled or not.
 	 */
 	void setEnabled(boolean enabled);
-
 }

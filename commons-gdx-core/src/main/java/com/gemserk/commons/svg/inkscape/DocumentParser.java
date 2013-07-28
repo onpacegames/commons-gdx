@@ -17,7 +17,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 public class DocumentParser {
-
 	private static class DefaultErrorHandler implements ErrorHandler {
 		@Override
 		public void warning(SAXParseException exception) throws SAXException {
@@ -64,13 +63,15 @@ public class DocumentParser {
 	public Document parse(Schema schema, InputStream is, boolean validating, boolean namespaceaware) {
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			if (schema != null)
+			if (schema != null) {
 				factory.setSchema(schema);
+			}
 			factory.setValidating(validating);
 			factory.setNamespaceAware(namespaceaware);
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			builder.setErrorHandler(new DefaultErrorHandler());
 			builder.setEntityResolver(new EntityResolver() {
+				@Override
 				public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
 					return new InputSource(new ByteArrayInputStream(new byte[0]));
 				}

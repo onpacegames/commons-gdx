@@ -108,21 +108,24 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      *
      * @param numElements  the number of elements to hold
      */
-    private void allocateElements(int numElements) {
+    @SuppressWarnings("unchecked")
+	private void allocateElements(int numElements) {
         int initialCapacity = MIN_INITIAL_CAPACITY;
         // Find the best power of two to hold elements.
         // Tests "<=" because arrays aren't kept full.
         if (numElements >= initialCapacity) {
             initialCapacity = numElements;
-            initialCapacity |= (initialCapacity >>>  1);
-            initialCapacity |= (initialCapacity >>>  2);
-            initialCapacity |= (initialCapacity >>>  4);
-            initialCapacity |= (initialCapacity >>>  8);
-            initialCapacity |= (initialCapacity >>> 16);
+            initialCapacity |= initialCapacity >>>  1;
+            initialCapacity |= initialCapacity >>>  2;
+            initialCapacity |= initialCapacity >>>  4;
+            initialCapacity |= initialCapacity >>>  8;
+            initialCapacity |= initialCapacity >>> 16;
             initialCapacity++;
 
-            if (initialCapacity < 0)   // Too many elements, must back off
-                initialCapacity >>>= 1;// Good luck allocating 2 ^ 30 elements
+            if (initialCapacity < 0)
+			 {
+				initialCapacity >>>= 1;// Good luck allocating 2 ^ 30 elements
+			}
         }
         elements = (E[]) new Object[initialCapacity];
     }
@@ -131,14 +134,16 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * Double the capacity of this deque.  Call only when full, i.e.,
      * when head and tail have wrapped around to become equal.
      */
-    private void doubleCapacity() {
+    @SuppressWarnings("unchecked")
+	private void doubleCapacity() {
         assert head == tail;
         int p = head;
         int n = elements.length;
         int r = n - p; // number of elements to the right of p
         int newCapacity = n << 1;
-        if (newCapacity < 0)
-            throw new IllegalStateException("Sorry, deque too big");
+        if (newCapacity < 0) {
+			throw new IllegalStateException("Sorry, deque too big");
+		}
         Object[] a = new Object[newCapacity];
         System.arraycopy(elements, p, a, 0, r);
         System.arraycopy(elements, 0, a, r, p);
@@ -169,7 +174,8 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * Constructs an empty array deque with an initial capacity
      * sufficient to hold 16 elements.
      */
-    public ArrayDeque() {
+    @SuppressWarnings("unchecked")
+	public ArrayDeque() {
         elements = (E[]) new Object[16];
     }
 
@@ -209,11 +215,13 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * @throws NullPointerException if the specified element is null
      */
     public void addFirst(E e) {
-        if (e == null)
-            throw new NullPointerException();
-        elements[head = (head - 1) & (elements.length - 1)] = e;
-        if (head == tail)
-            doubleCapacity();
+        if (e == null) {
+			throw new NullPointerException();
+		}
+        elements[head = head - 1 & elements.length - 1] = e;
+        if (head == tail) {
+			doubleCapacity();
+		}
     }
 
     /**
@@ -225,11 +233,13 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * @throws NullPointerException if the specified element is null
      */
     public void addLast(E e) {
-        if (e == null)
-            throw new NullPointerException();
+        if (e == null) {
+			throw new NullPointerException();
+		}
         elements[tail] = e;
-        if ( (tail = (tail + 1) & (elements.length - 1)) == head)
-            doubleCapacity();
+        if ( (tail = tail + 1 & elements.length - 1) == head) {
+			doubleCapacity();
+		}
     }
 
     /**
@@ -261,8 +271,9 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      */
     public E removeFirst() {
         E x = pollFirst();
-        if (x == null)
-            throw new NoSuchElementException();
+        if (x == null) {
+			throw new NoSuchElementException();
+		}
         return x;
     }
 
@@ -271,26 +282,29 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      */
     public E removeLast() {
         E x = pollLast();
-        if (x == null)
-            throw new NoSuchElementException();
+        if (x == null) {
+			throw new NoSuchElementException();
+		}
         return x;
     }
 
     public E pollFirst() {
         int h = head;
         E result = elements[h]; // Element is null if deque empty
-        if (result == null)
-            return null;
+        if (result == null) {
+			return null;
+		}
         elements[h] = null;     // Must null out slot
-        head = (h + 1) & (elements.length - 1);
+        head = h + 1 & elements.length - 1;
         return result;
     }
 
     public E pollLast() {
-        int t = (tail - 1) & (elements.length - 1);
+        int t = tail - 1 & elements.length - 1;
         E result = elements[t];
-        if (result == null)
-            return null;
+        if (result == null) {
+			return null;
+		}
         elements[t] = null;
         tail = t;
         return result;
@@ -301,8 +315,9 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      */
     public E getFirst() {
         E x = elements[head];
-        if (x == null)
-            throw new NoSuchElementException();
+        if (x == null) {
+			throw new NoSuchElementException();
+		}
         return x;
     }
 
@@ -310,9 +325,10 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * @throws NoSuchElementException {@inheritDoc}
      */
     public E getLast() {
-        E x = elements[(tail - 1) & (elements.length - 1)];
-        if (x == null)
-            throw new NoSuchElementException();
+        E x = elements[tail - 1 & elements.length - 1];
+        if (x == null) {
+			throw new NoSuchElementException();
+		}
         return x;
     }
 
@@ -321,7 +337,7 @@ public class ArrayDeque<E> extends AbstractCollection<E>
     }
 
     public E peekLast() {
-        return elements[(tail - 1) & (elements.length - 1)];
+        return elements[tail - 1 & elements.length - 1];
     }
 
     /**
@@ -337,8 +353,9 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * @return <tt>true</tt> if the deque contained the specified element
      */
     public boolean removeFirstOccurrence(Object o) {
-        if (o == null)
-            return false;
+        if (o == null) {
+			return false;
+		}
         int mask = elements.length - 1;
         int i = head;
         E x;
@@ -347,7 +364,7 @@ public class ArrayDeque<E> extends AbstractCollection<E>
                 delete(i);
                 return true;
             }
-            i = (i + 1) & mask;
+            i = i + 1 & mask;
         }
         return false;
     }
@@ -365,17 +382,18 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * @return <tt>true</tt> if the deque contained the specified element
      */
     public boolean removeLastOccurrence(Object o) {
-        if (o == null)
-            return false;
+        if (o == null) {
+			return false;
+		}
         int mask = elements.length - 1;
-        int i = (tail - 1) & mask;
+        int i = tail - 1 & mask;
         E x;
         while ( (x = elements[i]) != null) {
             if (o.equals(x)) {
                 delete(i);
                 return true;
             }
-            i = (i - 1) & mask;
+            i = i - 1 & mask;
         }
         return false;
     }
@@ -391,7 +409,8 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * @return <tt>true</tt> (as specified by {@link Collection#add})
      * @throws NullPointerException if the specified element is null
      */
-    public boolean add(E e) {
+    @Override
+	public boolean add(E e) {
         addLast(e);
         return true;
     }
@@ -405,7 +424,8 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * @return <tt>true</tt> (as specified by {@link Queue#offer})
      * @throws NullPointerException if the specified element is null
      */
-    public boolean offer(E e) {
+    @Override
+	public boolean offer(E e) {
         return offerLast(e);
     }
 
@@ -420,7 +440,8 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * @return the head of the queue represented by this deque
      * @throws NoSuchElementException {@inheritDoc}
      */
-    public E remove() {
+    @Override
+	public E remove() {
         return removeFirst();
     }
 
@@ -434,7 +455,8 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * @return the head of the queue represented by this deque, or
      *         <tt>null</tt> if this deque is empty
      */
-    public E poll() {
+    @Override
+	public E poll() {
         return pollFirst();
     }
 
@@ -448,7 +470,8 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * @return the head of the queue represented by this deque
      * @throws NoSuchElementException {@inheritDoc}
      */
-    public E element() {
+    @Override
+	public E element() {
         return getFirst();
     }
 
@@ -461,7 +484,8 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * @return the head of the queue represented by this deque, or
      *         <tt>null</tt> if this deque is empty
      */
-    public E peek() {
+    @Override
+	public E peek() {
         return peekFirst();
     }
 
@@ -497,9 +521,9 @@ public class ArrayDeque<E> extends AbstractCollection<E>
     private void checkInvariants() {
 	assert elements[tail] == null;
 	assert head == tail ? elements[head] == null :
-	    (elements[head] != null &&
-	     elements[(tail - 1) & (elements.length - 1)] != null);
-	assert elements[(head - 1) & (elements.length - 1)] == null;
+	    elements[head] != null &&
+	     elements[tail - 1 & elements.length - 1] != null;
+	assert elements[head - 1 & elements.length - 1] == null;
     }
 
     /**
@@ -518,12 +542,13 @@ public class ArrayDeque<E> extends AbstractCollection<E>
 	final int mask = elements.length - 1;
 	final int h = head;
 	final int t = tail;
-	final int front = (i - h) & mask;
-	final int back  = (t - i) & mask;
+	final int front = i - h & mask;
+	final int back  = t - i & mask;
 
 	// Invariant: head <= i < tail mod circularity
-	if (front >= ((t - h) & mask))
-	    throw new ConcurrentModificationException();
+	if (front >= (t - h & mask)) {
+		throw new ConcurrentModificationException();
+	}
 
 	// Optimize for least element motion
 	if (front < back) {
@@ -535,7 +560,7 @@ public class ArrayDeque<E> extends AbstractCollection<E>
 		System.arraycopy(elements, h, elements, h + 1, mask - h);
 	    }
 	    elements[h] = null;
-	    head = (h + 1) & mask;
+	    head = h + 1 & mask;
 	    return false;
 	} else {
 	    if (i < t) { // Copy the null tail as well
@@ -545,7 +570,7 @@ public class ArrayDeque<E> extends AbstractCollection<E>
 		System.arraycopy(elements, i + 1, elements, i, mask - i);
 		elements[mask] = elements[0];
 		System.arraycopy(elements, 1, elements, 0, t);
-		tail = (t - 1) & mask;
+		tail = t - 1 & mask;
 	    }
 	    return true;
 	}
@@ -558,8 +583,9 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      *
      * @return the number of elements in this deque
      */
-    public int size() {
-        return (tail - head) & (elements.length - 1);
+    @Override
+	public int size() {
+        return tail - head & elements.length - 1;
     }
 
     /**
@@ -567,7 +593,8 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      *
      * @return <tt>true</tt> if this deque contains no elements
      */
-    public boolean isEmpty() {
+    @Override
+	public boolean isEmpty() {
         return head == tail;
     }
 
@@ -579,7 +606,8 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      *
      * @return an iterator over the elements in this deque
      */
-    public Iterator<E> iterator() {
+    @Override
+	public Iterator<E> iterator() {
         return new DeqIterator();
     }
 
@@ -605,28 +633,34 @@ public class ArrayDeque<E> extends AbstractCollection<E>
          */
         private int lastRet = -1;
 
-        public boolean hasNext() {
+        @Override
+		public boolean hasNext() {
             return cursor != fence;
         }
 
-        public E next() {
-            if (cursor == fence)
-                throw new NoSuchElementException();
+        @Override
+		public E next() {
+            if (cursor == fence) {
+				throw new NoSuchElementException();
+			}
             E result = elements[cursor];
             // This check doesn't catch all possible comodifications,
             // but does catch the ones that corrupt traversal
-            if (tail != fence || result == null)
-                throw new ConcurrentModificationException();
+            if (tail != fence || result == null) {
+				throw new ConcurrentModificationException();
+			}
             lastRet = cursor;
-            cursor = (cursor + 1) & (elements.length - 1);
+            cursor = cursor + 1 & elements.length - 1;
             return result;
         }
 
-        public void remove() {
-            if (lastRet < 0)
-                throw new IllegalStateException();
+        @Override
+		public void remove() {
+            if (lastRet < 0) {
+				throw new IllegalStateException();
+			}
             if (delete(lastRet)) { // if left-shifted, undo increment in next()
-                cursor = (cursor - 1) & (elements.length - 1);
+                cursor = cursor - 1 & elements.length - 1;
 		fence = tail;
 	    }
             lastRet = -1;
@@ -643,26 +677,32 @@ public class ArrayDeque<E> extends AbstractCollection<E>
         private int fence = head;
         private int lastRet = -1;
 
-        public boolean hasNext() {
+        @Override
+		public boolean hasNext() {
             return cursor != fence;
         }
 
-        public E next() {
-            if (cursor == fence)
-                throw new NoSuchElementException();
-            cursor = (cursor - 1) & (elements.length - 1);
+        @Override
+		public E next() {
+            if (cursor == fence) {
+				throw new NoSuchElementException();
+			}
+            cursor = cursor - 1 & elements.length - 1;
 	    E result = elements[cursor];
-            if (head != fence || result == null)
-                throw new ConcurrentModificationException();
+            if (head != fence || result == null) {
+				throw new ConcurrentModificationException();
+			}
             lastRet = cursor;
             return result;
         }
 
-        public void remove() {
-            if (lastRet < 0)
-                throw new IllegalStateException();
+        @Override
+		public void remove() {
+            if (lastRet < 0) {
+				throw new IllegalStateException();
+			}
             if (!delete(lastRet)) {
-                cursor = (cursor + 1) & (elements.length - 1);
+                cursor = cursor + 1 & elements.length - 1;
 		fence = head;
 	    }
             lastRet = -1;
@@ -677,16 +717,19 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * @param o object to be checked for containment in this deque
      * @return <tt>true</tt> if this deque contains the specified element
      */
-    public boolean contains(Object o) {
-        if (o == null)
-            return false;
+    @Override
+	public boolean contains(Object o) {
+        if (o == null) {
+			return false;
+		}
         int mask = elements.length - 1;
         int i = head;
         E x;
         while ( (x = elements[i]) != null) {
-            if (o.equals(x))
-                return true;
-            i = (i + 1) & mask;
+            if (o.equals(x)) {
+				return true;
+			}
+            i = i + 1 & mask;
         }
         return false;
     }
@@ -704,7 +747,8 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * @param o element to be removed from this deque, if present
      * @return <tt>true</tt> if this deque contained the specified element
      */
-    public boolean remove(Object o) {
+    @Override
+	public boolean remove(Object o) {
         return removeFirstOccurrence(o);
     }
 
@@ -712,7 +756,8 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      * Removes all of the elements from this deque.
      * The deque will be empty after this call returns.
      */
-    public void clear() {
+    @Override
+	public void clear() {
         int h = head;
         int t = tail;
         if (h != t) { // clear all cells
@@ -721,7 +766,7 @@ public class ArrayDeque<E> extends AbstractCollection<E>
             int mask = elements.length - 1;
             do {
                 elements[i] = null;
-                i = (i + 1) & mask;
+                i = i + 1 & mask;
             } while (i != t);
         }
     }
@@ -739,7 +784,8 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      *
      * @return an array containing all of the elements in this deque
      */
-    public Object[] toArray() {
+    @Override
+	public Object[] toArray() {
 	return copyElements(new Object[size()]);
     }
 
@@ -780,14 +826,17 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      *         this deque
      * @throws NullPointerException if the specified array is null
      */
-    public <T> T[] toArray(T[] a) {
+    @Override
+	public <T> T[] toArray(T[] a) {
         int size = size();
-        if (a.length < size)
-            a = (T[])java.lang.reflect.Array.newInstance(
+        if (a.length < size) {
+			a = (T[])java.lang.reflect.Array.newInstance(
                     a.getClass().getComponentType(), size);
+		}
 	copyElements(a);
-        if (a.length > size)
-            a[size] = null;
+        if (a.length > size) {
+			a[size] = null;
+		}
         return a;
     }
 
@@ -798,7 +847,8 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      *
      * @return a copy of this deque
      */
-    public ArrayDeque<E> clone() {
+    @Override
+	public ArrayDeque<E> clone() {
         try {
             ArrayDeque<E> result = (ArrayDeque<E>) super.clone();
             result.elements = Arrays.copyOf(elements, elements.length);
@@ -829,8 +879,9 @@ public class ArrayDeque<E> extends AbstractCollection<E>
 
         // Write out elements in order.
         int mask = elements.length - 1;
-        for (int i = head; i != tail; i = (i + 1) & mask)
-            s.writeObject(elements[i]);
+        for (int i = head; i != tail; i = i + 1 & mask) {
+			s.writeObject(elements[i]);
+		}
     }
 
     /**
@@ -847,7 +898,8 @@ public class ArrayDeque<E> extends AbstractCollection<E>
         tail = size;
 
         // Read in all elements in the proper order.
-        for (int i = 0; i < size; i++)
-            elements[i] = (E)s.readObject();
+        for (int i = 0; i < size; i++) {
+			elements[i] = (E)s.readObject();
+		}
     }
 }

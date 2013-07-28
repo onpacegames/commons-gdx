@@ -1,7 +1,8 @@
 package com.gemserk.commons.artemis.systems;
 
+import com.artemis.Aspect;
 import com.artemis.Entity;
-import com.artemis.EntityProcessingSystem;
+import com.artemis.systems.EntityProcessingSystem;
 import com.gemserk.animation4j.interpolator.FloatInterpolator;
 import com.gemserk.commons.artemis.components.CameraComponent;
 import com.gemserk.commons.artemis.components.Components;
@@ -12,7 +13,6 @@ import com.gemserk.commons.gdx.time.TimeStepProvider;
 import com.gemserk.commons.gdx.time.TimeStepProviderGlobalImpl;
 
 public class CameraUpdateSystem extends EntityProcessingSystem {
-	
 	private final TimeStepProvider timeStepProvider;
 	
 	public CameraUpdateSystem() {
@@ -21,7 +21,7 @@ public class CameraUpdateSystem extends EntityProcessingSystem {
 
 	@SuppressWarnings("unchecked")
 	public CameraUpdateSystem(TimeStepProvider timeStepProvider) {
-		super(Components.cameraComponentClass);
+		super(Aspect.getAspectForAll(Components.cameraComponentClass));
 		this.timeStepProvider = timeStepProvider;
 	}
 	
@@ -52,5 +52,4 @@ public class CameraUpdateSystem extends EntityProcessingSystem {
 		libgdx2dCamera.zoom(newZoom);
 		libgdx2dCamera.rotate(newAngle);
 	}
-
 }

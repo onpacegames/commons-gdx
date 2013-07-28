@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 public class ErrorDialogUtilsAndroidImpl implements ErrorDialogUtils {
-
 	private final Activity activity;
 	private final int messageTextId;
 	private final int okTextId;
@@ -27,6 +26,7 @@ public class ErrorDialogUtilsAndroidImpl implements ErrorDialogUtils {
 				builder.setMessage(messageTextId) //
 						.setCancelable(false) //
 						.setPositiveButton(okTextId, new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int id) {
 								// Gdx.app.exit();
 								// System.exit(0);
@@ -38,5 +38,4 @@ public class ErrorDialogUtilsAndroidImpl implements ErrorDialogUtils {
 			}
 		});
 	}
-
 }

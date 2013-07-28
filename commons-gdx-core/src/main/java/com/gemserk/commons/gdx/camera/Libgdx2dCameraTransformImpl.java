@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class Libgdx2dCameraTransformImpl implements Libgdx2dCamera {
-
 	private static final Vector3 rotationAxis = new Vector3(0f, 0f, 1f);
 
 	private final Matrix4 transform = new Matrix4();
@@ -95,6 +94,7 @@ public class Libgdx2dCameraTransformImpl implements Libgdx2dCamera {
 		spriteBatch.setProjectionMatrix(getCombinedMatrix());
 	}
 
+	@Override
 	public void apply() {
 		GL10 gl = Gdx.gl10;
 

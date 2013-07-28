@@ -8,8 +8,8 @@ import com.gemserk.commons.gdx.scene2d.ActionAdapter;
 import com.gemserk.commons.gdx.scene2d.ActorDecorator;
 import com.gemserk.commons.gdx.scene2d.ActorFocusListener;
 
+@Deprecated
 public class ScaleOnFocusAction extends ActionAdapter {
-
 	float width, height;
 	Transition<?> focusTransition;
 	ActorDecorator actorDecorator;
@@ -57,8 +57,9 @@ public class ScaleOnFocusAction extends ActionAdapter {
 	public boolean update(float delta) {
 		monitorTouchFocusAction.act(delta);
 
-		if (focusTransition != null)
+		if (focusTransition != null) {
 			focusTransition.update(delta);
+		}
 		
 		return false;
 	}

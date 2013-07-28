@@ -4,7 +4,6 @@ import com.artemis.Entity;
 import com.badlogic.gdx.utils.Array;
 
 public class OrderedByLayerEntities {
-
 	private RenderableComponentComparator renderableComponentComparator;
 	private RenderableComponentComparator.Factory factory;
 
@@ -15,7 +14,7 @@ public class OrderedByLayerEntities {
 		this.minLayer = minLayer;
 		this.maxLayer = maxLayer;
 		factory = new RenderableComponentComparator.Factory();
-		this.renderableComponentComparator = new RenderableComponentComparator(factory);
+		renderableComponentComparator = new RenderableComponentComparator(factory);
 	}
 
 	public boolean belongs(int layer) {
@@ -40,5 +39,4 @@ public class OrderedByLayerEntities {
 	public Entity get(int i) {
 		return entities.get(i);
 	}
-
 }

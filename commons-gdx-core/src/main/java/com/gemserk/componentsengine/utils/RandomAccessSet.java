@@ -8,7 +8,6 @@ import java.util.Set;
 import com.badlogic.gdx.utils.ObjectIntMap;
 
 public class RandomAccessSet<T> implements Set<T>, RandomAccess<T> {
-
 	ArrayList<T> items = new ArrayList<T>();
 	ObjectIntMap<Object> positions = new ObjectIntMap<Object>();
 	private final int NOT_PRESENT = -1;
@@ -77,8 +76,9 @@ public class RandomAccessSet<T> implements Set<T>, RandomAccess<T> {
 	@Override
 	public boolean remove(Object e) {
 		int position = positions.remove(e, NOT_PRESENT);
-		if (position == NOT_PRESENT)
+		if (position == NOT_PRESENT) {
 			return false;
+		}
 
 		int lastPosition = items.size() - 1;
 		T lastItem = items.remove(lastPosition);
@@ -125,6 +125,7 @@ public class RandomAccessSet<T> implements Set<T>, RandomAccess<T> {
 		positions.clear();
 	}
 
+	@Override
 	public T get(int index) {
 		return items.get(index);
 	}

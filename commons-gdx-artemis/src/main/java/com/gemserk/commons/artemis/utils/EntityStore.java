@@ -6,7 +6,6 @@ import com.gemserk.commons.utils.Store;
 import com.gemserk.commons.utils.StoreFactory;
 
 public class EntityStore extends Store<Entity> {
-
 	Array<Entity> freedThisFrame = new Array<Entity>(false, 20, Entity.class);
 
 	/**
@@ -19,13 +18,16 @@ public class EntityStore extends Store<Entity> {
 		super(storeFactory);
 	}
 
+	@Override
 	public void free(Entity e) {
-		if (freedThisFrame.contains(e, true))
+		if (freedThisFrame.contains(e, true)) {
 			return;
+		}
 		e.disable();
 		freedThisFrame.add(e);
 	}
 
+	@Override
 	public Entity get() {
 		Entity e = super.get();
 		e.enable();
@@ -34,8 +36,9 @@ public class EntityStore extends Store<Entity> {
 
 	public int refreshPool() {
 		int size = freedThisFrame.size;
-		if (size <= 0)
+		if (size <= 0) {
 			return 0;
+		}
 
 		Entity[] entities = freedThisFrame.items;
 		for (int i = 0; i < size; i++) {
@@ -45,5 +48,4 @@ public class EntityStore extends Store<Entity> {
 		freedThisFrame.clear();
 		return size;
 	}
-	
 }

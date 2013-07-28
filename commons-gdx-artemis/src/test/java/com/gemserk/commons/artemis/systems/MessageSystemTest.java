@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import com.artemis.Aspect;
 import com.artemis.Component;
 import com.artemis.Entity;
-import com.artemis.EntityProcessingSystem;
+import com.artemis.systems.EntityProcessingSystem;
 
 public class MessageSystemTest {
-
 	class Message {
-
 		private final Entity source;
 		private final String id;
 
@@ -27,31 +26,25 @@ public class MessageSystemTest {
 			this.id = id;
 			this.source = source;
 		}
-
 	}
 
 	class MessageQueueComponent extends Component {
-
 		private ArrayList<Message> messages;
 
 		public ArrayList<Message> getMessages() {
 			return messages;
 		}
-
 	}
 
 	class MessageQueue {
-
 		private ArrayList<Message> messages;
 
 		public ArrayList<Message> getMessages() {
 			return messages;
 		}
-
 	}
 
 	class MessageQueueSystem extends EntityProcessingSystem {
-
 		private MessageQueue messageQueue;
 
 		public void setMessageQueue(MessageQueue messageQueue) {
@@ -60,7 +53,7 @@ public class MessageSystemTest {
 
 		@SuppressWarnings("unchecked")
 		public MessageQueueSystem() {
-			super(MessageQueueComponent.class);
+			super(Aspect.getAspectForAll(MessageQueueComponent.class));
 		}
 
 		@Override
@@ -69,11 +62,9 @@ public class MessageSystemTest {
 			messageQueue.getMessages().addAll(messageQueueComponent.getMessages());
 			messageQueueComponent.getMessages().clear();
 		}
-
 	}
 
 	class MessageHandler {
-
 		boolean canHandle(Message m) {
 			return true;
 		}
@@ -81,17 +72,13 @@ public class MessageSystemTest {
 		void handle(Message m) {
 
 		}
-
 	}
 
 	class MessageHandlerComponent extends Component {
-
 		ArrayList<MessageHandler> messageHandlers;
-
 	}
 
 	class MessageListenerSystem extends EntityProcessingSystem {
-
 		private MessageQueue messageQueue;
 
 		public void setMessageQueue(MessageQueue messageQueue) {
@@ -100,7 +87,7 @@ public class MessageSystemTest {
 
 		@SuppressWarnings("unchecked")
 		public MessageListenerSystem() {
-			super(MessageHandlerComponent.class);
+			super(Aspect.getAspectForAll(MessageHandlerComponent.class));
 		}
 
 		@Override
@@ -112,18 +99,17 @@ public class MessageSystemTest {
 				// if (messageHandler.canHandle(m))
 				for (int j = 0; j < messageQueue.messages.size(); j++) {
 					Message m = messageQueue.messages.get(j);
-					if (messageHandler.canHandle(m))
+					if (messageHandler.canHandle(m)) {
 						messageHandler.handle(m);
+					}
 				}
 			}
 			messageQueue.messages.clear();
 		}
-
 	}
 	
 	@Test
 	public void test() {
 		
 	}
-
 }

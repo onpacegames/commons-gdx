@@ -1,12 +1,11 @@
 package com.gemserk.commons.artemis.components;
 
 import com.artemis.Component;
-import com.artemis.ComponentTypeManager;
+import com.artemis.ComponentType;
 import com.artemis.Entity;
 
 public class OwnerComponent extends Component {
-
-	public static final int type = ComponentTypeManager.getTypeFor(OwnerComponent.class).getId();
+	public static final ComponentType type = ComponentType.getTypeFor(OwnerComponent.class);
 
 	public static OwnerComponent get(Entity e) {
 		return (OwnerComponent) e.getComponent(type);
@@ -25,5 +24,4 @@ public class OwnerComponent extends Component {
 	public OwnerComponent(Entity owner) {
 		this.owner = owner;
 	}
-
 }

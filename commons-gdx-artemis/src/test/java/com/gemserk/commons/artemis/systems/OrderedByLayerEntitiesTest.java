@@ -10,7 +10,6 @@ import com.gemserk.commons.artemis.components.OwnerComponent;
 import com.gemserk.commons.artemis.components.RenderableComponent;
 
 public class OrderedByLayerEntitiesTest {
-
 	OrderedByLayerEntities orderedByLayerEntities = new OrderedByLayerEntities(-100, 100);
 	
 	@Test
@@ -317,6 +316,4 @@ public class OrderedByLayerEntitiesTest {
 		assertSame(orderedByLayerEntities.get(0), e1);
 		assertSame(orderedByLayerEntities.get(1), e2);
 	}
-
-
 }

@@ -1,15 +1,9 @@
 package com.gemserk.commons.artemis.components;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-
-import com.artemis.Component;
-import com.artemis.ComponentMapper;
-import com.artemis.EntityManager;
-
+@Deprecated
 public class ComponentMapperInitHelper {
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	/*@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void config(Object target, EntityManager entityManager) {
 		try {
 			for (Field field : target.getClass().getDeclaredFields()) {
@@ -28,6 +22,5 @@ public class ComponentMapperInitHelper {
 		} catch (Exception e) {
 			throw new RuntimeException("Error while setting component mappers", e);
 		}
-	}
-
+	}*/
 }

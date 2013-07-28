@@ -19,7 +19,6 @@ import com.gemserk.commons.gdx.graphics.SpriteBatchUtils;
 import com.gemserk.componentsengine.utils.RandomAccessMap;
 
 public class RenderLayerSpriteBatchImpl implements RenderLayer {
-
 	static class EntityComponents {
 		public RenderableComponent renderableComponent;
 		public FrustumCullingComponent frustumCullingComponent;
@@ -85,12 +84,11 @@ public class RenderLayerSpriteBatchImpl implements RenderLayer {
 		this.camera = camera;
 		this.spriteBatch = spriteBatch;
 		this.optimizationParameters = optimizationParameters;
-		// this.orderedByLayerEntities = new OrderedByLayerEntities(minLayer,
-		// maxLayer);
-		this.orderedByLayerRenderables = new OrderedByLayerRenderables(minLayer, maxLayer);
-		this.enabled = true;
-		this.factory = new Factory();
-		this.ownsSpriteBatch = false;
+		// this.orderedByLayerEntities = new OrderedByLayerEntities(minLayer, maxLayer);
+		orderedByLayerRenderables = new OrderedByLayerRenderables(minLayer, maxLayer);
+		enabled = true;
+		factory = new Factory();
+		ownsSpriteBatch = false;
 		this.blending = blending;
 	}
 
@@ -104,7 +102,7 @@ public class RenderLayerSpriteBatchImpl implements RenderLayer {
 
 	public RenderLayerSpriteBatchImpl(int minLayer, int maxLayer, Libgdx2dCamera camera) {
 		this(minLayer, maxLayer, camera, new SpriteBatch());
-		this.ownsSpriteBatch = true;
+		ownsSpriteBatch = true;
 	}
 
 	@Override
@@ -114,8 +112,9 @@ public class RenderLayerSpriteBatchImpl implements RenderLayer {
 
 	@Override
 	public void dispose() {
-		if (ownsSpriteBatch)
+		if (ownsSpriteBatch) {
 			spriteBatch.dispose();
+		}
 	}
 
 	@Override
@@ -139,18 +138,21 @@ public class RenderLayerSpriteBatchImpl implements RenderLayer {
 	public void render() {
 		camera.getFrustum(frustum);
 
-		if (optimizationParameters.updateCamera)
+		if (optimizationParameters.updateCamera) {
 			camera.apply(spriteBatch);
+		}
 
 		RandomAccessMap<Entity, EntityComponents> entityComponents = factory.entityComponents;
 
-		if (blending && !spriteBatch.isBlendingEnabled())
+		if (blending && !spriteBatch.isBlendingEnabled()) {
 			spriteBatch.enableBlending();
-		else if (!blending && spriteBatch.isBlendingEnabled())
+		} else if (!blending && spriteBatch.isBlendingEnabled()) {
 			spriteBatch.disableBlending();
+		}
 
-		if (optimizationParameters.beginBatch)
+		if (optimizationParameters.beginBatch) {
 			spriteBatch.begin();
+		}
 		for (int i = 0; i < orderedByLayerRenderables.size(); i++) {
 			Renderable renderable = orderedByLayerRenderables.get(i);
 
@@ -159,8 +161,9 @@ public class RenderLayerSpriteBatchImpl implements RenderLayer {
 			// if (!renderableComponent.isVisible())
 			// continue;
 
-			if (!renderable.isVisible())
+			if (!renderable.isVisible()) {
 				continue;
+			}
 
 			EntityComponents components = entityComponents.get(renderable.getEntity());
 			FrustumCullingComponent frustumCullingComponent = components.frustumCullingComponent;
@@ -173,8 +176,9 @@ public class RenderLayerSpriteBatchImpl implements RenderLayer {
 				entityBounds.setX(entityBounds.getX() + spatial.getX());
 				entityBounds.setY(entityBounds.getY() + spatial.getY());
 
-				if (!frustum.overlaps(entityBounds))
+				if (!frustum.overlaps(entityBounds)) {
 					continue;
+				}
 			}
 
 			SpriteComponent spriteComponent = components.spriteComponent;
@@ -201,8 +205,9 @@ public class RenderLayerSpriteBatchImpl implements RenderLayer {
 				particleEmitterComponent.particleEmitter.draw(spriteBatch);
 			}
 		}
-		if (optimizationParameters.endBatch)
+		if (optimizationParameters.endBatch) {
 			spriteBatch.end();
+		}
 	}
 
 	@Override
@@ -216,7 +221,6 @@ public class RenderLayerSpriteBatchImpl implements RenderLayer {
 	}
 
 	class Factory extends EntityComponentsFactory<EntityComponents> {
-
 		@Override
 		public EntityComponents newInstance() {
 			return new EntityComponents();
@@ -242,5 +246,4 @@ public class RenderLayerSpriteBatchImpl implements RenderLayer {
 			entityComponent.particleEmitterComponent = Components.getParticleEmitterComponent(e);
 		}
 	}
-
 }

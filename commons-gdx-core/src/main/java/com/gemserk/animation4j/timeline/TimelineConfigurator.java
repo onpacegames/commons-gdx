@@ -12,7 +12,6 @@ import com.gemserk.commons.gdx.camera.Camera;
 
 @SuppressWarnings("rawtypes")
 public class TimelineConfigurator {
-
 	private static final String OPACITY_SUFFIX = ".opacity";
 	private static final String SCALE_SUFFIX = ".scale";
 	private static final String POSITION_SUFFIX = ".position";
@@ -26,8 +25,9 @@ public class TimelineConfigurator {
 	private Timeline timeline;
 
 	public Timeline getTimeline() {
-		if (timeline == null)
+		if (timeline == null) {
 			timeline = new Timeline(new ArrayList<TimelineValue>(timelineValues.values()));
+		}
 		return timeline;
 	}
 
@@ -123,9 +123,9 @@ public class TimelineConfigurator {
 	}
 
 	private void setObjectForTimelineValue(String propertyId, Object object) {
-		TimelineValue timelineValue = timelineValues.get(propertyId);
-		if (timelineValue != null)
+		TimelineValue<Object> timelineValue = timelineValues.get(propertyId);
+		if (timelineValue != null) {
 			timelineValue.setObject(object);
+		}
 	}
-
 }

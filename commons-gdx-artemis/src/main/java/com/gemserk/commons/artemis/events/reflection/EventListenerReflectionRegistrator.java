@@ -18,7 +18,6 @@ import com.gemserk.componentsengine.utils.Pool.PoolObjectFactory;
  * Provides reflection utilities to register event listeners for the methods of a class, maybe should be used in an instance way, to avoid problems when forgetting to call unregister().
  */
 public class EventListenerReflectionRegistrator {
-
 	protected static final Logger logger = LoggerFactory.getLogger(EventListenerReflectionRegistrator.class);
 
 	// private static final Class<Handles> handlesClass = Handles.class;
@@ -49,25 +48,29 @@ public class EventListenerReflectionRegistrator {
 	}
 
 	private Map<String, Method> getClassCachedMethods(Class<?> clazz) {
-		if (!cachedMethodsPerClass.containsKey(clazz))
+		if (!cachedMethodsPerClass.containsKey(clazz)) {
 			cachedMethodsPerClass.put(clazz, new HashMap<String, Method>());
+		}
 		return cachedMethodsPerClass.get(clazz);
 	}
 
 	private Method getMethod(String name, Class<?> clazz) {
 		Map<String, Method> cachedMethods = getClassCachedMethods(clazz);
-		if (cachedMethods.containsKey(name))
+		if (cachedMethods.containsKey(name)) {
 			return cachedMethods.get(name);
+		}
 		try {
 			Method method = clazz.getMethod(name, eventClass);
 			cachedMethods.put(name, method);
 			return method;
 		} catch (SecurityException e) {
-			if (logger.isErrorEnabled())
+			if (logger.isErrorEnabled()) {
 				logger.error("Failed to get method " + name, e);
+			}
 		} catch (NoSuchMethodException e) {
-			if (logger.isErrorEnabled())
+			if (logger.isErrorEnabled()) {
 				logger.error("Failed to get method " + name, e);
+			}
 		}
 		return null;
 	}
@@ -76,8 +79,9 @@ public class EventListenerReflectionRegistrator {
 		// On ComponentsEngine Component methods were cached to improve performance when registering for events and more.
 		final Method method = getMethod(eventId, o.getClass());
 		if (method == null) {
-			if (logger.isErrorEnabled())
+			if (logger.isErrorEnabled()) {
 				logger.error("Failed to register EventListener for event " + eventId);
+			}
 			return;
 		}
 		registerEventListenerForMethod(eventId, o, method);
@@ -98,8 +102,9 @@ public class EventListenerReflectionRegistrator {
 	}
 
 	private Map<Method, InvokeMethodEventListener> getCachedMethodEventListenersForObject(final Object o) {
-		if (!createdMethodEventListeners.containsKey(o))
+		if (!createdMethodEventListeners.containsKey(o)) {
 			createdMethodEventListeners.put(o, new HashMap<Method, InvokeMethodEventListener>());
+		}
 		return createdMethodEventListeners.get(o);
 	}
 
@@ -122,18 +127,17 @@ public class EventListenerReflectionRegistrator {
 	public void registerEventListeners(Object o) {
 		Class<?> clazz = o.getClass();
 		Method[] methods = getCachedClassMethods(clazz);
-		for (int i = 0; i < methods.length; i++) {
-			Method method = methods[i];
+		for (Method method : methods) {
 			Handles handlesAnnotation = getHandlesAnnotation(method);
-			if (handlesAnnotation == null)
+			if (handlesAnnotation == null) {
 				continue;
+			}
 			String[] eventIds = handlesAnnotation.ids();
 			if (eventIds.length == 0) {
 				registerEventListenerForMethod(method.getName(), o, method);
 				continue;
 			}
-			for (int j = 0; j < eventIds.length; j++) {
-				String eventId = eventIds[j];
+			for (String eventId : eventIds) {
 				registerEventListenerForMethod(eventId, o, method);
 			}
 		}
@@ -150,18 +154,17 @@ public class EventListenerReflectionRegistrator {
 	public void unregisterEventListeners(Object o) {
 		Class<?> clazz = o.getClass();
 		Method[] methods = getCachedClassMethods(clazz);
-		for (int i = 0; i < methods.length; i++) {
-			Method method = methods[i];
+		for (Method method : methods) {
 			Handles handlesAnnotation = getHandlesAnnotation(method);
-			if (handlesAnnotation == null)
+			if (handlesAnnotation == null) {
 				continue;
+			}
 			String[] eventIds = handlesAnnotation.ids();
 			if (eventIds.length == 0) {
 				unregisterEventListenerForMethod(method.getName(), o, method);
 				continue;
 			}
-			for (int j = 0; j < eventIds.length; j++) {
-				String eventId = eventIds[j];
+			for (String eventId : eventIds) {
 				unregisterEventListenerForMethod(eventId, o, method);
 			}
 		}
@@ -170,23 +173,25 @@ public class EventListenerReflectionRegistrator {
 
 	private Handles getHandlesAnnotation(Method method) {
 		Annotation[] annotations = getAnnotations(method);
-		for (int i = 0; i < annotations.length; i++) {
-			if (annotations[i] instanceof Handles)
-				return (Handles) annotations[i];
+		for (Annotation annotation : annotations) {
+			if (annotation instanceof Handles) {
+				return (Handles) annotation;
+			}
 		}
 		return null;
 	}
 
 	private Annotation[] getAnnotations(Method method) {
-		if (!cachedAnnotationsPerMethod.containsKey(method))
+		if (!cachedAnnotationsPerMethod.containsKey(method)) {
 			cachedAnnotationsPerMethod.put(method, method.getAnnotations());
+		}
 		return cachedAnnotationsPerMethod.get(method);
 	}
 
 	private static Method[] getCachedClassMethods(Class<?> clazz) {
-		if (!cachedClassMethods.containsKey(clazz))
+		if (!cachedClassMethods.containsKey(clazz)) {
 			cachedClassMethods.put(clazz, clazz.getMethods());
+		}
 		return cachedClassMethods.get(clazz);
 	}
-
 }

@@ -2,6 +2,7 @@ package com.gemserk.commons.svg.inkscape;
 
 import static org.junit.Assert.assertThat;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -17,13 +18,15 @@ import com.gemserk.vecmath.Vector3f;
 
 
 public class SvgParseGroupTest {
-	
 	private Document document;
 
 	@Before
 	public void setup() {
-		InputStream svgStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("test-groups.svg");
-		document = new DocumentParser().parse(svgStream);
+		try (InputStream svgStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("test-groups.svg")) {
+			document = new DocumentParser().parse(svgStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
@@ -34,8 +37,9 @@ public class SvgParseGroupTest {
 			@Override
 			protected void handle(SvgParser svgParser, SvgInkscapeGroup svgInkscapeGroup, Element element) {
 				String id = svgInkscapeGroup.getId();
-				if (!"group-path".equals(id)) 
+				if (!"group-path".equals(id)) {
 					return;
+				}
 				Matrix3f transform = svgInkscapeGroup.getTransform();
 				
 				Matrix3f expectedMatrix = new Matrix3f(new float[] { 1, 0, 20, 0, 1, 10, 0, 0, 1 });
@@ -73,9 +77,7 @@ public class SvgParseGroupTest {
 			@Override
 			protected void handle(SvgParser svgParser, SvgPath svgPath, Element element) {
 				Vector2f[] points = svgPath.getPoints();
-				for (int i = 0; i < points.length; i++) {
-					Vector2f point = points[i];
-					
+				for (Vector2f point : points) {
 					tmp.set(point.x, point.y, 1f);
 					groupTransform.transform(tmp);
 					
@@ -103,8 +105,8 @@ public class SvgParseGroupTest {
 		for (SvgPath path : paths) {
 			System.out.println(path.getId());
 			Vector2f[] points = path.getPoints();
-			for (int i = 0; i < points.length; i++) {
-				System.out.println(points[i]);
+			for (Vector2f point : points) {
+				System.out.println(point);
 			}
 		}
 	}

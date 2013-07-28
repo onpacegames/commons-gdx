@@ -1,7 +1,8 @@
 package com.gemserk.commons.artemis.systems;
 
+import com.artemis.Aspect;
 import com.artemis.Entity;
-import com.artemis.EntityProcessingSystem;
+import com.artemis.systems.EntityProcessingSystem;
 import com.gemserk.commons.artemis.components.Components;
 import com.gemserk.commons.artemis.components.ParticleEmitterComponent;
 import com.gemserk.commons.artemis.components.SpatialComponent;
@@ -9,10 +10,9 @@ import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.games.Spatial;
 
 public class ParticleEmitterSystem extends EntityProcessingSystem {
-	
 	@SuppressWarnings("unchecked")
 	public ParticleEmitterSystem() {
-		super(Components.particleEmitterComponentClass, Components.spatialComponentClass);
+		super(Aspect.getAspectForAll(Components.particleEmitterComponentClass, Components.spatialComponentClass));
 	}
 
 	@Override
@@ -23,5 +23,4 @@ public class ParticleEmitterSystem extends EntityProcessingSystem {
 		particleEmitterComponent.particleEmitter.setPosition(spatial.getX(), spatial.getY());
 		particleEmitterComponent.particleEmitter.update(GlobalTime.getDelta());
 	}
-	
 }

@@ -3,7 +3,6 @@ package com.gemserk.commons.svg.inkscape;
 import com.gemserk.vecmath.Matrix3f;
 
 public class SvgInkscapeGroupImpl implements SvgInkscapeGroup {
-
 	String groupMode;
 	String label;
 	SvgGroup svgGroup;
@@ -12,6 +11,7 @@ public class SvgInkscapeGroupImpl implements SvgInkscapeGroup {
 		this.svgGroup = svgGroup;
 	}
 	
+	@Override
 	public String getGroupMode() {
 		return groupMode;
 	}
@@ -20,6 +20,7 @@ public class SvgInkscapeGroupImpl implements SvgInkscapeGroup {
 		this.groupMode = groupMode;
 	}
 
+	@Override
 	public String getLabel() {
 		return label;
 	}

@@ -1,13 +1,13 @@
 package com.gemserk.commons.artemis.components;
 
 import com.artemis.Component;
-import com.artemis.ComponentTypeManager;
+import com.artemis.ComponentType;
 import com.artemis.Entity;
 import com.gemserk.animation4j.gdx.Animation;
 
 public class AnimationComponent extends Component {
 
-	public static final int type = ComponentTypeManager.getTypeFor(AnimationComponent.class).getId();
+	public static final ComponentType type = ComponentType.getTypeFor(AnimationComponent.class);
 
 	public static AnimationComponent get(Entity e) {
 		return (AnimationComponent) e.getComponent(type);
@@ -38,11 +38,10 @@ public class AnimationComponent extends Component {
 	}
 
 	public AnimationComponent(Animation[] spriteSheets) {
-		this.animations = spriteSheets;
+		animations = spriteSheets;
 	}
 	
 	public void setAnimations(Animation[] animations) {
 		this.animations = animations;
 	}
-
 }

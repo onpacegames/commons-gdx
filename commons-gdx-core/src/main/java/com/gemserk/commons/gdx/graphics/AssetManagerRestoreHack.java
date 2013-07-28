@@ -12,7 +12,6 @@ import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
 import com.badlogic.gdx.utils.Logger;
 
 public class AssetManagerRestoreHack extends AssetManager {
-
 	public ArrayList<TextureParameter> textures = new ArrayList<TextureLoader.TextureParameter>();
 
 	@Override
@@ -66,7 +65,6 @@ public class AssetManagerRestoreHack extends AssetManager {
 		throw new UnsupportedOperationException("This method is not supported in this class");
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public synchronized boolean isLoaded(String fileName, Class type) {
 		throw new UnsupportedOperationException("This method is not supported in this class");
@@ -77,7 +75,6 @@ public class AssetManagerRestoreHack extends AssetManager {
 		throw new UnsupportedOperationException("This method is not supported in this class");
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public synchronized void load(AssetDescriptor desc) {
 		throw new UnsupportedOperationException("This method is not supported in this class");

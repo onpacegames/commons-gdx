@@ -6,7 +6,6 @@ import com.artemis.World;
  * A system that works over the Artemis World, not over entities with a specific component.
  */
 public interface WorldSystem {
-
 	/**
 	 * Called to initialize the system for a given world.
 	 * 
@@ -30,5 +29,4 @@ public interface WorldSystem {
 	 *            The artemis world.
 	 */
 	void dispose(World world);
-
 }

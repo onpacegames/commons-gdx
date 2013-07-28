@@ -7,7 +7,6 @@ import com.gemserk.componentsengine.utils.Parameters;
  * 
  */
 public class GameStateDelegateFixedTimestepImpl implements GameState {
-
 	protected float delta;
 
 	protected final float dt;
@@ -27,38 +26,46 @@ public class GameStateDelegateFixedTimestepImpl implements GameState {
 		this.maxFrameTime = maxFrameTime;
 	}
 
+	@Override
 	public void init() {
 		gameState.init();
 		accumulator = dt * 2;
 	}
 
+	@Override
 	public void dispose() {
 		gameState.dispose();
 	}
 
+	@Override
 	public void resume() {
 		gameState.resume();
 	}
 
+	@Override
 	public void pause() {
 		gameState.pause();
 	}
 
+	@Override
 	public void show() {
 		gameState.show();
 	}
 
+	@Override
 	public void hide() {
 		gameState.hide();
 	}
 
+	@Override
 	public void update() {
 		// float t = 0f;
 		float frameTime = delta;
 
 		// note: max frame time to avoid spiral of death
-		if (frameTime > maxFrameTime)
+		if (frameTime > maxFrameTime) {
 			frameTime = maxFrameTime;
+		}
 
 		accumulator += frameTime;
 
@@ -77,22 +84,27 @@ public class GameStateDelegateFixedTimestepImpl implements GameState {
 		gameState.setAlpha(alpha);
 	}
 
+	@Override
 	public void render() {
 		gameState.render();
 	}
 
+	@Override
 	public void setDelta(float delta) {
 		this.delta = delta;
 	}
 
+	@Override
 	public void setAlpha(float alpha) {
 		gameState.setAlpha(alpha);
 	}
 
+	@Override
 	public Parameters getParameters() {
 		return gameState.getParameters();
 	}
 
+	@Override
 	public void resize(int width, int height) {
 		gameState.resize(width, height);
 	}

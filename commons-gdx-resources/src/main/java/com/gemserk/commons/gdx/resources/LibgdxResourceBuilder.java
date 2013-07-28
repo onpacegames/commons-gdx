@@ -34,7 +34,6 @@ import com.gemserk.resources.ResourceManager;
 import com.gemserk.resources.dataloaders.DataLoader;
 
 public class LibgdxResourceBuilder {
-
 	// TODO: Define folders for each type of resource?
 
 	protected ResourceManager<String> resourceManager;
@@ -105,8 +104,9 @@ public class LibgdxResourceBuilder {
 					try {
 						String textureResourceId = id + pageTextureSuffix + i;
 						page.texture = resourceManager.getResourceValue(textureResourceId);
-						if (page.texture == null)
+						if (page.texture == null) {
 							throw new RuntimeException("The resource " + textureResourceId + " was not found");
+						}
 					} catch (Exception e) {
 						throw new RuntimeException("Error while loading page for textureAtlas " + id + " - page: " + page.textureFile.path(), e);
 					}
@@ -131,8 +131,9 @@ public class LibgdxResourceBuilder {
 			@Override
 			public Sprite load() {
 				Resource<Texture> texture = resourceManager.get(textureId);
-				if (texture == null)
+				if (texture == null) {
 					throw new RuntimeException("Failed to create Sprite from missing Texture resource " + textureId);
+				}
 				return new Sprite(texture.get());
 			}
 		});
@@ -170,14 +171,16 @@ public class LibgdxResourceBuilder {
 
 				if (sprite == null) {
 					sprite = textureAtlas.createSprite(regionId);
-					if (sprite == null)
+					if (sprite == null) {
 						throw new RuntimeException("Failed to create Sprite resource " + id + " from region " + regionId + " from texture atlas " + textureAtlasId);
+					}
 				}
 
-				if (sprite instanceof AtlasSprite)
+				if (sprite instanceof AtlasSprite) {
 					return new AtlasSprite(((AtlasSprite) sprite).getAtlasRegion());
-				else
+				} else {
 					return new Sprite(sprite);
+				}
 			}
 		});
 	}
@@ -195,7 +198,7 @@ public class LibgdxResourceBuilder {
 	}
 
 	public void animation(final String id, final String textureAtlasId, final String prefix, final int sf, final int ef, final boolean loop, final boolean removeAlias, final int time, final int... times) {
-		float ftime = 0.001f * (float) time;
+		float ftime = 0.001f * time;
 		float[] ftimes = null;
 		// if (times != null) {
 		ftimes = new float[times.length];
@@ -222,7 +225,7 @@ public class LibgdxResourceBuilder {
 					Sprite lastSprite = null;
 					int i = 0;
 
-					FloatValue frameTime = null;
+					FloatValue frameTime = new FloatValue(0);
 
 					do {
 						Sprite sprite = frames[i];
@@ -244,8 +247,9 @@ public class LibgdxResourceBuilder {
 
 					newSprites.toArray(this.frames);
 
-					for (i = 0; i < newTimes.size(); i++)
+					for (i = 0; i < newTimes.size(); i++) {
 						this.times[i] = newTimes.get(i).value;
+					}
 				}
 
 			}
@@ -266,17 +270,20 @@ public class LibgdxResourceBuilder {
 						throw new RuntimeException("Failed to create animation " + id + " from texture atlas " + textureAtlasId, e);
 					}
 
-					if (sprites.size == 0)
+					if (sprites.size == 0) {
 						throw new IllegalArgumentException("Failed to create animation " + id + ", no regions found for prefix " + prefix);
+					}
 
 					int endFrame = ef;
 					int startFrame = sf;
 
-					if (endFrame == -1)
+					if (endFrame == -1) {
 						endFrame = sprites.size - 1;
+					}
 
-					if (startFrame == -1)
+					if (startFrame == -1) {
 						startFrame = 0;
+					}
 
 					Sprite[] frames = new Sprite[endFrame - startFrame + 1];
 					int frameNumber = startFrame;
@@ -299,16 +306,18 @@ public class LibgdxResourceBuilder {
 							// newTimes[i] = ((float) times[i]) * 0.001f;
 							newTimes[i] = times[i];
 							lastTime = newTimes[i];
-						} else
+						} else {
 							newTimes[i] = lastTime;
+						}
 					}
 
 					for (int i = 0; i < frames.length; i++) {
 						Sprite sprite = sprites.get(frameNumber);
-						if (sprite instanceof AtlasSprite)
+						if (sprite instanceof AtlasSprite) {
 							frames[i] = new AtlasSprite(((AtlasSprite) sprite).getAtlasRegion());
-						else
+						} else {
 							frames[i] = new Sprite(sprite);
+						}
 						frameNumber++;
 					}
 
@@ -331,10 +340,11 @@ public class LibgdxResourceBuilder {
 
 				for (int i = 0; i < frames.length; i++) {
 					Sprite sprite = cachedAnimation.getFrame(i);
-					if (sprite instanceof AtlasSprite)
+					if (sprite instanceof AtlasSprite) {
 						frames[i] = new AtlasSprite(((AtlasSprite) sprite).getAtlasRegion());
-					else
+					} else {
 						frames[i] = new Sprite(sprite);
+					}
 				}
 
 				return new Animation(frames, new FrameAnimationImpl(cachedFrameAnimation));
@@ -373,13 +383,14 @@ public class LibgdxResourceBuilder {
 
 				for (int i = 0; i < framesCount - 1; i++) {
 					if (i < times.length) {
-						newTimes[i] = ((float) times[i]) * 0.001f;
+						newTimes[i] = times[i] * 0.001f;
 						lastTime = times[i];
-					} else
-						newTimes[i] = ((float) lastTime) * 0.001f;
+					} else {
+						newTimes[i] = lastTime * 0.001f;
+					}
 				}
 
-				FrameAnimationImpl frameAnimation = new FrameAnimationImpl(0.001f * (float) time, newTimes);
+				FrameAnimationImpl frameAnimation = new FrameAnimationImpl(0.001f * time, newTimes);
 				frameAnimation.setLoop(loop);
 
 				return new Animation(frames, frameAnimation);
@@ -397,8 +408,9 @@ public class LibgdxResourceBuilder {
 			@Override
 			public BitmapFont load() {
 				Texture texture = new Texture(internal(imageFile));
-				if (linearFilter)
+				if (linearFilter) {
 					texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+				}
 				return new BitmapFont(internal(fontFile), new Sprite(texture), false);
 			}
 		});
@@ -497,19 +509,21 @@ public class LibgdxResourceBuilder {
 			}
 		};
 
-		if (resourceBuilder.isVolatile())
+		if (resourceBuilder.isVolatile()) {
 			resourceManager.addVolatile(id, dataLoader);
-		else
+		} else {
 			resourceManager.add(id, dataLoader);
+		}
 
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void resource(final String id, final DataLoaderBuilder dataLoaderBuilder) {
-		if (dataLoaderBuilder.isVolatile())
+		if (dataLoaderBuilder.isVolatile()) {
 			resourceManager.addVolatile(id, dataLoaderBuilder.build(resourceManager));
-		else
+		} else {
 			resourceManager.add(id, dataLoaderBuilder.build(resourceManager));
+		}
 	}
 
 	public SpriteResourceBuilder sprite2() {

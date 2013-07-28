@@ -1,13 +1,12 @@
 package com.gemserk.commons.artemis.components;
 
 import com.artemis.Component;
-import com.artemis.ComponentTypeManager;
+import com.artemis.ComponentType;
 import com.artemis.Entity;
 import com.gemserk.componentsengine.utils.RandomAccessSet;
 
 public class ContainerComponent extends Component {
-
-	public static final int type = ComponentTypeManager.getTypeFor(ContainerComponent.class).getId();
+	public static final ComponentType type = ComponentType.getTypeFor(ContainerComponent.class);
 
 	public static ContainerComponent get(Entity e) {
 		return (ContainerComponent) e.getComponent(type);
@@ -18,5 +17,4 @@ public class ContainerComponent extends Component {
 	public RandomAccessSet<Entity> getChildren() {
 		return children;
 	}
-
 }

@@ -5,7 +5,6 @@ import com.gemserk.commons.artemis.render.Renderable;
 import com.gemserk.commons.artemis.render.RenderableComparator;
 
 public class OrderedByLayerRenderables {
-
 	final RenderableComparator renderableComparator = new RenderableComparator();
 
 	private final Array<Renderable> entities = new Array<Renderable>();
@@ -37,5 +36,4 @@ public class OrderedByLayerRenderables {
 	public Renderable get(int i) {
 		return entities.get(i);
 	}
-
 }

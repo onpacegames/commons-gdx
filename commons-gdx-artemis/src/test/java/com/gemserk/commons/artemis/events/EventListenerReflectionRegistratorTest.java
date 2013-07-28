@@ -23,6 +23,10 @@ public class EventListenerReflectionRegistratorTest {
 			wasCalled = true;
 		}
 
+		public void customEvent2(Event e) {
+			
+		}
+
 	}
 
 	@Test

@@ -6,7 +6,6 @@ import com.gemserk.componentsengine.utils.Parameters;
 import com.gemserk.componentsengine.utils.ParametersWrapper;
 
 public class EntityFactoryImpl implements EntityFactory {
-
 	private Parameters parameters = new ParametersWrapper();
 	private World world;
 
@@ -24,15 +23,14 @@ public class EntityFactoryImpl implements EntityFactory {
 		Entity entity = world.createEntity();
 		template.setParameters(parameters);
 		template.apply(entity);
-		entity.refresh();
+		entity.addToWorld();
 		return entity;
 	}
 
 	@Override
 	public Entity instantiate() {
 		Entity entity = world.createEntity();
-		entity.refresh();
+		entity.addToWorld();
 		return entity;
 	}
-
 }

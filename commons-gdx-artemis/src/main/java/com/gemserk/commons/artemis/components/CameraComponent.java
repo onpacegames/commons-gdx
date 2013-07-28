@@ -1,14 +1,13 @@
 package com.gemserk.commons.artemis.components;
 
 import com.artemis.Component;
-import com.artemis.ComponentTypeManager;
+import com.artemis.ComponentType;
 import com.artemis.Entity;
 import com.gemserk.commons.gdx.camera.Camera;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 
 public class CameraComponent extends Component {
-	
-	public static final int type = ComponentTypeManager.getTypeFor(CameraComponent.class).getId();
+	public static final ComponentType type = ComponentType.getTypeFor(CameraComponent.class);
 
 	public static CameraComponent get(Entity e) {
 		return (CameraComponent) e.getComponent(type);
@@ -37,5 +36,4 @@ public class CameraComponent extends Component {
 		this.libgdx2dCamera = libgdx2dCamera;
 		this.camera = camera;
 	}
-
 }

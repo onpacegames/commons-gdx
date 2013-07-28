@@ -10,11 +10,11 @@ import com.gemserk.commons.artemis.components.PhysicsComponent;
 import com.gemserk.commons.artemis.components.PhysicsComponent.ImmediateModePhysicsListener;
 
 public class PhysicsContactListener implements ContactListener {
-
 	@Override
 	public void beginContact(Contact contact) {
-		if (!contact.isTouching())
+		if (!contact.isTouching()) {
 			return;
+		}
 
 		Body bodyA = contact.getFixtureA().getBody();
 		Body bodyB = contact.getFixtureB().getBody();
@@ -37,17 +37,20 @@ public class PhysicsContactListener implements ContactListener {
 	 *            The real contact, used internally to get some data like normals and stuff.
 	 */
 	private void addBodyToContacts(Entity e, Contact contact, boolean fixtureA) {
-		if (e == null)
+		if (e == null) {
 			return;
+		}
 		PhysicsComponent physicsComponent = PhysicsComponent.get(e);
-		if (physicsComponent == null)
+		if (physicsComponent == null) {
 			return;
+		}
 
 		physicsComponent.getContact().addContact(contact, fixtureA);
 
 		ImmediateModePhysicsListener physicsListener = physicsComponent.physicsListener;
-		if (physicsListener != null)
+		if (physicsListener != null) {
 			physicsListener.beginContact(e, contact, fixtureA);
+		}
 	}
 
 	@Override
@@ -71,22 +74,26 @@ public class PhysicsContactListener implements ContactListener {
 	 *            The body to be removed from contacts.
 	 */
 	private void removeBodyFromContacts(Entity e, Contact contact, boolean fixtureA) {
-		if (e == null)
+		if (e == null) {
 			return;
+		}
 		PhysicsComponent physicsComponent = PhysicsComponent.get(e);
-		if (physicsComponent == null)
+		if (physicsComponent == null) {
 			return;
+		}
 		physicsComponent.getContact().removeContact(contact, fixtureA);
 
 		ImmediateModePhysicsListener physicsListener = physicsComponent.physicsListener;
-		if (physicsListener != null)
+		if (physicsListener != null) {
 			physicsListener.endContact(e, contact, fixtureA);
+		}
 	}
 
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
-		if (!contact.isTouching())
+		if (!contact.isTouching()) {
 			return;
+		}
 
 		Body bodyA = contact.getFixtureA().getBody();
 		Body bodyB = contact.getFixtureB().getBody();
@@ -99,15 +106,18 @@ public class PhysicsContactListener implements ContactListener {
 	}
 
 	private void executePreSolveListener(Entity e, Contact contact, boolean fixtureA) {
-		if (e == null)
+		if (e == null) {
 			return;
+		}
 		PhysicsComponent physicsComponent = PhysicsComponent.get(e);
-		if (physicsComponent == null)
+		if (physicsComponent == null) {
 			return;
+		}
 
 		ImmediateModePhysicsListener physicsListener = physicsComponent.physicsListener;
-		if (physicsListener != null)
+		if (physicsListener != null) {
 			physicsListener.preSolve(e, contact, fixtureA);
+		}
 	}
 
 	@Override
@@ -115,5 +125,4 @@ public class PhysicsContactListener implements ContactListener {
 		// TODO Auto-generated function stub
 
 	}
-
 }

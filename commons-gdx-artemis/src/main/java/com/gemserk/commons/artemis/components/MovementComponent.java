@@ -1,14 +1,13 @@
 package com.gemserk.commons.artemis.components;
 
 import com.artemis.Component;
-import com.artemis.ComponentTypeManager;
+import com.artemis.ComponentType;
 import com.artemis.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.commons.gdx.games.Movement;
 
 public class MovementComponent extends Component {
-
-	public static final int type = ComponentTypeManager.getTypeFor(MovementComponent.class).getId();
+	public static final ComponentType type = ComponentType.getTypeFor(MovementComponent.class);
 
 	public static MovementComponent get(Entity e) {
 		return (MovementComponent) e.getComponent(type);
@@ -47,5 +46,4 @@ public class MovementComponent extends Component {
 	public MovementComponent(Movement movement) {
 		this.movement = movement;
 	}
-
 }

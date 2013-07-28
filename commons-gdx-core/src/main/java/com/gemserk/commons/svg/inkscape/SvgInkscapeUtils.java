@@ -19,8 +19,9 @@ public class SvgInkscapeUtils {
 
 	public static boolean isLayer(Element element) {
 		String groupMode = element.getAttributeNS(INKSCAPE, "groupmode");
-		if (groupMode == null)
+		if (groupMode == null) {
 			return false;
+		}
 		return "layer".equals(groupMode);
 	}
 
@@ -55,8 +56,9 @@ public class SvgInkscapeUtils {
 	public static Matrix3f getTransform(Element element, Matrix3f m) {
 		String transform = element.getAttribute("transform");
 
-		if (transform == null)
+		if (transform == null) {
 			return m;
+		}
 
 		return parseTransformAttribute(transform, m);
 	}
@@ -64,6 +66,7 @@ public class SvgInkscapeUtils {
 	/**
 	 * @deprecated Use SvgTransformUtils instead.
 	 */
+	@Deprecated
 	public static Matrix3f parseTransformAttribute(String transformAttribute, Matrix3f m) {
 		return SvgTransformUtils.parseTransform(transformAttribute, m);
 	}
@@ -71,6 +74,7 @@ public class SvgInkscapeUtils {
 	/**
 	 * @deprecated Use SvgTransformUtils instead.
 	 */
+	@Deprecated
 	public static String transformToAttribute(Matrix3f m) {
 		return SvgTransformUtils.serializeTransform(m);
 	}
@@ -78,6 +82,7 @@ public class SvgInkscapeUtils {
 	/**
 	 * @deprecated Use SvgTransformUtils isntead.
 	 */
+	@Deprecated
 	public static boolean isFlipped(Matrix3f matrix) {
 		return matrix.getM00() != matrix.getM11();
 	}

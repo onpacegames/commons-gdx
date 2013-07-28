@@ -1,7 +1,6 @@
 package com.gemserk.commons.gdx.camera;
 
 public class CameraImpl implements Camera {
-
 	private float x, y;
 
 	private float zoom;
@@ -25,31 +24,38 @@ public class CameraImpl implements Camera {
 		setZoom(camera.getZoom());
 	}
 
+	@Override
 	public void setPosition(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
 
+	@Override
 	public void setZoom(float zoom) {
 		this.zoom = zoom;
 	}
 	
+	@Override
 	public void setAngle(float angle) {
 		this.angle = angle;
 	}
 
+	@Override
 	public float getZoom() {
 		return zoom;
 	}
 
+	@Override
 	public float getAngle() {
 		return angle;
 	}
 
+	@Override
 	public float getX() {
 		return x;
 	}
 
+	@Override
 	public float getY() {
 		return y;
 	}

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.gemserk.commons.gdx</groupId>
 	<artifactId>commons-gdx</artifactId>
-	<version>0.0.11-SNAPSHOT</version>
+	<version>1.0.0-OPG-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Common Gdx - Parent</name>
 	<description>Common utitilites to be used with libgdx</description>
@@ -29,25 +29,18 @@
 	</developers>
 
 	<scm>
-		<url>https://github.com/gemserk/commons-gdx</url>
-		<connection>scm:git://github.com/gemserk/commons-gdx.git</connection>
-		<developerConnection>scm:git:git@github.com:gemserk/commons-gdx.git</developerConnection>
+		<url>https://github.com/onpacegames/commons-gdx</url>
+		<connection>scm:git://github.com/onpacegames/commons-gdx.git</connection>
+		<developerConnection>scm:git:git@onpacegames/commons-gdx.git</developerConnection>
 	</scm>
 
-
 	<distributionManagement>
-		<repository>
+		<!-- <repository>
 			<id>gemserk.releases</id>
 			<name>Gemserk Releases</name>
 			<url>https://maven.gemserk.com/nexus/content/repositories/releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>gemserk.snapshots</id>
-			<name>Gemserk Snapshots</name>
-			<url>https://maven.gemserk.com/nexus/content/repositories/snapshots/</url>
-		</snapshotRepository>
+		</repository> -->
 	</distributionManagement>
-
 
 	<modules>
 		<module>commons-gdx-android</module>
@@ -58,29 +51,30 @@
 	</modules>
 
 	<properties>
-		<compiler.version>1.6</compiler.version>
 		<adwhirl.version>3.0.0</adwhirl.version>
-		<admob.version>6.0.1</admob.version>
-		<android.version>2.2.1</android.version>
-		<animation4j.version>0.2.2-SNAPSHOT</animation4j.version>
-		<artemis.version>0.0.1-GEMSERK-SNAPSHOT</artemis.version>
-		<gdx.version>0.9.8-SNAPSHOT</gdx.version>
-		<resourcesmanager.version>0.2.0-SNAPSHOT</resourcesmanager.version>
+		<admob.version>4.1.0</admob.version>
+		<android.version>4.1.1.4</android.version>
+		<animation4j.version>1.0.0-OPG-SNAPSHOT</animation4j.version>
+		<artemis.version>1.0.0-OPG-SNAPSHOT</artemis.version>
+		<gdx.version>0.9.9-SNAPSHOT</gdx.version>
+		<resourcesmanager.version>1.0.0-OPG-SNAPSHOT</resourcesmanager.version>
 		<vecmath.version>1.5.3-GEMSERK</vecmath.version>
+		<slf4j.version>1.7.5</slf4j.version>
+		<slf4j.android.version>1.6.1-RC1</slf4j.android.version>
+		<logback.version>1.0.13</logback.version>
+		<apache.http.version>4.2.5</apache.http.version>
+		<easymock.version>3.2</easymock.version>
 	</properties>
 
-
-	<prerequisites>
-		<maven>2.2.1</maven>
-	</prerequisites>
 	<build>
+	    <defaultGoal>install</defaultGoal>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
+				<version>3.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
@@ -88,7 +82,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.5</version>
+				<version>2.6</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 				</configuration>
@@ -97,7 +91,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
+				<version>2.2.1</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 				</configuration>
@@ -114,7 +108,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
+				<version>2.9.1</version>
 				<executions>
 					<execution>
 						<phase>install</phase>
@@ -128,7 +122,17 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
-				<version>2.1</version>
+				<version>2.4.1</version>
+			</plugin>
+			
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-eclipse-plugin</artifactId>
+			    <version>2.9</version>
+			    <configuration>
+			        <downloadSources>true</downloadSources>
+			        <downloadJavadocs>false</downloadJavadocs>
+			    </configuration>
 			</plugin>
 
 		</plugins>
@@ -137,27 +141,33 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.8.2</version>
-				<scope>test</scope>
-			</dependency>
+                <groupId>junit</groupId>
+	            <artifactId>junit-dep</artifactId>
+		        <version>4.11</version>
+		        <scope>test</scope>
+		    </dependency>
+		    <dependency>
+		        <groupId>org.hamcrest</groupId>
+		        <artifactId>hamcrest-all</artifactId>
+		        <version>1.3</version>
+		        <scope>test</scope>
+		    </dependency>
 			<dependency>
 				<groupId>org.jmock</groupId>
 				<artifactId>jmock</artifactId>
-				<version>2.5.1</version>
+				<version>2.6.0</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.jmock</groupId>
 				<artifactId>jmock-legacy</artifactId>
-				<version>2.5.1</version>
+				<version>2.6.0</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.jmock</groupId>
 				<artifactId>jmock-junit4</artifactId>
-				<version>2.5.1</version>
+				<version>2.6.0</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>

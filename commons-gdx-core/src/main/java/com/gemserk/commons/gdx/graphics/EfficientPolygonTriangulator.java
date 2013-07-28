@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.Array;
  * 
  */
 public class EfficientPolygonTriangulator implements Triangulator {
-
 	private static final float EPSILON = 0.0000000001f;
 
 	Array<Vector2> points = new Array<Vector2>(100);
@@ -54,42 +53,49 @@ public class EfficientPolygonTriangulator implements Triangulator {
 		/* allocate and initialize list of Vertices in polygon */
 
 		int n = contour.size;
-		if (n < 3)
+		if (n < 3) {
 			return false;
+		}
 
 		int[] V = new int[n];
 
 		/* we want a counter-clockwise polygon in V */
 
-		if (0.0f < area(contour))
-			for (int v = 0; v < n; v++)
+		if (0.0f < area(contour)) {
+			for (int v = 0; v < n; v++) {
 				V[v] = v;
-		else
-			for (int v = 0; v < n; v++)
-				V[v] = (n - 1) - v;
+			}
+		} else {
+			for (int v = 0; v < n; v++) {
+				V[v] = n - 1 - v;
+			}
+		}
 
 		int nv = n;
 
 		/* remove nv-2 Vertices, creating 1 triangle every time */
 		int count = 2 * nv; /* error detection */
 
-		for (int m = 0, v = nv - 1; nv > 2;) {
+		for (int v = nv - 1; nv > 2;) {
 			/* if we loop, it is probably a non-simple polygon */
-			if (0 >= (count--)) {
+			if (0 >= count--) {
 				// ** Triangulate: ERROR - probable bad polygon!
 				return false;
 			}
 
 			/* three consecutive vertices in current polygon, <u,v,w> */
 			int u = v;
-			if (nv <= u)
+			if (nv <= u) {
 				u = 0; /* previous */
+			}
 			v = u + 1;
-			if (nv <= v)
+			if (nv <= v) {
 				v = 0; /* new v */
+			}
 			int w = v + 1;
-			if (nv <= w)
+			if (nv <= w) {
 				w = 0; /* next */
+			}
 
 			if (snip(contour, u, v, w, nv, V)) {
 				int a, b, c, s, t;
@@ -106,11 +112,10 @@ public class EfficientPolygonTriangulator implements Triangulator {
 				result.add(contour.get(b));
 				result.add(contour.get(c));
 
-				m++;
-
 				/* remove v from remaining polygon */
-				for (s = v, t = v + 1; t < nv; s++, t++)
+				for (s = v, t = v + 1; t < nv; s++, t++) {
 					V[s] = V[t];
+				}
 				nv--;
 
 				/* resest error detection counter */
@@ -148,17 +153,20 @@ public class EfficientPolygonTriangulator implements Triangulator {
 		Cx = contour.get(V[w]).x;
 		Cy = contour.get(V[w]).y;
 
-		if (EPSILON > (((Bx - Ax) * (Cy - Ay)) - ((By - Ay) * (Cx - Ax))))
+		if (EPSILON > (Bx - Ax) * (Cy - Ay) - (By - Ay) * (Cx - Ax)) {
 			return false;
+		}
 
 		for (p = 0; p < n; p++) {
-			if ((p == u) || (p == v) || (p == w))
+			if (p == u || p == v || p == w) {
 				continue;
+			}
 			Px = contour.get(V[p]).x;
 			Py = contour.get(V[p]).y;
 
-			if (insideTriangle(Ax, Ay, Bx, By, Cx, Cy, Px, Py))
+			if (insideTriangle(Ax, Ay, Bx, By, Cx, Cy, Px, Py)) {
 				return false;
+			}
 		}
 
 		return true;
@@ -185,6 +193,6 @@ public class EfficientPolygonTriangulator implements Triangulator {
 		cCROSSap = cx * apy - cy * apx;
 		bCROSScp = bx * cpy - by * cpx;
 
-		return ((aCROSSbp >= 0.0f) && (bCROSScp >= 0.0f) && (cCROSSap >= 0.0f));
+		return aCROSSbp >= 0.0f && bCROSScp >= 0.0f && cCROSSap >= 0.0f;
 	}
 }

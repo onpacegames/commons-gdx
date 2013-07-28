@@ -13,7 +13,7 @@ import java.util.List;
  * 
  * @param <T> the type
  */
-@SuppressWarnings("unchecked") public class Pool<T> {
+public class Pool<T> {
 	/**
 	 * Interface for an Object Factory to be used with this Pool
 	 * 
@@ -26,7 +26,7 @@ import java.util.List;
 	}
 
 	/** the list of free objects **/
-	private final List<T> freeObjects = new ArrayList();
+	private final List<T> freeObjects = new ArrayList<T>();
 	/** the factory **/
 	private final PoolObjectFactory<T> factory;
 	/** maximum size of pool **/
@@ -45,16 +45,19 @@ import java.util.List;
 	public T newObject () {
 		T object = null;
 
-		if (freeObjects.size() == 0)
+		if (freeObjects.size() == 0) {
 			object = factory.createObject();
-		else
+		} else {
 			object = freeObjects.remove(freeObjects.size() - 1);
+		}
 
 		return object;
 	}
 
 	public void free (T object) {
-		if (freeObjects.size() < maxSize) freeObjects.add(object);
+		if (freeObjects.size() < maxSize) {
+			freeObjects.add(object);
+		}
 	}
 	
 	public int size(){

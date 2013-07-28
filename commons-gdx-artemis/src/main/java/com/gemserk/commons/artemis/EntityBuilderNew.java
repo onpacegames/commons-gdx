@@ -8,7 +8,6 @@ import com.gemserk.componentsengine.utils.Parameters;
 import com.gemserk.componentsengine.utils.ParametersWrapper;
 
 public class EntityBuilderNew {
-
 	private final Parameters parameters = new ParametersWrapper();
 	
 	private final World world;
@@ -36,8 +35,9 @@ public class EntityBuilderNew {
 	}
 
 	private void checkEntityCreated() {
-		if (entity == null)
+		if (entity == null) {
 			entity = world.createEntity();
+		}
 	}
 
 	public Entity build() {
@@ -46,7 +46,7 @@ public class EntityBuilderNew {
 		Entity builtEntity = entity;
 		entity = null;
 
-		builtEntity.refresh();
+		builtEntity.addToWorld();
 		return builtEntity;
 	}
 

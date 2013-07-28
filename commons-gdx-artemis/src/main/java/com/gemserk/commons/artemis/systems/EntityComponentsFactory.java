@@ -5,7 +5,6 @@ import com.artemis.utils.Bag;
 import com.gemserk.componentsengine.utils.RandomAccessMap;
 
 public abstract class EntityComponentsFactory<T> {
-
 	public final RandomAccessMap<Entity,T> entityComponents = new RandomAccessMap<Entity,T>(256);
 	final Bag<T> pool = new Bag<T>(256);
 
@@ -16,8 +15,9 @@ public abstract class EntityComponentsFactory<T> {
 	public abstract void load(Entity e, T entityComponent);
 	
 	public EntityComponentsFactory() {
-		for (int i = 0; i < 200; i++) 
+		for (int i = 0; i < 200; i++) {
 			pool.add(newInstance());
+		}
 	}
 
 	public T add(Entity entity) {
@@ -41,5 +41,4 @@ public abstract class EntityComponentsFactory<T> {
 	public T get(Entity entity) {
 		return entityComponents.get(entity);
 	}
-
 }

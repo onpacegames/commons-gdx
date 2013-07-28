@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Container extends ControlImpl {
-
 	private ArrayList<Control> controls;
 	private float width, height;
 
@@ -46,16 +45,19 @@ public class Container extends ControlImpl {
 
 	@Override
 	public void update() {
-		for (int i = 0; i < controls.size(); i++)
+		for (int i = 0; i < controls.size(); i++) {
 			controls.get(i).update();
+		}
 	}
 
 	@Override
 	public void draw(SpriteBatch spriteBatch) {
-		if (!isVisible())
+		if (!isVisible()) {
 			return;
-		for (int i = 0; i < controls.size(); i++)
+		}
+		for (int i = 0; i < controls.size(); i++) {
 			controls.get(i).draw(spriteBatch);
+		}
 	}
 
 	public void add(Control control) {
@@ -72,16 +74,19 @@ public class Container extends ControlImpl {
 		controls.clear();
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T extends Control> T findControl(String id) {
 		for (int i = 0; i < controls.size(); i++) {
 			Control control = controls.get(i);
-			if (id.equals(control.getId()))
+			if (id.equals(control.getId())) {
 				return (T) control;
+			}
 			if (control instanceof Container) {
 				Container container = (Container) control;
 				T child = (T) container.findControl(id);
-				if (child != null)
-					return (T) child;
+				if (child != null) {
+					return child;
+				}
 			}
 		}
 		return null;
@@ -90,8 +95,9 @@ public class Container extends ControlImpl {
 	@Override
 	public void invalidate() {
 		super.invalidate();
-		for (int i = 0; i < getControls().size(); i++)
+		for (int i = 0; i < getControls().size(); i++) {
 			getControls().get(i).invalidate();
+		}
 	}
 
 }

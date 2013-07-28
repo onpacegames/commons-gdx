@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class NinePatchSpriteHack extends NinePatch {
-
 	private Sprite sprite = null;
 	private float originalWidth;
 	private float originalHeight;
@@ -23,8 +22,8 @@ public class NinePatchSpriteHack extends NinePatch {
 		// else
 		this.sprite = sprite;
 		this.scaleFactor = scaleFactor;
-		this.originalHeight = sprite.getWidth();
-		this.originalWidth = sprite.getHeight();
+		originalHeight = sprite.getWidth();
+		originalWidth = sprite.getHeight();
 	}
 
 	@Override
@@ -34,19 +33,21 @@ public class NinePatchSpriteHack extends NinePatch {
 		float newX = x + (width - scaledWidth) / 2f;
 		float newY = y + (height - scaledHeight) / 2f;
 
-		if (sprite.getX() != newX || sprite.getY() != newY || sprite.getWidth() != scaledWidth || sprite.getHeight() != scaledHeight) 
+		if (sprite.getX() != newX || sprite.getY() != newY || sprite.getWidth() != scaledWidth || sprite.getHeight() != scaledHeight) {
 			sprite.setBounds(newX, newY, scaledWidth, scaledHeight);
+		}
 
 		sprite.setColor(batch.getColor());
 		sprite.draw(batch);
 	}
 
+	@Override
 	public float getTotalHeight() {
 		return originalWidth;
 	}
 
+	@Override
 	public float getTotalWidth() {
 		return originalHeight;
 	}
-
 }

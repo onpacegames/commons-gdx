@@ -1,7 +1,6 @@
 package com.gemserk.commons.gdx.gui;
 
 public abstract class ControlImpl implements Control {
-
 	String id;
 	float x, y;
 	Control parent = new NullControl();
@@ -16,23 +15,28 @@ public abstract class ControlImpl implements Control {
 		this.id = id;
 	}
 
+	@Override
 	public String getId() {
 		return id;
 	}
 
+	@Override
 	public float getX() {
 		return x + parent.getX();
 	}
 
+	@Override
 	public float getY() {
 		return y + parent.getY();
 	}
 
+	@Override
 	public void setX(float x) {
 		this.x = x;
 		invalidate();
 	}
 
+	@Override
 	public void setY(float y) {
 		this.y = y;
 		invalidate();
@@ -44,6 +48,7 @@ public abstract class ControlImpl implements Control {
 		setY(y);
 	}
 
+	@Override
 	public void setParent(Control parent) {
 		this.parent = parent;
 		invalidate();

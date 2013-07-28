@@ -8,14 +8,13 @@ import java.util.Map;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
+import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectMap.Keys;
 
 public class GpuMemUtils {
-
 	public static class GpuMemInfo {
 		public int totalTextures;
 		public int gpuMemSize;
@@ -82,8 +81,9 @@ public class GpuMemUtils {
 		for (Texture texture : managedTextures) {
 			String path = getFilePath(texture);
 			if (path != null) {
-				if (paths.containsKey(path))
+				if (paths.containsKey(path)) {
 					pathErrors.put(path, null);
+				}
 
 				paths.put(path, null);
 			}
@@ -92,7 +92,7 @@ public class GpuMemUtils {
 		List<String> duplicatePaths = new ArrayList<String>(pathErrors.size);
 		Keys<String> keys = pathErrors.keys();
 		while (keys.hasNext()) {
-			String path = (String) keys.next();
+			String path = keys.next();
 			duplicatePaths.add(path);
 		}
 		return duplicatePaths;
@@ -113,8 +113,9 @@ public class GpuMemUtils {
 		ObjectMap<Texture, Object> referenceErrors = new ObjectMap<Texture, Object>();
 		ObjectMap<Texture, Object> references = new ObjectMap<Texture, Object>();
 		for (Texture texture : managedTextures) {
-			if (references.containsKey(texture))
+			if (references.containsKey(texture)) {
 				referenceErrors.put(texture, null);
+			}
 
 			references.put(texture, null);
 		}
@@ -122,10 +123,11 @@ public class GpuMemUtils {
 		List<String> duplicatePaths = new ArrayList<String>(referenceErrors.size);
 		Keys<Texture> keys = referenceErrors.keys();
 		while (keys.hasNext()) {
-			Texture texture = (Texture) keys.next();
+			Texture texture = keys.next();
 			String path = getFilePath(texture);
-			if(path==null)
+			if(path==null) {
 				path = "NoPath -" + texture.getTextureData().getClass() + " - " + texture.getWidth() + "x" + texture.getHeight();
+			}
 				
 			duplicatePaths.add(path);
 		}

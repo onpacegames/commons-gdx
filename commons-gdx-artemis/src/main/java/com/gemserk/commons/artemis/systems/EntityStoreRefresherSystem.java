@@ -7,7 +7,6 @@ import com.gemserk.commons.gdx.artemis.stores.EntityStores;
 import com.gemserk.componentsengine.utils.RandomAccessWithKey;
 
 public class EntityStoreRefresherSystem extends WorldSystemImpl {
-
 	EntityStores entityStores;
 
 	@Override
@@ -21,5 +20,4 @@ public class EntityStoreRefresherSystem extends WorldSystemImpl {
 			// System.out.println(stores.getKey(i) + " - " + freed);
 		}
 	}
-
 }

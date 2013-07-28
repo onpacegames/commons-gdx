@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.os.Message;
 
 public class AdWhirlAndroidHandler extends Handler {
-	
 	public static final int SHOW_ADS = 1;
 
 	public static final int HIDE_ADS = 0;
@@ -26,6 +25,8 @@ public class AdWhirlAndroidHandler extends Handler {
 			adView.onPause();
 			break;
 		}
+		default:
+			break;
 		}
 	}
 }

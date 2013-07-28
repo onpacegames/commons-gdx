@@ -3,7 +3,6 @@ package com.gemserk.commons.gdx;
 import com.gemserk.componentsengine.utils.Parameters;
 
 class MockScreen implements Screen {
-
 	boolean updateCalled = false;
 
 	boolean renderCalled = false;
@@ -20,6 +19,7 @@ class MockScreen implements Screen {
 	
 	boolean hideCalled = false;
 
+	@SuppressWarnings("unused")
 	private float delta;
 
 	@Override
@@ -82,5 +82,4 @@ class MockScreen implements Screen {
 	public Parameters getParameters() {
 		return null;
 	}
-
 }

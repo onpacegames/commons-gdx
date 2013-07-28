@@ -1,9 +1,6 @@
 package com.gemserk.componentsengine.utils.timers;
 
-
-
 public class CountDownTimer implements Timer {
-
 	int time;
 	int timeLeft;
 	boolean fired;
@@ -14,14 +11,16 @@ public class CountDownTimer implements Timer {
 
 	public CountDownTimer(int time, boolean started) {
 		this.time = time;
-		this.timeLeft = time;
-		this.fired = !started;
+		timeLeft = time;
+		fired = !started;
 	}
 
+	@Override
 	public boolean update(int delta) {
 		
-		if(fired)
+		if(fired) {
 			return false;
+		}
 		
 		timeLeft-=delta;
 		if(timeLeft<0){
@@ -31,6 +30,7 @@ public class CountDownTimer implements Timer {
 		return false;
 	}
 
+	@Override
 	public void reset() {
 		timeLeft = time;
 		fired = false;

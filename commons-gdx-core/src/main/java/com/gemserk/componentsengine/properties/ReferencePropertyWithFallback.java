@@ -1,7 +1,6 @@
 package com.gemserk.componentsengine.properties;
 
 public class ReferencePropertyWithFallback<T extends Object> implements Property<T> {
-
 	String referencedPropertyName;
 	String fallbackReferencePropertyName;
 	PropertiesHolder holder;
@@ -24,7 +23,7 @@ public class ReferencePropertyWithFallback<T extends Object> implements Property
 
 	@Override
 	public T get() {
-		return (T) getProperty().get();
+		return getProperty().get();
 	}
 
 	private Property<T> getProperty() {

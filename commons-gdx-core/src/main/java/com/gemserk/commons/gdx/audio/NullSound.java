@@ -70,7 +70,27 @@ public class NullSound implements Sound {
 	}
 
 	@Override
-	public void setPriority(long arg0, int arg1) {
+	public void pause() {
+		
+	}
+
+	@Override
+	public void resume() {
+		
+	}
+
+	@Override
+	public void pause(long soundId) {
+		
+	}
+
+	@Override
+	public void resume(long soundId) {
+		
+	}
+
+	@Override
+	public void setPriority(long soundId, int priority) {
 		
 	}
 

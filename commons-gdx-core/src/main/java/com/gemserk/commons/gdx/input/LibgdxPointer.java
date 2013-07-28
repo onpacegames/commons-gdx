@@ -5,7 +5,6 @@ import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 import com.gemserk.commons.gdx.camera.Libgdx2dCameraNullImpl;
 
 public class LibgdxPointer implements Pointer {
-
 	public boolean touched = false;
 
 	protected Vector2 pressedPosition = new Vector2();
@@ -22,10 +21,12 @@ public class LibgdxPointer implements Pointer {
 
 	private RealPointer pointer;
 
+	@Override
 	public boolean wasPressed() {
 		return wasPressed;
 	}
 
+	@Override
 	public boolean wasReleased() {
 		return wasReleased;
 	}
@@ -91,29 +92,33 @@ public class LibgdxPointer implements Pointer {
 	}
 
 	private void updateReleased() {
-		if (pointer.isDown())
+		if (pointer.isDown()) {
 			return;
+		}
 		wasPressed = false;
 		if (touched) {
 			touched = false;
 			wasReleased = true;
 			releasedPosition.set(getX(), getY());
 			camera.unproject(releasedPosition);
-		} else
+		} else {
 			wasReleased = false;
+		}
 	}
 
 	private void updatePressed() {
-		if (!pointer.isDown())
+		if (!pointer.isDown()) {
 			return;
+		}
 		wasReleased = false;
 		if (!touched) {
 			touched = true;
 			wasPressed = true;
 			pressedPosition.set(getX(), getY());
 			camera.unproject(pressedPosition);
-		} else
+		} else {
 			wasPressed = false;
+		}
 	}
 
 	private int getY() {

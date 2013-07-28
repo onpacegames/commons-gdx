@@ -25,10 +25,10 @@ import java.util.Iterator;
  */
 public class CachingFastMapIntValue<K> implements Iterable<CachingFastMapIntValue.Entry<K>> {
 	public static final int NOT_PRESENT_VALUE = Integer.MIN_VALUE;
-	Entry[] table;
-	private final float loadFactor;
+	@SuppressWarnings("rawtypes") Entry[] table;
+	@SuppressWarnings("unused") private final float loadFactor;
 	private int size, mask, capacity, threshold;
-	private ArrayList<Entry> freeEntries;
+	@SuppressWarnings("rawtypes") private ArrayList<Entry> freeEntries;
 
 	/**
 	 * Same as: FastMap(16, 0.75f);
@@ -44,13 +44,21 @@ public class CachingFastMapIntValue<K> implements Iterable<CachingFastMapIntValu
 		this(initialCapacity, 0.75f);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public CachingFastMapIntValue (int initialCapacity, float loadFactor) {
-		if (initialCapacity > 1 << 30) throw new IllegalArgumentException("initialCapacity is too large.");
-		if (initialCapacity < 0) throw new IllegalArgumentException("initialCapacity must be greater than zero.");
-		if (loadFactor <= 0) throw new IllegalArgumentException("initialCapacity must be greater than zero.");
+		if (initialCapacity > 1 << 30) {
+			throw new IllegalArgumentException("initialCapacity is too large.");
+		}
+		if (initialCapacity < 0) {
+			throw new IllegalArgumentException("initialCapacity must be greater than zero.");
+		}
+		if (loadFactor <= 0) {
+			throw new IllegalArgumentException("initialCapacity must be greater than zero.");
+		}
 		capacity = 1;
-		while (capacity < initialCapacity)
+		while (capacity < initialCapacity) {
 			capacity <<= 1;
+		}
 		this.loadFactor = loadFactor;
 		this.threshold = (int)(capacity * loadFactor);
 		this.table = new Entry[capacity];
@@ -62,18 +70,23 @@ public class CachingFastMapIntValue<K> implements Iterable<CachingFastMapIntValu
 		freeEntries.clear();
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void cache (int count) {
-		for (int i = freeEntries.size(); i < count; i++)
+		for (int i = freeEntries.size(); i < count; i++) {
 			freeEntries.add(new Entry());
+		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public int put (K key, int value) {
 		int hash = key.hashCode();
 		Entry[] table = this.table;
 		int index = hash & mask;
 		// Check if key already exists.
 		for (Entry e = table[index]; e != null; e = e.next) {
-			if (!e.key.equals(key)) continue;
+			if (!e.key.equals(key)) {
+				continue;
+			}
 			int oldValue = e.value;
 			e.value = value;
 			return oldValue;
@@ -90,9 +103,11 @@ public class CachingFastMapIntValue<K> implements Iterable<CachingFastMapIntValu
 			int newCapacity = 2 * capacity;
 			Entry[] newTable = new Entry[newCapacity];
 			int newMask = newCapacity - 1;
-			for (int i = 0; i < table.length; i++) {
-				Entry e = table[i];
-				if (e == null) continue;
+			for (Entry element : table) {
+				Entry e = element;
+				if (e == null) {
+					continue;
+				}
 				do {
 					Entry next = e.next;
 					index = e.hash & newMask;
@@ -109,29 +124,43 @@ public class CachingFastMapIntValue<K> implements Iterable<CachingFastMapIntValu
 		return NOT_PRESENT_VALUE;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public int get (Object key) {
 		int index = key.hashCode() & mask;
-		for (Entry e = table[index]; e != null; e = e.next)
-			if (e.key.equals(key)) return e.value;
+		for (Entry e = table[index]; e != null; e = e.next) {
+			if (e.key.equals(key)) {
+				return e.value;
+			}
+		}
 		return NOT_PRESENT_VALUE;
 	}
 
 	
+	@SuppressWarnings("rawtypes")
 	public boolean containsValue (int value) {
 		Entry[] table = this.table;
-		for (int i = table.length - 1; i >= 0; i--)
-			for (Entry e = table[i]; e != null; e = e.next)
-				if (e.value== value) return true;
+		for (int i = table.length - 1; i >= 0; i--) {
+			for (Entry e = table[i]; e != null; e = e.next) {
+				if (e.value== value) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public boolean containsKey (Object key) {
 		int index = key.hashCode() & mask;
-		for (Entry e = table[index]; e != null; e = e.next)
-			if (e.key.equals(key)) return true;
+		for (Entry e = table[index]; e != null; e = e.next) {
+			if (e.key.equals(key)) {
+				return true;
+			}
+		}
 		return false;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public int remove (Object key) {
 		int index = key.hashCode() & mask;
 		Entry prev = table[index];
@@ -140,10 +169,11 @@ public class CachingFastMapIntValue<K> implements Iterable<CachingFastMapIntValu
 			Entry next = e.next;
 			if (e.key.equals(key)) {
 				size--;
-				if (prev == e)
+				if (prev == e) {
 					table[index] = next;
-				else
+				} else {
 					prev.next = next;
+				}
 				freeEntries.add(e);
 				return e.value;
 			}
@@ -162,11 +192,13 @@ public class CachingFastMapIntValue<K> implements Iterable<CachingFastMapIntValu
 	}
 
 	
+	@SuppressWarnings("rawtypes")
 	public void clear () {
 		Entry[] table = this.table;
 		for (int index = table.length - 1; index >= 0; index--) {
-			for (Entry e = table[index]; e != null; e = e.next)
+			for (Entry e = table[index]; e != null; e = e.next) {
 				freeEntries.add(e);
+			}
 			table[index] = null;
 		}
 		size = 0;
@@ -185,22 +217,32 @@ public class CachingFastMapIntValue<K> implements Iterable<CachingFastMapIntValu
 			reset();
 		}
 
+		@SuppressWarnings("rawtypes")
 		public void reset () {
 			current = null;
 			// Find first bucket.
 			Entry[] table = CachingFastMapIntValue.this.table;
 			int i;
-			for (i = table.length - 1; i >= 0; i--)
-				if (table[i] != null) break;
+			for (i = table.length - 1; i >= 0; i--) {
+				if (table[i] != null) {
+					break;
+				}
+			}
 			nextIndex = i;
 		}
 
+		@SuppressWarnings("rawtypes")
+		@Override
 		public boolean hasNext () {
-			if (nextIndex >= 0) return true;
+			if (nextIndex >= 0) {
+				return true;
+			}
 			Entry e = current;
 			return e != null && e.next != null;
 		}
 
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		@Override
 		public Entry<K> next () {
 			// Next entry in current bucket.
 			Entry e = current;
@@ -215,12 +257,16 @@ public class CachingFastMapIntValue<K> implements Iterable<CachingFastMapIntValu
 			Entry[] table = CachingFastMapIntValue.this.table;
 			int i = nextIndex;
 			e = current = table[i];
-			while (--i >= 0)
-				if (table[i] != null) break;
+			while (--i >= 0) {
+				if (table[i] != null) {
+					break;
+				}
+			}
 			nextIndex = i;
 			return e;
 		}
 
+		@Override
 		public void remove () {
 			CachingFastMapIntValue.this.remove(current.key);
 		}
@@ -230,7 +276,7 @@ public class CachingFastMapIntValue<K> implements Iterable<CachingFastMapIntValu
 		int hash;
 		K key;
 		int value;
-		Entry next;
+		@SuppressWarnings("rawtypes") Entry next;
 
 		public K getKey () {
 			return key;

@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public interface Libgdx2dCamera {
-
 	/**
 	 * Moves the camera to the specified coordinates.
 	 */
@@ -78,5 +77,4 @@ public interface Libgdx2dCamera {
 	 *            The Rectangle to be modified with the frustum values.
 	 */
 	void getFrustum(Rectangle frustum);
-
 }

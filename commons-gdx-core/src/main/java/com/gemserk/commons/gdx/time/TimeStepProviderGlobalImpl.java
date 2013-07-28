@@ -3,7 +3,6 @@ package com.gemserk.commons.gdx.time;
 import com.gemserk.commons.gdx.GlobalTime;
 
 public class TimeStepProviderGlobalImpl implements TimeStepProvider {
-
 	@Override
 	public float getDelta() {
 		return GlobalTime.getDelta();
@@ -13,5 +12,4 @@ public class TimeStepProviderGlobalImpl implements TimeStepProvider {
 	public float getAlpha() {
 		return GlobalTime.getAlpha();
 	}
-	
 }

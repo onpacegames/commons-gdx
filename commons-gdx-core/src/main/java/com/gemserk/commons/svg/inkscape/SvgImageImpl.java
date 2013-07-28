@@ -3,13 +3,13 @@ package com.gemserk.commons.svg.inkscape;
 import com.gemserk.vecmath.Matrix3f;
 
 public class SvgImageImpl implements SvgImage {
-
 	String id;
 
 	float x, y, width, height;
 
 	Matrix3f transform;
 
+	@Override
 	public String getId() {
 		return id;
 	}
@@ -18,6 +18,7 @@ public class SvgImageImpl implements SvgImage {
 		this.id = id;
 	}
 
+	@Override
 	public float getX() {
 		return x;
 	}
@@ -26,6 +27,7 @@ public class SvgImageImpl implements SvgImage {
 		this.x = x;
 	}
 
+	@Override
 	public float getY() {
 		return y;
 	}
@@ -34,6 +36,7 @@ public class SvgImageImpl implements SvgImage {
 		this.y = y;
 	}
 
+	@Override
 	public float getWidth() {
 		return width;
 	}
@@ -42,6 +45,7 @@ public class SvgImageImpl implements SvgImage {
 		this.width = width;
 	}
 
+	@Override
 	public float getHeight() {
 		return height;
 	}
@@ -50,6 +54,7 @@ public class SvgImageImpl implements SvgImage {
 		this.height = height;
 	}
 
+	@Override
 	public Matrix3f getTransform() {
 		return transform;
 	}

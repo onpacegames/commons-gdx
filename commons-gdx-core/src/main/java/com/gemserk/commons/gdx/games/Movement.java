@@ -3,7 +3,6 @@ package com.gemserk.commons.gdx.games;
 import com.badlogic.gdx.math.Vector2;
 
 public class Movement {
-	
 	private final Vector2 linearVelocity = new Vector2();
 	private float angularVelocity;
 	
@@ -12,7 +11,7 @@ public class Movement {
 	}
 	
 	public void setLinearVelocity(float x, float y) {
-		this.linearVelocity.set(x, y);
+		linearVelocity.set(x, y);
 	}
 	
 	public void setAngularVelocity(float angularVelocity) {
@@ -22,5 +21,4 @@ public class Movement {
 	public float getAngularVelocity() {
 		return angularVelocity;
 	}
-
 }

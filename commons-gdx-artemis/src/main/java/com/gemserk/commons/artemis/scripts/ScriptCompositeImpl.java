@@ -11,33 +11,35 @@ import com.artemis.utils.Bag;
  * 
  */
 public class ScriptCompositeImpl extends ScriptJavaImpl {
-
 	private Bag<Script> scripts = new Bag<Script>();
 
 	public ScriptCompositeImpl(Script requiredScript, Script... scripts) {
 		this.scripts.add(requiredScript);
-		if (scripts != null)
-			for (int i = 0; i < scripts.length; i++)
-				this.scripts.add(scripts[i]);
+		if (scripts != null) {
+			for (Script script : scripts) {
+				this.scripts.add(script);
+			}
+		}
 	}
 	
 	@Override
-	public void enabled(World world, Entity e) {
-		for (int i = 0; i < scripts.size(); i++)
-			scripts.get(i).enabled(world, e);
+	public void inserted(World world, Entity e) {
+		for (int i = 0; i < scripts.size(); i++) {
+			scripts.get(i).inserted(world, e);
+		}
 	}
 
 	@Override
 	public void update(World world, Entity e) {
-		for (int i = 0; i < scripts.size(); i++)
+		for (int i = 0; i < scripts.size(); i++) {
 			scripts.get(i).update(world, e);
+		}
 	}
 	
 	@Override
-	public void disabled(World world, Entity e) {
-		for (int i = 0; i < scripts.size(); i++)
-			scripts.get(i).disabled(world, e);
-		
+	public void removed(World world, Entity e) {
+		for (int i = 0; i < scripts.size(); i++) {
+			scripts.get(i).removed(world, e);
+		}
 	}
-
 }

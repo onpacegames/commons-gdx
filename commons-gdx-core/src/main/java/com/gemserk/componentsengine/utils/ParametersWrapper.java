@@ -8,7 +8,6 @@ import java.util.Set;
  * Lets you work with a map<string, object> in an easy way, using generic methods.
  */
 public class ParametersWrapper implements Parameters {
-	
 	// TODO: name it something like ParametersMapImpl
 
 	private Map<String, Object> wrappedParameters;
@@ -45,16 +44,15 @@ public class ParametersWrapper implements Parameters {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public <T> T get(String id) {
 		return (T) wrappedParameters.get(id);
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public <T> T get(String id, T defaultValue) {
-		if (!wrappedParameters.containsKey(id))
+		if (!wrappedParameters.containsKey(id)) {
 			return defaultValue;
+		}
 		return (T) wrappedParameters.get(id);
 	}
 
@@ -67,8 +65,9 @@ public class ParametersWrapper implements Parameters {
 	@Override
 	public Parameters putAll(Map<String, Object> values) {
 		Set<String> keySet = values.keySet();
-		for (String key : keySet) 
+		for (String key : keySet) {
 			put(key, values.get(key));
+		}
 		return this;
 	}
 

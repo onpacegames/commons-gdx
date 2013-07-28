@@ -10,7 +10,6 @@ import com.gemserk.componentsengine.input.InputDevicesMonitorImpl;
 import com.gemserk.componentsengine.input.LibgdxInputMappingBuilder;
 
 public class SwitchableResolutionApplicationDelegate implements ApplicationListener {
-
 	private final ApplicationListener applicationListener;
 	private final Dimension[] resolutions;
 	private int currentResolution;
@@ -26,6 +25,8 @@ public class SwitchableResolutionApplicationDelegate implements ApplicationListe
 		this.applicationName = applicationName;
 	}
 
+	@SuppressWarnings("unused")
+	@Override
 	public void create() {
 		applicationListener.create();
 		inputMonitor = new InputDevicesMonitorImpl<String>();
@@ -41,11 +42,13 @@ public class SwitchableResolutionApplicationDelegate implements ApplicationListe
 		currentResolution = 0;
 	}
 
+	@Override
 	public void resize(int width, int height) {
 		applicationListener.resize(width, height);
 		Gdx.graphics.setTitle(String.format(applicationName + " - Resolution(%dx%d) - (%d/%d)", width, height, currentResolution + 1, resolutions.length));
 	}
 
+	@Override
 	public void render() {
 		inputMonitor.update();
 
@@ -54,8 +57,9 @@ public class SwitchableResolutionApplicationDelegate implements ApplicationListe
 			changeResolution();
 		} else if (switchPreviousResolutionButton.isReleased()) {
 			currentResolution--;
-			if (currentResolution < 0)
+			if (currentResolution < 0) {
 				currentResolution = resolutions.length - 1;
+			}
 			changeResolution();
 		}
 
@@ -69,14 +73,17 @@ public class SwitchableResolutionApplicationDelegate implements ApplicationListe
 		applicationListener.resize(resolution.width, resolution.height);
 	}
 
+	@Override
 	public void pause() {
 		applicationListener.pause();
 	}
 
+	@Override
 	public void resume() {
 		applicationListener.resume();
 	}
 
+	@Override
 	public void dispose() {
 		applicationListener.dispose();
 	}

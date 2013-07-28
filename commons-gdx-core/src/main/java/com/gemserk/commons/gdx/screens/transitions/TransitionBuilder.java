@@ -8,7 +8,6 @@ import com.gemserk.commons.gdx.GameTransitions.TransitionScreen;
 import com.gemserk.commons.gdx.Screen;
 
 public class TransitionBuilder {
-
 	// should be named ScreenTransitionBuilder because it builds a ScreenTransition
 
 	private final Screen screen;
@@ -36,40 +35,40 @@ public class TransitionBuilder {
 	}
 
 	public TransitionBuilder leaveTime(int leaveTime) {
-		return leaveTime((float) leaveTime * 0.001f);
+		return leaveTime(leaveTime * 0.001f);
 	}
 
 	public TransitionBuilder enterTime(int enterTime) {
-		return enterTime((float) enterTime * 0.001f);
+		return enterTime(enterTime * 0.001f);
 	}
 
 	public TransitionBuilder disposeCurrent() {
-		this.shouldDisposeCurrentScreen = true;
+		shouldDisposeCurrentScreen = true;
 		return this;
 	}
 
 	public TransitionBuilder disposeCurrent(boolean disposeCurrent) {
-		this.shouldDisposeCurrentScreen = disposeCurrent;
+		shouldDisposeCurrentScreen = disposeCurrent;
 		return this;
 	}
 
 	public TransitionBuilder restartScreen() {
-		this.shouldRestartNextScreen = true;
+		shouldRestartNextScreen = true;
 		return this;
 	}
 	
 	public TransitionBuilder restartScreen(boolean restart) {
-		this.shouldRestartNextScreen = restart;
+		shouldRestartNextScreen = restart;
 		return this;
 	}
 
 	public TransitionBuilder leaveTransitionHandler(TransitionHandler transitionHandler) {
-		this.leaveTransitionHandler = transitionHandler;
+		leaveTransitionHandler = transitionHandler;
 		return this;
 	}
 	
 	public TransitionBuilder enterTransitionHandler(TransitionHandler transitionHandler) {
-		this.enterTransitionHandler = transitionHandler;
+		enterTransitionHandler = transitionHandler;
 		return this;
 	}
 
@@ -81,9 +80,9 @@ public class TransitionBuilder {
 	public TransitionBuilder(final Game game, final Screen screen) {
 		this.game = game;
 		this.screen = screen;
-		this.leaveTransitionHandler = new TransitionHandler();
-		this.leaveTime = 0.25f;
-		this.enterTime = 0.25f;
+		leaveTransitionHandler = new TransitionHandler();
+		leaveTime = 0.25f;
+		enterTime = 0.25f;
 	}
 
 	public void start() {
@@ -108,8 +107,9 @@ public class TransitionBuilder {
 					public void onEnd() {
 						super.onEnd();
 						leaveTransitionHandler.onEnd();
-						if (shouldRestartNextScreen)
+						if (shouldRestartNextScreen) {
 							screen.dispose();
+						}
 					}
 					
 				}), //
@@ -121,15 +121,17 @@ public class TransitionBuilder {
 						enterTransitionHandler.onBegin();
 					}
 					
+					@Override
 					public void onEnd() {
 						super.onEnd();
 						enterTransitionHandler.onEnd();
 						game.setScreen(screen, true);
 						// disposes current transition screen, not previous screen.
-						if (shouldDisposeCurrentScreen)
+						if (shouldDisposeCurrentScreen) {
 							currentScreen.dispose();
+						}
 						transitioning = false;
-					};
+					}
 					
 				}))) {
 			@Override

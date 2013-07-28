@@ -7,7 +7,6 @@ import org.hamcrest.core.IsSame;
 import org.junit.Test;
 
 public class ContainerTest {
-	
 	private Control mockControl(String id) {
 		MockControl control = new MockControl();
 		control.setId("A");
@@ -27,5 +26,4 @@ public class ContainerTest {
 		assertThat(findControl, IsNull.notNullValue());
 		assertThat(findControl, IsSame.sameInstance(grandChild));
 	}
-
 }

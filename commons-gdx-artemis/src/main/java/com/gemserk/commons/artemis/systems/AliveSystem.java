@@ -1,20 +1,21 @@
 package com.gemserk.commons.artemis.systems;
 
+import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
+import com.artemis.utils.ImmutableBag;
 import com.gemserk.commons.artemis.components.AliveComponent;
+import com.gemserk.commons.artemis.components.Components;
 import com.gemserk.commons.artemis.components.StoreComponent;
 import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.componentsengine.utils.RandomAccessMap;
 
 public class AliveSystem extends EntitySystem {
-
 	class EntityComponents {
 		AliveComponent aliveComponent;
 	}
 	
 	class Factory extends EntityComponentsFactory<EntityComponents>{
-
 		@Override
 		public EntityComponents newInstance() {
 			return new EntityComponents();
@@ -30,7 +31,6 @@ public class AliveSystem extends EntitySystem {
 		public void load(Entity e, EntityComponents entityComponent) {
 			entityComponent.aliveComponent = AliveComponent.get(e);
 		}
-		
 	}
 
 	private Factory factory;
@@ -38,12 +38,12 @@ public class AliveSystem extends EntitySystem {
 	
 	@SuppressWarnings("unchecked")
 	public AliveSystem() {
-		super(AliveComponent.class);
-		this.factory = new Factory();
+		super(Aspect.getAspectForAll(Components.aliveComponentClass));
+		factory = new Factory();
 	}
 
 	@Override
-	protected void processEntities() {
+	protected void processEntities(ImmutableBag<Entity> entities) {
 		RandomAccessMap<Entity, EntityComponents> allTheEntityComponents = factory.entityComponents;
 		int entitiesSize = allTheEntityComponents.size();
 		for (int entityIndex = 0; entityIndex < entitiesSize; entityIndex++) {
@@ -55,29 +55,27 @@ public class AliveSystem extends EntitySystem {
 			if (aliveTime <= 0) {
 				Entity e = allTheEntityComponents.getKey(entityIndex);
 				StoreComponent storeComponent = StoreComponent.get(e);
-				if (storeComponent != null)
+				if (storeComponent != null) {
 					storeComponent.store.free(e);
-				else
-					e.delete();
+				} else {
+					e.deleteFromWorld();
+				}
 			}
 		}
 	}
 
 	@Override
-	protected void enabled(Entity e) {
-		super.enabled(e);
+	protected void inserted(Entity e) {
 		factory.add(e);
 	}
 
 	@Override
-	protected void disabled(Entity e) {
+	protected void removed(Entity e) {
 		factory.remove(e);
-		super.disabled(e);
 	}
 
 	@Override
 	protected boolean checkProcessing() {
 		return true;
 	}
-
 }

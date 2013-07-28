@@ -1,10 +1,14 @@
 package com.gemserk.commons.gdx.box2d;
 
 import static org.jmock.Expectations.same;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
+import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
-import org.hamcrest.number.OrderingComparisons;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -18,6 +22,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
 import com.gemserk.commons.gdx.box2d.Contacts.Contact;
 
+@SuppressWarnings("deprecation")
 @RunWith(JMock.class)
 public class ContactsTest {
 
@@ -73,7 +78,7 @@ public class ContactsTest {
 		assertThat(1, IsEqual.equalTo(contacts.getContactCount()));
 
 		Contact contact = contacts.getContact(0);
-		assertThat(contact.getNormal().dst(0, 1), OrderingComparisons.lessThan(0.1f));
+		assertThat(contact.getNormal().dst(0, 1), Matchers.lessThan(0.1f));
 		assertSame(fixtureA, contact.getMyFixture());
 		assertSame(fixtureB, contact.getOtherFixture());
 
@@ -102,7 +107,7 @@ public class ContactsTest {
 		assertThat(1, IsEqual.equalTo(contacts.getContactCount()));
 
 		Contact contact = contacts.getContact(0);
-		assertThat(contact.getNormal().dst(0, -1), OrderingComparisons.lessThan(0.1f));
+		assertThat(contact.getNormal().dst(0, -1), Matchers.lessThan(0.1f));
 		assertSame(fixtureA, contact.getOtherFixture());
 		assertSame(fixtureB, contact.getMyFixture());
 

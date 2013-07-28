@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -15,9 +16,7 @@ import android.widget.RelativeLayout;
 import com.gemserk.commons.admob.AdsAnimation.Type;
 
 public class AdViewHandler extends Handler {
-
 	static class AnimationAdapter implements AnimationListener {
-
 		@Override
 		public void onAnimationStart(Animation animation) {
 
@@ -32,11 +31,9 @@ public class AdViewHandler extends Handler {
 		public void onAnimationRepeat(Animation animation) {
 
 		}
-
 	}
 
 	static class HideAnimationListener extends AnimationAdapter {
-
 		private final View view;
 
 		public HideAnimationListener(View view) {
@@ -48,11 +45,9 @@ public class AdViewHandler extends Handler {
 			view.setVisibility(View.GONE);
 			// System.out.println("setting visibility to gone");
 		}
-
 	}
 
 	static class ShowAnimationListener extends AnimationAdapter {
-
 		private final View view;
 
 		public ShowAnimationListener(View view) {
@@ -64,7 +59,6 @@ public class AdViewHandler extends Handler {
 			view.setVisibility(View.VISIBLE);
 			// System.out.println("setting visibility to visible");
 		}
-
 	}
 
 	public static final int SHOW_ADS = 1;
@@ -79,8 +73,8 @@ public class AdViewHandler extends Handler {
 	public AdViewHandler(View adView, RelativeLayout layout) {
 		this.adView = adView;
 		this.layout = layout;
-		this.verticalAlign = RelativeLayout.ALIGN_PARENT_TOP;
-		this.horizontalAlign = RelativeLayout.CENTER_HORIZONTAL;
+		verticalAlign = RelativeLayout.ALIGN_PARENT_TOP;
+		horizontalAlign = RelativeLayout.CENTER_HORIZONTAL;
 	}
 
 	@Override
@@ -94,14 +88,17 @@ public class AdViewHandler extends Handler {
 			hideAds(msg);
 			break;
 		}
+		default:
+			break;
 		}
 	}
 
 	private void hideAds(Message msg) {
 		AdsParameters adsParameters = (AdsParameters) msg.obj;
 
-		if (adView.getVisibility() == View.GONE)
+		if (adView.getVisibility() == View.GONE) {
 			return;
+		}
 
 		if (adsParameters != null) {
 
@@ -151,7 +148,7 @@ public class AdViewHandler extends Handler {
 		if (adsParameters != null) {
 			updateAligns(adsParameters);
 
-			RelativeLayout.LayoutParams adParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+			RelativeLayout.LayoutParams adParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
 			adParams.addRule(verticalAlign);
 			adParams.addRule(horizontalAlign);
@@ -204,22 +201,28 @@ public class AdViewHandler extends Handler {
 	}
 
 	private int getVerticalAlign(AdsParameters adsParameters) {
-		if (adsParameters.verticalAlign == null)
+		if (adsParameters.verticalAlign == null) {
 			return verticalAlign;
-		if (adsParameters.verticalAlign == AdsParameters.VERTICAL_TOP)
+		}
+		if (adsParameters.verticalAlign == AdsParameters.VERTICAL_TOP) {
 			return RelativeLayout.ALIGN_PARENT_TOP;
-		if (adsParameters.verticalAlign == AdsParameters.VERTICAL_BOTTOM)
+		}
+		if (adsParameters.verticalAlign == AdsParameters.VERTICAL_BOTTOM) {
 			return RelativeLayout.ALIGN_PARENT_BOTTOM;
+		}
 		return RelativeLayout.CENTER_VERTICAL;
 	}
 
 	private int getHorizontalAlign(AdsParameters adsParameters) {
-		if (adsParameters.horizontalAlign == null)
+		if (adsParameters.horizontalAlign == null) {
 			return horizontalAlign;
-		if (adsParameters.horizontalAlign == AdsParameters.HORIZONTAL_LEFT)
+		}
+		if (adsParameters.horizontalAlign == AdsParameters.HORIZONTAL_LEFT) {
 			return RelativeLayout.ALIGN_PARENT_LEFT;
-		if (adsParameters.horizontalAlign == AdsParameters.HORIZONTAL_RIGHT)
+		}
+		if (adsParameters.horizontalAlign == AdsParameters.HORIZONTAL_RIGHT) {
 			return RelativeLayout.ALIGN_PARENT_RIGHT;
+		}
 		return RelativeLayout.CENTER_HORIZONTAL;
 	}
 

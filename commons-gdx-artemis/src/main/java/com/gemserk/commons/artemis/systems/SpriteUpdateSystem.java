@@ -1,7 +1,9 @@
 package com.gemserk.commons.artemis.systems;
 
+import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
+import com.artemis.utils.ImmutableBag;
 import com.gemserk.animation4j.interpolator.FloatInterpolator;
 import com.gemserk.commons.artemis.components.Components;
 import com.gemserk.commons.artemis.components.PreviousStateSpatialComponent;
@@ -17,17 +19,13 @@ import com.gemserk.componentsengine.utils.RandomAccessMap;
  * Updates Sprites from SpriteComponent to the location of the Spatial from the SpatialComponent, if the entity has a PreviousSpatialStateComponent, then it performs an interpolation between both spatial information using the GlobalTime.getAlpha().
  */
 public class SpriteUpdateSystem extends EntitySystem {
-
 	static class EntityComponents {
-
 		public SpatialComponent spatialComponent;
 		public SpriteComponent spriteComponent;
 		public PreviousStateSpatialComponent previousStateSpatialComponent;
-
 	}
 
 	static class Factory extends EntityComponentsFactory<EntityComponents> {
-
 		@Override
 		public EntityComponents newInstance() {
 			return new EntityComponents();
@@ -43,7 +41,6 @@ public class SpriteUpdateSystem extends EntitySystem {
 			entityComponent.spriteComponent = Components.getSpriteComponent(e);
 			entityComponent.previousStateSpatialComponent = Components.getPreviousStateSpatialComponent(e);
 		}
-
 	}
 
 	private final TimeStepProvider timeStepProvider;
@@ -55,13 +52,13 @@ public class SpriteUpdateSystem extends EntitySystem {
 
 	@SuppressWarnings("unchecked")
 	public SpriteUpdateSystem(TimeStepProvider timeStepProvider) {
-		super(Components.spatialComponentClass, Components.spriteComponentClass);
+		super(Aspect.getAspectForAll(Components.spatialComponentClass, Components.spriteComponentClass));
 		this.timeStepProvider = timeStepProvider;
-		this.factory = new Factory();
+		factory = new Factory();
 	}
 
 	@Override
-	protected void processEntities() {
+	protected void processEntities(ImmutableBag<Entity> entities) {
 		RandomAccessMap<Entity, EntityComponents> allTheEntityComponents = factory.entityComponents;
 		int entitiesSize = allTheEntityComponents.size();
 		for (int entityIndex = 0; entityIndex < entitiesSize; entityIndex++) {
@@ -91,15 +88,13 @@ public class SpriteUpdateSystem extends EntitySystem {
 	}
 
 	@Override
-	protected void enabled(Entity e) {
-		super.enabled(e);
+	protected void inserted(Entity e) {
 		factory.add(e);
 	}
 
 	@Override
-	protected void disabled(Entity e) {
+	protected void removed(Entity e) {
 		factory.remove(e);
-		super.disabled(e);
 	}
 
 	@Override

@@ -1,20 +1,19 @@
 package com.gemserk.commons.artemis.systems;
 
+import com.artemis.Aspect;
 import com.artemis.Entity;
-import com.artemis.EntityProcessingSystem;
+import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.gemserk.commons.artemis.components.AntiGravityComponent;
 import com.gemserk.commons.artemis.components.Components;
 import com.gemserk.commons.artemis.components.PhysicsComponent;
 
 public class AntiGravitySystem extends EntityProcessingSystem {
-	
 	private final Vector2 tmp = new Vector2();
 
 	@SuppressWarnings("unchecked")
 	public AntiGravitySystem() {
-		super(AntiGravityComponent.class);
+		super(Aspect.getAspectForAll(Components.antiGravityComponentClass));
 	}
 	
 	@Override
@@ -24,9 +23,7 @@ public class AntiGravitySystem extends EntityProcessingSystem {
 		
 		Vector2 gravity = body.getWorld().getGravity();
 
-		tmp.set(gravity).mul(-body.getMass());
-		body.applyForceToCenter(tmp);
+		tmp.set(gravity).scl(-body.getMass());
+		body.applyForceToCenter(tmp, true);
 	}
-
-
 }

@@ -1,13 +1,12 @@
 package com.gemserk.commons.artemis.components;
 
 import com.artemis.Component;
-import com.artemis.ComponentTypeManager;
+import com.artemis.ComponentType;
 import com.artemis.Entity;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 
 public class ParticleEmitterComponent extends Component {
-	
-	public static final int type = ComponentTypeManager.getTypeFor(ParticleEmitterComponent.class).getId();
+	public static final ComponentType type = ComponentType.getTypeFor(ParticleEmitterComponent.class);
 
 	public static ParticleEmitterComponent get(Entity e) {
 		return (ParticleEmitterComponent) e.getComponent(type);
@@ -18,5 +17,4 @@ public class ParticleEmitterComponent extends Component {
 	public ParticleEmitterComponent(ParticleEmitter particleEmitter) {
 		this.particleEmitter = particleEmitter;
 	}
-
 }

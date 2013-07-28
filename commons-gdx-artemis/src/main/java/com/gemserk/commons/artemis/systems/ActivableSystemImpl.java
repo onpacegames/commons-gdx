@@ -1,7 +1,6 @@
 package com.gemserk.commons.artemis.systems;
 
 public class ActivableSystemImpl implements ActivableSystem {
-	
 	private boolean enabled = true;
 
 	protected void disable() {
@@ -19,10 +18,10 @@ public class ActivableSystemImpl implements ActivableSystem {
 
 	@Override
 	public void toggle() {
-		if (isEnabled())
+		if (isEnabled()) {
 			disable();
-		else
+		} else {
 			enable();
+		}
 	}
-
 }

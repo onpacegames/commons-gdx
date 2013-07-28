@@ -9,7 +9,6 @@ import com.gemserk.animation4j.gdx.Animation;
 import com.gemserk.resources.ResourceManager;
 
 public class AnimationResourceBuilder implements ResourceBuilder<Animation> {
-
 	private final ResourceManager<String> resourceManager;
 	
 	private final String spriteSheetId;
@@ -30,7 +29,7 @@ public class AnimationResourceBuilder implements ResourceBuilder<Animation> {
 		
 	}
 	
-	private ArrayList<Frame> frames; 
+	private ArrayList<Frame> frames;
 	
 	private boolean loop = false;
 
@@ -47,7 +46,7 @@ public class AnimationResourceBuilder implements ResourceBuilder<Animation> {
 	public AnimationResourceBuilder(ResourceManager<String> resourceManager, String spriteSheetId) {
 		this.resourceManager = resourceManager;
 		this.spriteSheetId = spriteSheetId;
-		this.frames = new ArrayList<Frame>();
+		frames = new ArrayList<Frame>();
 	}
 
 	@Override
@@ -55,13 +54,13 @@ public class AnimationResourceBuilder implements ResourceBuilder<Animation> {
 		Texture spriteSheet = resourceManager.getResourceValue(spriteSheetId);
 		Sprite[] frames = new Sprite[this.frames.size()];
 		float[] times = new float[this.frames.size()];
-		for (int i = 0; i < frames.length; i++) { 
+		for (int i = 0; i < frames.length; i++) {
 			Frame frame = this.frames.get(i);
 			frames[i] = new Sprite(spriteSheet, frame.x, frame.y, frame.w, frame.h);
 
 			// convert time from milliseconds to seconds
 			
-			times[i] = (float) frame.time * 0.001f; 
+			times[i] = frame.time * 0.001f;
 		}
 		return new Animation(frames, new FrameAnimationImpl(loop, times));
 	}
@@ -70,5 +69,4 @@ public class AnimationResourceBuilder implements ResourceBuilder<Animation> {
 	public boolean isVolatile() {
 		return true;
 	}
-
 }

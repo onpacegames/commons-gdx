@@ -5,21 +5,22 @@ package com.gemserk.componentsengine.properties;
  * note: added to replace InnerProperty.
  */
 public class FixedProperty implements Property<Object> {
-
 	private final PropertiesHolder holder;
 
 	public FixedProperty(PropertiesHolder propertiesHolder) {
-		this.holder = propertiesHolder;
+		holder = propertiesHolder;
 	}
 	
 	protected PropertiesHolder getHolder() {
 		return holder;
 	}
 	
+	@Override
 	public Object get() {
 		return null;
 	}
 
+	@Override
 	public void set(Object value) {
 
 	}
@@ -27,8 +28,9 @@ public class FixedProperty implements Property<Object> {
 	@Override
 	public String toString() {
 		Object object = get();
-		if (object != null)
+		if (object != null) {
 			return "FIXEDPROP: " + object.toString();
+		}
 		return "FIXEDPROP: null value";
 	}
 

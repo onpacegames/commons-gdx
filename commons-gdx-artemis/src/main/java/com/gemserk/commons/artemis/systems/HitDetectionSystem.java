@@ -1,19 +1,20 @@
 package com.gemserk.commons.artemis.systems;
 
+import com.artemis.Aspect;
 import com.artemis.Entity;
-import com.artemis.EntityProcessingSystem;
+import com.artemis.systems.EntityProcessingSystem;
+import com.gemserk.commons.artemis.components.Components;
 import com.gemserk.commons.artemis.components.HitComponent;
 import com.gemserk.commons.artemis.components.PhysicsComponent;
 import com.gemserk.commons.artemis.triggers.Trigger;
 import com.gemserk.commons.gdx.box2d.Contacts;
 
 public class HitDetectionSystem extends EntityProcessingSystem implements ActivableSystem {
-
 	private final ActivableSystem activableSystem = new ActivableSystemImpl();
 
 	@SuppressWarnings("unchecked")
 	public HitDetectionSystem() {
-		super(HitComponent.class);
+		super(Aspect.getAspectForAll(Components.hitComponentClass));
 	}
 
 	@Override
@@ -34,13 +35,14 @@ public class HitDetectionSystem extends EntityProcessingSystem implements Activa
 		Contacts contact = physicsComponent.getContact();
 		Trigger trigger = hitComponent.getTrigger();
 
-		if (!contact.isInContact())
+		if (!contact.isInContact()) {
 			return;
+		}
 
-		if (trigger.isAlreadyTriggered())
+		if (trigger.isAlreadyTriggered()) {
 			return;
+		}
 
 		trigger.trigger(e);
 	}
-
 }

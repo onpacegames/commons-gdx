@@ -5,15 +5,14 @@ import com.gemserk.commons.artemis.WorldSystemImpl;
 import com.gemserk.commons.artemis.events.EventManager;
 
 public class EventManagerWorldSystem extends WorldSystemImpl {
-	
 	EventManager eventManager;
 	
 	public void setEventManager(EventManager eventManager) {
 		this.eventManager = eventManager;
 	}
 
+	@Override
 	public void process(World world) {
 		eventManager.process();
 	}
-	
 }

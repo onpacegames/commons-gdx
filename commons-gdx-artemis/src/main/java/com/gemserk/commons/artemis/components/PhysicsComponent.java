@@ -1,7 +1,7 @@
 package com.gemserk.commons.artemis.components;
 
 import com.artemis.Component;
-import com.artemis.ComponentTypeManager;
+import com.artemis.ComponentType;
 import com.artemis.Entity;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -10,18 +10,15 @@ import com.gemserk.commons.gdx.games.Physics;
 import com.gemserk.commons.gdx.games.PhysicsImpl;
 
 public class PhysicsComponent extends Component {
-
 	public static interface ImmediateModePhysicsListener {
-
 		public void beginContact(Entity e, Contact contact, boolean fixtureA);
 
 		public void endContact(Entity e, Contact contact, boolean fixtureA);
 
 		public void preSolve(Entity e, Contact contact, boolean fixtureA);
-
 	}
 
-	public static final int type = ComponentTypeManager.getTypeFor(PhysicsComponent.class).getId();
+	public static final ComponentType type = ComponentType.getTypeFor(PhysicsComponent.class);
 
 	public static PhysicsComponent get(Entity e) {
 		return (PhysicsComponent) e.getComponent(type);
@@ -57,7 +54,5 @@ public class PhysicsComponent extends Component {
 	public PhysicsComponent(Physics physics, ImmediateModePhysicsListener physicsListener) {
 		this.physics = physics;
 		this.physicsListener = physicsListener;
-
 	}
-
 }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.gemserk.animation4j.FrameAnimation;
 
 public class Animation implements com.gemserk.animation4j.animations.Animation {
-
 	private final Sprite[] sprites;
 	private final FrameAnimation frameAnimation;
 
@@ -23,10 +22,10 @@ public class Animation implements com.gemserk.animation4j.animations.Animation {
 	}
 
 	public Animation(Sprite[] frames, FrameAnimation frameAnimation) {
-		this.sprites = frames;
+		sprites = frames;
 		this.frameAnimation = frameAnimation;
-		this.playing = true;
-		this.started = true;
+		playing = true;
+		started = true;
 		speed = 1f;
 	}
 
@@ -46,6 +45,7 @@ public class Animation implements com.gemserk.animation4j.animations.Animation {
 		return frameAnimation.getCurrentFrame();
 	}
 
+	@Override
 	public int getIteration() {
 		return frameAnimation.getIteration();
 	}
@@ -54,18 +54,23 @@ public class Animation implements com.gemserk.animation4j.animations.Animation {
 		return getFrame(frameAnimation.getCurrentFrame());
 	}
 
+	@Override
 	public void update(float delta) {
-		if (!playing)
+		if (!playing) {
 			return;
+		}
 		frameAnimation.update(delta * speed);
-		if (frameAnimation.isFinished())
+		if (frameAnimation.isFinished()) {
 			playing = false;
+		}
 	}
 
+	@Override
 	public boolean isFinished() {
 		return frameAnimation.isFinished();
 	}
 
+	@Override
 	public void restart() {
 		start();
 	}
@@ -104,6 +109,7 @@ public class Animation implements com.gemserk.animation4j.animations.Animation {
 		playing = true;
 	}
 
+	@Override
 	public boolean isPlaying() {
 		return playing;
 	}
@@ -118,6 +124,7 @@ public class Animation implements com.gemserk.animation4j.animations.Animation {
 		return PlayingDirection.Normal;
 	}
 	
+	@Override
 	public float getCurrentTime() {
 		return frameAnimation.getCurrentTime();
 	}

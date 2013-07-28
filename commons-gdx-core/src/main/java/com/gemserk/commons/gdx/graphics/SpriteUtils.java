@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * @author acoppes
  */
 public class SpriteUtils {
-
 	/**
 	 * As Sprite is a TextureRegion, this method lets you calculate the original width of the sprite based on the internal texture coordinates.
 	 * 
@@ -42,13 +41,13 @@ public class SpriteUtils {
 	 *            The desired width of the Sprite.
 	 */
 	public static void resize(Sprite sprite, float width) {
-		float aspect = (float) sprite.getHeight() / (float) sprite.getWidth();
+		float aspect = sprite.getHeight() / sprite.getWidth();
 		float height = width * aspect;
 		sprite.setSize(width, height);
 	}
 
 	public static void resizeUsingHeightKeepAspectRatio(Sprite sprite, float height) {
-		float aspect = (float) sprite.getHeight() / (float) sprite.getWidth();
+		float aspect = sprite.getHeight() / sprite.getWidth();
 		float width = height / aspect;
 		sprite.setSize(width, height);
 	}
@@ -147,8 +146,9 @@ public class SpriteUtils {
 		boolean isAtlasSprite1 = sprite1 instanceof AtlasSprite;
 		boolean isAtlasSprite2 = sprite2 instanceof AtlasSprite;
 
-		if (isAtlasSprite1 != isAtlasSprite2)
+		if (isAtlasSprite1 != isAtlasSprite2) {
 			return false;
+		}
 
 		if (!isAtlasSprite1) {
 			return TextureRegionUtils.textureRegionEquals(sprite1, sprite2);

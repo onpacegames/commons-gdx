@@ -1,7 +1,9 @@
 package com.gemserk.commons.artemis.systems;
 
+import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
+import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
@@ -11,7 +13,6 @@ import com.gemserk.commons.artemis.utils.PhysicsUtils;
 import com.gemserk.commons.gdx.GlobalTime;
 
 public class PhysicsSystem extends EntitySystem implements ActivableSystem, Disposable {
-
 	private ActivableSystem activableSystem = new ActivableSystemImpl();
 
 	World physicsWorld;
@@ -26,7 +27,7 @@ public class PhysicsSystem extends EntitySystem implements ActivableSystem, Disp
 	
 	@SuppressWarnings("unchecked")
 	public PhysicsSystem(World physicsWorld, int velocityIterations, int positionIterations) {
-		super(Components.physicsComponentClass);
+		super(Aspect.getAspectForAll(Components.physicsComponentClass));
 		this.physicsWorld = physicsWorld;
 		this.velocityIterations = velocityIterations;
 		this.positionIterations = positionIterations;
@@ -43,20 +44,9 @@ public class PhysicsSystem extends EntitySystem implements ActivableSystem, Disp
 	protected boolean checkProcessing() {
 		return isEnabled();
 	}
-	
-	@Override
-	protected void processEntities() {
-	}
 
 	@Override
-	protected void disabled(Entity e) {
-		PhysicsComponent physicsComponent = Components.getPhysicsComponent(e);
-		physicsComponent.getBody().setActive(false);
-		PhysicsUtils.releaseContacts(physicsComponent.getContact());
-	}
-
-	@Override
-	protected void enabled(Entity e) {
+	protected void inserted(Entity e) {
 		PhysicsComponent physicsComponent = Components.getPhysicsComponent(e);
 		physicsComponent.getBody().setActive(true);
 	}
@@ -64,9 +54,9 @@ public class PhysicsSystem extends EntitySystem implements ActivableSystem, Disp
 	@Override
 	protected void removed(Entity e) {
 		PhysicsComponent physicsComponent = Components.getPhysicsComponent(e);
-
-		if (physicsComponent == null)
-			return;
+		
+		physicsComponent.getBody().setActive(false);
+		PhysicsUtils.releaseContacts(physicsComponent.getContact());
 
 		Body body = physicsComponent.getBody();
 		body.setUserData(null);
@@ -82,10 +72,12 @@ public class PhysicsSystem extends EntitySystem implements ActivableSystem, Disp
 		physicsWorld.setContactListener(physicsContactListener);
 	}
 
+	@Override
 	public void toggle() {
 		activableSystem.toggle();
 	}
 
+	@Override
 	public boolean isEnabled() {
 		return activableSystem.isEnabled();
 	}
@@ -95,4 +87,7 @@ public class PhysicsSystem extends EntitySystem implements ActivableSystem, Disp
 		physicsWorld.dispose();
 	}
 
+	@Override
+	protected void processEntities(ImmutableBag<Entity> entities) {
+	}
 }

@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.math.Vector2;
 
 public class MeshTransform {
-
 	private float[] vertices;
 	private Mesh mesh;
 
@@ -55,7 +54,7 @@ public class MeshTransform {
 		vertexSize = vertexAttributes.vertexSize / 4;
 		
 		colorOffset = Gdx2dMeshBuilder.getOffset(vertexAttributes, Usage.ColorPacked);
-		this.transformedVertices = new float[mesh.getNumVertices() * vertexSize];
+		transformedVertices = new float[mesh.getNumVertices() * vertexSize];
 	}
 
 	public void setPosition(float x, float y) {
@@ -76,12 +75,13 @@ public class MeshTransform {
 	}
 
 	public void update() {
-		if (!dirty)
+		if (!dirty) {
 			return;
+		}
 		mesh.getVertices(transformedVertices);
 		int idx = 0;
 		for (int i = 0; i < vertices.length; i += 2) {
-			tmp.set(vertices[i], vertices[i + 1]).mul(sx, sy).rotate(angle).add(x, y);
+			tmp.set(vertices[i], vertices[i + 1]).scl(sx, sy).rotate(angle).add(x, y);
 			transformedVertices[idx] = tmp.x;
 			transformedVertices[idx + 1] = tmp.y;
 			transformedVertices[idx + 2] = 0f;

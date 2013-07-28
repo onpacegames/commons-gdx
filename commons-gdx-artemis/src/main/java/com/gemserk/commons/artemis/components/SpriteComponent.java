@@ -1,15 +1,14 @@
 package com.gemserk.commons.artemis.components;
 
 import com.artemis.Component;
-import com.artemis.ComponentTypeManager;
+import com.artemis.ComponentType;
 import com.artemis.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
 public class SpriteComponent extends Component {
-
-	public static final int type = ComponentTypeManager.getTypeFor(SpriteComponent.class).getId();
+	public static final ComponentType type = ComponentType.getTypeFor(SpriteComponent.class);
 
 	public static SpriteComponent get(Entity e) {
 		return (SpriteComponent) e.getComponent(type);
@@ -71,7 +70,7 @@ public class SpriteComponent extends Component {
 	public SpriteComponent(Sprite sprite, float cx, float cy, Color color) {
 		this.sprite = sprite;
 		this.color = new Color(color);
-		this.center = new Vector2(cx, cy);
+		center = new Vector2(cx, cy);
 	}
 
 	public SpriteComponent(Sprite sprite, Color color) {
@@ -86,23 +85,26 @@ public class SpriteComponent extends Component {
 	
 		// to avoid modifying the sprite.dirty unnecessary
 		
-		if (isUpdateRotation() && sprite.getRotation() != angle)
+		if (isUpdateRotation() && sprite.getRotation() != angle) {
 			sprite.setRotation(angle);
+		}
 		
 		float ox = width * center.x;
 		float oy = height * center.y;
 		
-		if (ox != sprite.getOriginX() || oy != sprite.getOriginY())
+		if (ox != sprite.getOriginX() || oy != sprite.getOriginY()) {
 			sprite.setOrigin(ox, oy);
+		}
 		
-		if (sprite.getWidth() != width || sprite.getHeight() != height)
+		if (sprite.getWidth() != width || sprite.getHeight() != height) {
 			sprite.setSize(width, height);
+		}
 		
 		float newX = x - sprite.getOriginX();
 		float newY = y - sprite.getOriginY();
 
-		if (newX != sprite.getX() || newY != sprite.getY())
+		if (newX != sprite.getX() || newY != sprite.getY()) {
 			sprite.setPosition(newX, newY);
+		}
 	}
-
 }

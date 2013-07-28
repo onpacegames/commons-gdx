@@ -8,9 +8,9 @@ import org.junit.Test;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.managers.TagManager;
 
 public class TagManagerTest {
-	
 	@Test
 	public void test() {
 		
@@ -21,24 +21,20 @@ public class TagManagerTest {
 		
 		World world = new World();
 		Entity e = world.createEntity();
-		e.setTag(tag);
-		e.refresh();
+		world.getManager(TagManager.class).register(tag, e);
+		e.addToWorld();
 		
 		world.setDelta(10);
-		world.loopStart();
 		
-		Entity e1 = world.getTagManager().getEntity(tag);
+		Entity e1 = world.getManager(TagManager.class).getEntity(tag);
 		assertThat(e1, IsNull.notNullValue());
 		assertThat(e1, IsSame.sameInstance(e));
 		
 		world.deleteEntity(e);
 		
 		world.setDelta(10);
-		world.loopStart();
 
-		Entity e2 = world.getTagManager().getEntity(tag);
+		Entity e2 = world.getManager(TagManager.class).getEntity(tag);
 		assertThat(e2, IsNull.nullValue());
 	}
-
-
 }

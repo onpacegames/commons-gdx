@@ -1,8 +1,11 @@
 package com.gemserk.commons.artemis.systems;
 
+import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
+import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.utils.Disposable;
+import com.gemserk.commons.artemis.components.Components;
 import com.gemserk.commons.artemis.components.OwnerComponent;
 import com.gemserk.commons.artemis.components.RenderableComponent;
 import com.gemserk.commons.artemis.render.RenderLayers;
@@ -10,12 +13,11 @@ import com.gemserk.commons.artemis.render.Renderable;
 import com.gemserk.commons.gdx.camera.Libgdx2dCameraTransformImpl;
 
 public class RenderableSystem extends EntitySystem implements Disposable {
-
 	private RenderLayers renderLayers;
 
 	@SuppressWarnings("unchecked")
 	public RenderableSystem() {
-		super(RenderableComponent.class);
+		super(Aspect.getAspectForAll(Components.renderableComponentClass));
 		// default layers
 		renderLayers = new RenderLayers();
 		renderLayers.add("default", new RenderLayerSpriteBatchImpl(-1000, 1000, new Libgdx2dCameraTransformImpl()));
@@ -23,22 +25,23 @@ public class RenderableSystem extends EntitySystem implements Disposable {
 
 	@SuppressWarnings("unchecked")
 	public RenderableSystem(RenderLayers renderLayers) {
-		super(RenderableComponent.class);
+		super(Aspect.getAspectForAll(Components.renderableComponentClass));
 		this.renderLayers = renderLayers;
 	}
 
 	@Override
-	protected void processEntities() {
+	protected void processEntities(ImmutableBag<Entity> entities) {
 		for (int i = 0; i < renderLayers.size(); i++) {
 			RenderLayer renderLayer = renderLayers.get(i);
-			if (!renderLayer.isEnabled())
+			if (!renderLayer.isEnabled()) {
 				continue;
+			}
 			renderLayer.render();
 		}
 	}
 
 	@Override
-	protected void enabled(Entity e) {
+	protected void inserted(Entity e) {
 		RenderableComponent renderableComponent = RenderableComponent.get(e);
 		OwnerComponent ownerComponent = OwnerComponent.get(e);
 
@@ -49,8 +52,9 @@ public class RenderableSystem extends EntitySystem implements Disposable {
 
 		renderable.setId(e.getId());
 		// if it has owner it uses the id of the owner... that was part of the original comparator
-		if (ownerComponent != null && ownerComponent.getOwner() != null)
+		if (ownerComponent != null && ownerComponent.getOwner() != null) {
 			renderable.setId(ownerComponent.getOwner().getId());
+		}
 
 		// order the entity in the Layer, probably the same inside the layer
 		for (int i = 0; i < renderLayers.size(); i++) {
@@ -63,7 +67,7 @@ public class RenderableSystem extends EntitySystem implements Disposable {
 	}
 
 	@Override
-	protected void disabled(Entity e) {
+	protected void removed(Entity e) {
 		RenderableComponent renderableComponent = RenderableComponent.get(e);
 		Renderable renderable = renderableComponent.renderable;
 		// remove the order

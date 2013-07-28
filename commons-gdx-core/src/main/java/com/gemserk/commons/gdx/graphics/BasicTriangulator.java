@@ -31,6 +31,7 @@ public class BasicTriangulator implements Triangulator {
 	 * @param y
 	 *            the y coordinate of the point
 	 */
+	@Override
 	public void addPolyPoint(float x, float y) {
 		Point p = new Point(x, y);
 		if (!poly.contains(p)) {
@@ -63,6 +64,7 @@ public class BasicTriangulator implements Triangulator {
 	 * 
 	 * @return True if we managed the task
 	 */
+	@Override
 	public boolean triangulate() {
 		tried = true;
 
@@ -75,6 +77,7 @@ public class BasicTriangulator implements Triangulator {
 	 * 
 	 * @return The number of triangles produced
 	 */
+	@Override
 	public int getTriangleCount() {
 		if (!tried) {
 			throw new RuntimeException("Call triangulate() before accessing triangles");
@@ -91,22 +94,23 @@ public class BasicTriangulator implements Triangulator {
 	 *            The index of the point within the triangle to retrieve (0 - 2)
 	 * @return The x,y coordinate pair for the point
 	 */
+	@Override
 	public float[] getTrianglePoint(int tri, int i) {
 		if (!tried) {
 			throw new RuntimeException("Call triangulate() before accessing triangles");
 		}
 
-		return tris.get((tri * 3) + i).toArray();
+		return tris.get(tri * 3 + i).toArray();
 	}
 
 	@Override
 	public float getTrianglePointX(int tri, int i) {
-		return tris.get((tri * 3) + i).x;
+		return tris.get(tri * 3 + i).x;
 	}
 
 	@Override
 	public float getTrianglePointY(int tri, int i) {
-		return tris.get((tri * 3) + i).y;
+		return tris.get(tri * 3 + i).y;
 	}
 
 	/**
@@ -172,7 +176,7 @@ public class BasicTriangulator implements Triangulator {
 		cCROSSap = cx * apy - cy * apx;
 		bCROSScp = bx * cpy - by * cpx;
 
-		return ((aCROSSbp >= 0.0f) && (bCROSScp >= 0.0f) && (cCROSSap >= 0.0f));
+		return aCROSSbp >= 0.0f && bCROSScp >= 0.0f && cCROSSap >= 0.0f;
 	}
 
 	/**
@@ -205,12 +209,12 @@ public class BasicTriangulator implements Triangulator {
 		Cx = contour.get(V[w]).getX();
 		Cy = contour.get(V[w]).getY();
 
-		if (EPSILON > (((Bx - Ax) * (Cy - Ay)) - ((By - Ay) * (Cx - Ax)))) {
+		if (EPSILON > (Bx - Ax) * (Cy - Ay) - (By - Ay) * (Cx - Ax)) {
 			return false;
 		}
 
 		for (p = 0; p < n; p++) {
-			if ((p == u) || (p == v) || (p == w)) {
+			if (p == u || p == v || p == w) {
 				continue;
 			}
 
@@ -241,19 +245,22 @@ public class BasicTriangulator implements Triangulator {
 		/* allocate and initialize list of Vertices in polygon */
 
 		int n = contour.size();
-		if (n < 3)
+		if (n < 3) {
 			return false;
+		}
 
 		int[] V = new int[n];
 
 		/* we want a counter-clockwise polygon in V */
 
 		if (0.0f < area(contour)) {
-			for (int v = 0; v < n; v++)
+			for (int v = 0; v < n; v++) {
 				V[v] = v;
+			}
 		} else {
-			for (int v = 0; v < n; v++)
-				V[v] = (n - 1) - v;
+			for (int v = 0; v < n; v++) {
+				V[v] = n - 1 - v;
+			}
 		}
 
 		int nv = n;
@@ -263,21 +270,24 @@ public class BasicTriangulator implements Triangulator {
 
 		for (int v = nv - 1; nv > 2;) {
 			/* if we loop, it is probably a non-simple polygon */
-			if (0 >= (count--)) {
+			if (0 >= count--) {
 				// ** Triangulator4: ERROR - probable bad polygon!
 				return false;
 			}
 
 			/* three consecutive vertices in current polygon, <u,v,w> */
 			int u = v;
-			if (nv <= u)
+			if (nv <= u) {
 				u = 0; /* previous */
+			}
 			v = u + 1;
-			if (nv <= v)
+			if (nv <= v) {
 				v = 0; /* new v */
+			}
 			int w = v + 1;
-			if (nv <= w)
+			if (nv <= w) {
 				w = 0; /* next */
+			}
 
 			if (snip(contour, u, v, w, nv, V)) {
 				int a, b, c, s, t;
@@ -365,6 +375,7 @@ public class BasicTriangulator implements Triangulator {
 		/**
 		 * @see java.lang.Object#hashCode()
 		 */
+		@Override
 		public int hashCode() {
 			return (int) (x * y * 31);
 		}
@@ -372,10 +383,11 @@ public class BasicTriangulator implements Triangulator {
 		/**
 		 * @see java.lang.Object#equals(java.lang.Object)
 		 */
+		@Override
 		public boolean equals(Object other) {
 			if (other instanceof Point) {
 				Point p = (Point) other;
-				return (p.x == x) && (p.y == y);
+				return p.x == x && p.y == y;
 			}
 
 			return false;
@@ -435,7 +447,7 @@ public class BasicTriangulator implements Triangulator {
 		 * @return The point
 		 */
 		public Point get(int i) {
-			return (Point) points.get(i);
+			return points.get(i);
 		}
 
 		/**

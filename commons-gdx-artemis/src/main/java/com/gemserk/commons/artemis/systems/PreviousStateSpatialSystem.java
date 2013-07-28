@@ -1,7 +1,9 @@
 package com.gemserk.commons.artemis.systems;
 
+import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
+import com.artemis.utils.ImmutableBag;
 import com.gemserk.commons.artemis.components.Components;
 import com.gemserk.commons.artemis.components.PreviousStateSpatialComponent;
 import com.gemserk.commons.artemis.components.SpatialComponent;
@@ -12,14 +14,12 @@ import com.gemserk.componentsengine.utils.RandomAccessMap;
  * Stores spatial state on the PreviousSpatialStateComponent (name could be changed) to be used when interpolating render stuff.
  */
 public class PreviousStateSpatialSystem extends EntitySystem {
-
 	static class EntityComponents {
 		public SpatialComponent spatialComponent;
 		public PreviousStateSpatialComponent previousStateSpatialComponent;
 	}
 
 	static class Factory extends EntityComponentsFactory<EntityComponents> {
-
 		@Override
 		public EntityComponents newInstance() {
 			return new EntityComponents();
@@ -36,30 +36,30 @@ public class PreviousStateSpatialSystem extends EntitySystem {
 			entityComponent.spatialComponent = SpatialComponent.get(e);
 			entityComponent.previousStateSpatialComponent = PreviousStateSpatialComponent.get(e);
 		}
-
 	}
 
 	private Factory factory;
 
 	@SuppressWarnings("unchecked")
 	public PreviousStateSpatialSystem() {
-		super(Components.spatialComponentClass, Components.previousStateSpatialComponentClass);
+		super(Aspect.getAspectForAll(Components.spatialComponentClass, Components.previousStateSpatialComponentClass));
 		factory = new Factory();
 	}
 
-	protected void enabled(Entity e) {
+	@Override
+	protected void inserted(Entity e) {
 		super.enabled(e);
 		factory.add(e);
 	}
 
 	@Override
-	protected void disabled(Entity e) {
+	protected void removed(Entity e) {
 		factory.remove(e);
 		super.disabled(e);
 	}
 
 	@Override
-	protected void processEntities() {
+	protected void processEntities(ImmutableBag<Entity> entities) {
 		RandomAccessMap<Entity, EntityComponents> allTheEntityComponents = factory.entityComponents;
 		int entitiesSize = allTheEntityComponents.size();
 		for (int e = 0; e < entitiesSize; e++) {
@@ -72,4 +72,8 @@ public class PreviousStateSpatialSystem extends EntitySystem {
 		}
 	}
 
+	@Override
+	protected boolean checkProcessing() {
+		return true;
+	}
 }

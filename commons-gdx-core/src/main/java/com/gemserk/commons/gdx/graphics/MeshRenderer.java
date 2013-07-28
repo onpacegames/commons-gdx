@@ -3,23 +3,21 @@ package com.gemserk.commons.gdx.graphics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Disposable;
 
 public class MeshRenderer implements Disposable {
-	
 	public int totalRenderCalls = 0;
 
 	private ShaderProgram shader = null;
 	private boolean blendingEnabled;
-	private int blendSrcFunc = GL11.GL_SRC_ALPHA;
-	private int blendDstFunc = GL11.GL_ONE_MINUS_SRC_ALPHA;
+	private int blendSrcFunc = GL10.GL_SRC_ALPHA;
+	private int blendDstFunc = GL10.GL_ONE_MINUS_SRC_ALPHA;
 
 	public void setBlendingEnabled(boolean blending) {
-		this.blendingEnabled = blending;
+		blendingEnabled = blending;
 	}
 
 	public boolean isBlendingEnabled() {
@@ -50,7 +48,7 @@ public class MeshRenderer implements Disposable {
 
 	public MeshRenderer(ShaderProgram shader) {
 		this.shader = shader;
-		this.blendingEnabled = true;
+		blendingEnabled = true;
 	}
 
 	/** Returns a new instance of the default shader used by SpriteBatch for GL2 when no shader is specified. */
@@ -79,8 +77,9 @@ public class MeshRenderer implements Disposable {
 				+ "}";
 
 		ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
-		if (shader.isCompiled() == false)
+		if (shader.isCompiled() == false) {
 			throw new IllegalArgumentException("couldn't compile shader: " + shader.getLog());
+		}
 		return shader;
 	}
 
@@ -113,8 +112,9 @@ public class MeshRenderer implements Disposable {
 
 	@Override
 	public void dispose() {
-		if (shader != null)
+		if (shader != null) {
 			shader.dispose();
+		}
 	}
 
 }
